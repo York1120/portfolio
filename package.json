@@ -7,7 +7,7 @@
                     "dev":  "next dev",
                     "lint":  "eslint .",
                     "start":  "next start",
-                    "deploy":  "npx wrangler deploy"
+                    "deploy":  "npx wrangler pages deploy out --commit-dirty=true"
                 },
     "dependencies":  {
                          "@hookform/resolvers":  "^3.10.0",
