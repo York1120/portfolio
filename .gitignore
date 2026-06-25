@@ -10,3 +10,7 @@ out/
 .wrangler/
 .env*.local
 .DS_Store
+
+# Lock files - pnpm only
+package-lock.json
+yarn.lock
