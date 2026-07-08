@@ -1,14 +1,16 @@
 ﻿"use client"
 
 import { useState } from "react"
-import { Monitor, ChevronDown, Code, BookOpen } from "lucide-react"
-
+import { Monitor, ChevronDown, Code, BookOpen, ArrowRight } from "lucide-react"
+import Link from "next/link"
 import type { LucideIcon } from "lucide-react"
+
 interface LessonItem {
   title: string
   desc: string
   level: string
   details: string[]
+  href: string
 }
 
 interface Topic {
@@ -34,6 +36,7 @@ const topics: Topic[] = [
         title: "Scratch 基础",
         desc: "认识 Scratch 界面，学习顺序、循环与条件结构。",
         level: "入门",
+        href: "/it-education/programming/scratch",
         details: [
           "认识 Scratch 编程环境：舞台区、积木区、脚本区",
           "学习顺序结构：让角色按步骤移动、说话",
@@ -46,6 +49,7 @@ const topics: Topic[] = [
         title: "Python 入门",
         desc: "变量、数据类型、条件判断与循环语句。",
         level: "入门",
+        href: "/it-education/programming/python",
         details: [
           "Python 环境搭建与第一个程序",
           "变量与数据类型：数字、字符串、布尔值",
@@ -58,6 +62,7 @@ const topics: Topic[] = [
         title: "趣味项目实践",
         desc: "用编程制作小游戏、绘图工具等趣味项目。",
         level: "进阶",
+        href: "/it-education/programming/projects",
         details: [
           "项目一：猜数字游戏 — 综合运用循环与条件",
           "项目二：简易计算器 — 函数定义与调用",
@@ -80,6 +85,7 @@ const topics: Topic[] = [
         title: "计算机基础",
         desc: "认识计算机硬件、软件与操作系统基本操作。",
         level: "入门",
+        href: "/it-education/basics/computer",
         details: [
           "计算机的发展历史与分类",
           "硬件组成：CPU、内存、硬盘、主板、外设",
@@ -92,6 +98,7 @@ const topics: Topic[] = [
         title: "网络与信息安全",
         desc: "互联网应用基础、信息识别与网络安全意识。",
         level: "入门",
+        href: "/it-education/basics/network",
         details: [
           "互联网的工作原理：IP 地址、DNS、HTTP",
           "搜索引擎使用技巧与信息筛选",
@@ -104,6 +111,7 @@ const topics: Topic[] = [
         title: "数据处理入门",
         desc: "电子表格基础操作、数据整理与简单分析。",
         level: "进阶",
+        href: "/it-education/basics/data",
         details: [
           "电子表格界面认识与基本操作",
           "数据输入与格式化",
@@ -162,33 +170,42 @@ export default function ITEducationPage() {
                       key={item.title}
                       className="bg-white border border-gray-200 rounded-xl hover:shadow-md transition-all"
                     >
-                      <button
-                        onClick={() => setExpandedItem(isExpanded ? null : topic.id + "-" + item.title)}
-                        className="w-full text-left p-5"
-                      >
+                      <div className="p-5">
                         <span className={"inline-block text-xs font-medium px-2.5 py-0.5 rounded-full mb-3 " + getLevelStyle(item.level)}>
                           {getLevelLabel(item.level)}
                         </span>
-                        <div className="flex items-center justify-between">
-                          <h3 className="font-semibold text-gray-900">{item.title}</h3>
-                          <ChevronDown className={"w-4 h-4 text-gray-400 transition-transform " + (isExpanded ? "rotate-180" : "")} />
-                        </div>
-                        <p className="text-gray-600 text-sm leading-relaxed mt-2">{item.desc}</p>
-                      </button>
-                      {isExpanded && (
-                        <div className="px-5 pb-5 border-t border-gray-100 pt-3 animate-fade-in-down">
-                          <ul className="space-y-2">
-                            {item.details.map((detail, i) => (
-                              <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                                <span className="w-5 h-5 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-medium mt-0.5">
-                                  {i + 1}
-                                </span>
-                                {detail}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                        <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
+                        <p className="text-gray-600 text-sm leading-relaxed mb-3">{item.desc}</p>
+
+                        <button
+                          onClick={() => setExpandedItem(isExpanded ? null : topic.id + "-" + item.title)}
+                          className="inline-flex items-center gap-1 text-blue-600 text-xs font-medium hover:text-blue-700 transition-colors"
+                        >
+                          {isExpanded ? "收起详情" : "查看课程内容"}
+                          <ChevronDown className={"w-3 h-3 transition-transform " + (isExpanded ? "rotate-180" : "")} />
+                        </button>
+
+                        {isExpanded && (
+                          <div className="mt-3 pt-3 border-t border-gray-100 animate-fade-in-down">
+                            <ul className="space-y-1.5 mb-3">
+                              {item.details.slice(0, 3).map((detail, i) => (
+                                <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                                  <span className="w-4 h-4 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-medium mt-0.5">
+                                    {i + 1}
+                                  </span>
+                                  {detail}
+                                </li>
+                              ))}
+                            </ul>
+                            <Link
+                              href={item.href}
+                              className="inline-flex items-center gap-1 text-blue-600 text-sm font-medium hover:text-blue-700 transition-colors"
+                            >
+                              进入课程 <ArrowRight className="w-3.5 h-3.5" />
+                            </Link>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )
                 })}
