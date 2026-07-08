@@ -23,7 +23,7 @@ export default function BlogPage() {
                   <Calendar className="w-3.5 h-3.5" />
                   {post.date}
                 </span>
-                <span>{post.readTime}</span>
+
               </div>
               <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                 {post.title}

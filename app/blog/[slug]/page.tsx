@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation"
+﻿import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, Calendar, Tag } from "lucide-react"
 import { blogPosts } from "@/lib/blog-data"
@@ -32,7 +32,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <Calendar className="w-3.5 h-3.5" />
             {post.date}
           </span>
-          <span>{post.readTime}</span>
+
         </div>
 
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">{post.title}</h1>
