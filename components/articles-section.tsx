@@ -1,9 +1,9 @@
 ﻿import { Calendar, ArrowRight } from "lucide-react"
 import Link from "next/link"
-import { blogPosts } from "@/lib/blog-data"
+import { getAllPosts } from "@/lib/blog"
 
 export function ArticlesSection() {
-  const articles = blogPosts.slice(0, 3)
+  const articles = getAllPosts().slice(0, 3)
 
   return (
     <section className="py-16 md:py-24 bg-white">

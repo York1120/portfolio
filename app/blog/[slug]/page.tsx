@@ -1,15 +1,17 @@
 ﻿import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, Calendar, Tag } from "lucide-react"
-import { blogPosts } from "@/lib/blog-data"
+import { getPostBySlug, getAllPosts } from "@/lib/blog"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 
 export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }))
+  return getAllPosts().map((post) => ({ slug: post.slug }))
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const post = blogPosts.find((p) => p.slug === slug)
+  const post = getPostBySlug(slug)
   if (!post) notFound()
 
   return (
@@ -32,13 +34,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <Calendar className="w-3.5 h-3.5" />
             {post.date}
           </span>
-
         </div>
 
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">{post.title}</h1>
 
         <div className="prose prose-gray max-w-none prose-headings:text-gray-900 prose-headings:font-bold prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-p:text-gray-600 prose-p:leading-relaxed prose-ul:text-gray-600 prose-li:leading-relaxed prose-strong:text-gray-900">
-          {post.content}
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {post.content}
+          </ReactMarkdown>
         </div>
       </article>
     </div>
