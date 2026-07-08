@@ -32,7 +32,7 @@ export function HeroSection() {
             {/* 按钮 */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href="https://yorkphysics.eu.cc/"
+                href="/physics"
                 className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-8 py-3.5 rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200"
               >
                 <FlaskConical className="w-5 h-5" />

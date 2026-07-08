@@ -1,4 +1,4 @@
-import { FlaskConical, Monitor, BookOpen, Wrench } from "lucide-react"
+﻿import { FlaskConical, Monitor, BookOpen, Wrench } from "lucide-react"
 import Link from "next/link"
 
 const fields = [
@@ -6,8 +6,8 @@ const fields = [
     title: "物理教学",
     description: "初中物理互动实验平台，覆盖声学、光学、热学、力学、电学，让抽象概念可视化。",
     icon: FlaskConical,
-    href: "https://yorkphysics.eu.cc/",
-    external: true,
+    href: "/physics",
+    external: false,
     lightColor: "bg-blue-50",
     iconColor: "text-blue-600",
   },
