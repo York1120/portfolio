@@ -1,4 +1,5 @@
 ﻿import { GraduationCap, Award, Monitor } from "lucide-react"
+import Image from "next/image"
 
 export function AboutSection() {
   return (
@@ -9,14 +10,14 @@ export function AboutSection() {
           <div className="flex justify-center">
             <div className="relative w-64 h-64 md:w-80 md:h-80">
               <div className="absolute inset-0 bg-blue-100 rounded-3xl rotate-6" />
-              <div className="absolute inset-0 bg-white rounded-3xl border-2 border-gray-200 flex items-center justify-center overflow-hidden">
-                <div className="text-center p-8">
-                  <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-white text-3xl font-bold">周</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900">周老师</h3>
-                  <p className="text-gray-500 text-sm">初中物理 · 信息技术教师</p>
-                </div>
+              <div className="absolute inset-0 bg-white rounded-3xl border-2 border-gray-200 overflow-hidden">
+                <Image
+                  src="/photo.jpg"
+                  alt="周老师"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 256px, 320px"
+                />
               </div>
             </div>
           </div>

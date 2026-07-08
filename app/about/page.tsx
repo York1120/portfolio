@@ -14,7 +14,7 @@ export default function AboutPage() {
           {/* 头像 */}
           <div className="flex-shrink-0">
             <div className="w-28 h-28 bg-blue-600 rounded-2xl flex items-center justify-center">
-              <span className="text-white text-5xl font-bold">周</span>
+              <span className="text-white text-4xl font-bold">York</span>
             </div>
           </div>
 

@@ -6,7 +6,8 @@ const fields = [
     title: "物理教学",
     description: "初中物理互动实验平台，覆盖声学、光学、热学、力学、电学，让抽象概念可视化。",
     icon: FlaskConical,
-    href: "/physics",
+    href: "https://yorkphysics.eu.cc/",
+    external: true,
     lightColor: "bg-blue-50",
     iconColor: "text-blue-600",
   },
@@ -15,6 +16,7 @@ const fields = [
     description: "编程入门、信息技术基础教学，培养学生的计算思维与数字化创新能力。",
     icon: Monitor,
     href: "/it-education",
+    external: false,
     lightColor: "bg-purple-50",
     iconColor: "text-purple-600",
   },
@@ -23,6 +25,7 @@ const fields = [
     description: "精选课件、教案和试题库，为教师同行提供高质量的教学参考资料。",
     icon: BookOpen,
     href: "/resources",
+    external: false,
     lightColor: "bg-green-50",
     iconColor: "text-green-600",
   },
@@ -31,6 +34,7 @@ const fields = [
     description: "班级排座位系统、AI 教学平台等实用工具，提升教学管理效率。",
     icon: Wrench,
     href: "/tools",
+    external: false,
     lightColor: "bg-orange-50",
     iconColor: "text-orange-600",
   },
@@ -50,10 +54,14 @@ export function ServicesSection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {fields.map((field) => {
             const Icon = field.icon
+            const CardWrapper = field.external ? "a" : Link
+            const wrapperProps = field.external
+              ? { href: field.href, target: "_blank", rel: "noopener noreferrer" }
+              : { href: field.href }
             return (
-              <Link
+              <CardWrapper
                 key={field.title}
-                href={field.href}
+                {...wrapperProps}
                 className="group bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg hover:border-blue-200 transition-all duration-300 hover:-translate-y-1"
               >
                 <div className={`w-12 h-12 ${field.lightColor} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
@@ -61,7 +69,7 @@ export function ServicesSection() {
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">{field.title}</h3>
                 <p className="text-gray-600 text-sm leading-relaxed">{field.description}</p>
-              </Link>
+              </CardWrapper>
             )
           })}
         </div>

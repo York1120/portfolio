@@ -1,31 +1,10 @@
 ﻿import { Calendar, ArrowRight } from "lucide-react"
 import Link from "next/link"
-
-const articles = [
-  {
-    title: "如何用互动实验突破物理教学难点",
-    excerpt: "结合具体教学案例，分享互动实验在声学、光学等章节中的实际应用效果。",
-    date: "2026年6月",
-    category: "教学心得",
-    href: "/blog",
-  },
-  {
-    title: "初中信息技术课编程入门教学设计",
-    excerpt: "从 Scratch 到 Python，设计适合初中生的编程入门课程路径。",
-    date: "2026年5月",
-    category: "课程设计",
-    href: "/blog",
-  },
-  {
-    title: "班级排座位系统的开发故事",
-    excerpt: "一个解决实际教学管理需求的小工具是如何从想法变成现实的。",
-    date: "2026年4月",
-    category: "技术分享",
-    href: "/blog",
-  },
-]
+import { blogPosts } from "@/lib/blog-data"
 
 export function ArticlesSection() {
+  const articles = blogPosts.slice(0, 3)
+
   return (
     <section className="py-16 md:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4">
@@ -44,10 +23,10 @@ export function ArticlesSection() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {articles.map((article, index) => (
+          {articles.map((article) => (
             <Link
-              key={index}
-              href={article.href}
+              key={article.slug}
+              href={"/blog/" + article.slug}
               className="group bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg hover:border-blue-200 transition-all duration-300"
             >
               <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">

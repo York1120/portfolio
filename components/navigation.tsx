@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -47,6 +47,10 @@ const navItems: NavItem[] = [
   { label: "关于我", href: "/about" },
 ]
 
+function cn(...classes: (string | boolean | undefined | null)[]) {
+  return classes.filter(Boolean).join(" ")
+}
+
 export function Navigation() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -64,19 +68,13 @@ export function Navigation() {
     return false
   }
 
-  const t = (strs, ...vals) => {
-    let r = ""
-    strs.forEach((s, i) => { r += s + (vals[i] || "") })
-    return r
-  }
-
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">周</span>
+              <span className="text-white font-bold text-sm">York</span>
             </div>
             <span className="text-lg font-bold text-gray-900 hidden sm:block">周老师教学园地</span>
           </Link>
@@ -91,7 +89,10 @@ export function Navigation() {
               >
                 {item.children ? (
                   <button
-                    className={t`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isParentActive(item) ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"}`}
+                    className={cn(
+                      "flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                      isParentActive(item) ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+                    )}
                   >
                     {item.label}
                     <ChevronDown className="w-3.5 h-3.5" />
@@ -99,7 +100,10 @@ export function Navigation() {
                 ) : (
                   <Link
                     href={item.href!}
-                    className={t`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActive(item.href) ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"}`}
+                    className={cn(
+                      "px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                      isActive(item.href) ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+                    )}
                   >
                     {item.label}
                   </Link>
@@ -111,7 +115,10 @@ export function Navigation() {
                       <Link
                         key={child.label}
                         href={child.href}
-                        className={t`block px-4 py-2 text-sm transition-colors ${isActive(child.href) ? "text-blue-600 bg-blue-50 font-medium" : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"}`}
+                        className={cn(
+                          "block px-4 py-2 text-sm transition-colors",
+                          isActive(child.href) ? "text-blue-600 bg-blue-50 font-medium" : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+                        )}
                       >
                         {child.label}
                       </Link>
@@ -140,11 +147,14 @@ export function Navigation() {
                 {item.children ? (
                   <>
                     <button
-                      className={t`flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isParentActive(item) ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:bg-gray-50"}`}
+                      className={cn(
+                        "flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                        isParentActive(item) ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:bg-gray-50"
+                      )}
                       onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
                     >
                       {item.label}
-                      <ChevronDown className={t`w-4 h-4 transition-transform ${openDropdown === item.label ? "rotate-180" : ""}`} />
+                      <ChevronDown className={cn("w-4 h-4 transition-transform", openDropdown === item.label ? "rotate-180" : "")} />
                     </button>
                     {openDropdown === item.label && (
                       <div className="ml-4 mt-1 space-y-1 pb-2">
@@ -152,7 +162,10 @@ export function Navigation() {
                           <Link
                             key={child.label}
                             href={child.href}
-                            className={t`block px-3 py-2 rounded-lg text-sm transition-colors ${isActive(child.href) ? "text-blue-600 bg-blue-50 font-medium" : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"}`}
+                            className={cn(
+                              "block px-3 py-2 rounded-lg text-sm transition-colors",
+                              isActive(child.href) ? "text-blue-600 bg-blue-50 font-medium" : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"
+                            )}
                             onClick={() => setMobileOpen(false)}
                           >
                             {child.label}
@@ -164,7 +177,10 @@ export function Navigation() {
                 ) : (
                   <Link
                     href={item.href!}
-                    className={t`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActive(item.href) ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:bg-gray-50"}`}
+                    className={cn(
+                      "block px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                      isActive(item.href) ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:bg-gray-50"
+                    )}
                     onClick={() => setMobileOpen(false)}
                   >
                     {item.label}
