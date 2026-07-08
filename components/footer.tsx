@@ -10,7 +10,7 @@ export function Footer() {
           <div className="sm:col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">York</span>
+                <span className="text-white font-bold text-xs">York</span>
               </div>
               <span className="text-lg font-bold">周老师教学园地</span>
             </div>

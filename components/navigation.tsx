@@ -74,7 +74,7 @@ export function Navigation() {
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">York</span>
+              <span className="text-white font-bold text-xs">York</span>
             </div>
             <span className="text-lg font-bold text-gray-900 hidden sm:block">周老师教学园地</span>
           </Link>
