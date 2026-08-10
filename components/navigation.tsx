@@ -16,9 +16,11 @@ const navItems: NavItem[] = [
   {
     label: "物理教学",
     children: [
-      { label: "互动实验", href: "/physics" },
-      { label: "知识点复习", href: "/physics#review" },
-      { label: "物理测验", href: "/physics#quiz" },
+      { label: "声学", href: "/physics/acoustics" },
+      { label: "光学", href: "/physics/optics" },
+      { label: "热学", href: "/physics/thermodynamics" },
+      { label: "力学", href: "/physics/mechanics" },
+      { label: "电学", href: "/physics/electricity" },
     ],
   },
   {
