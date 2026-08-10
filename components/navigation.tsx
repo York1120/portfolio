@@ -74,9 +74,9 @@ export function Navigation() {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+    <header className="fixed top-0 left-0 right-0 z-50 px-3 sm:px-4 pt-2">
+      <div className="glass-nav relative max-w-7xl mx-auto rounded-2xl border border-white/50 bg-white/55 backdrop-blur-2xl backdrop-saturate-150 transition-all duration-300 shadow-[0_8px_32px_rgba(31,38,135,0.12),0_2px_8px_rgba(31,38,135,0.08)] hover:bg-white/70 hover:backdrop-blur-3xl hover:shadow-[0_12px_40px_rgba(31,38,135,0.16),0_4px_12px_rgba(31,38,135,0.10)]">
+        <div className="flex items-center justify-between h-14 px-3 sm:px-5">
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xs">York</span>
@@ -146,10 +146,9 @@ export function Navigation() {
             {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
-      </div>
 
       {mobileOpen && (
-        <div className="md:hidden border-t border-gray-200 bg-white">
+        <div className="md:hidden border-t border-white/50 bg-white/60">
           <div className="px-4 py-3 space-y-1">
             {navItems.map((item) => (
               <div key={item.label}>
@@ -209,6 +208,7 @@ export function Navigation() {
           </div>
         </div>
       )}
+      </div>
     </header>
   )
 }
