@@ -26,7 +26,6 @@ export function Footer() {
               <li><Link href="/" className="text-gray-400 hover:text-white transition-colors">首页</Link></li>
               <li><Link href="/physics" className="text-gray-400 hover:text-white transition-colors">物理教学</Link></li>
               <li><Link href="/it-education" className="text-gray-400 hover:text-white transition-colors">信息技术</Link></li>
-              <li><Link href="/blog" className="text-gray-400 hover:text-white transition-colors">教学博客</Link></li>
             </ul>
           </div>
 

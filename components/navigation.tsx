@@ -36,7 +36,6 @@ const navItems: NavItem[] = [
       { label: "试题库", href: "/resources#exams" },
     ],
   },
-  { label: "教学博客", href: "/blog" },
   {
     label: "在线工具",
     children: [
