@@ -10,7 +10,7 @@ interface ResourceItem {
   topics: string[]
   grade: string
   format: string
-  file?: string
+  link?: string
 }
 
 interface ResourceCategory {
@@ -37,28 +37,28 @@ const resourceCategories: ResourceCategory[] = [
         description: "涵盖声音的产生与传播、声音的特性、声的利用等核心知识点，配有互动实验链接。",
         topics: ["声音的产生与传播", "音调、响度、音色", "噪声的危害与控制"],
         grade: "八年级", format: "PPTX",
-        file: "/resources/声现象-课件说明.txt",
+        link: "https://1814543784.share.123pan.cn/123pan/4SrZVv-9G1M",
       },
       {
         title: "八年级物理《光现象》课件",
         description: "光的直线传播、反射定律、平面镜成像、光的折射，配套小孔成像互动实验。",
         topics: ["光的直线传播", "光的反射定律", "平面镜成像", "光的折射"],
         grade: "八年级", format: "PPTX",
-        file: "/resources/光现象-课件说明.txt",
+        link: "https://1814543784.share.123pan.cn/123pan/4SrZVv-71UI",
       },
       {
         title: "九年级物理《欧姆定律》课件",
         description: "电流与电压、电阻的关系，欧姆定律的应用，配套电路互动实验。",
         topics: ["电流与电压关系", "欧姆定律", "电阻的串并联"],
         grade: "九年级", format: "PPTX",
-        file: "/resources/欧姆定律-课件说明.txt",
+        link: "https://1814543784.share.123pan.cn/123pan/4SrZVv-nPtM",
       },
       {
         title: "信息技术《Python 入门》课件",
         description: "从环境搭建到基础语法，适合初中生的 Python 入门教学。",
         topics: ["Python 环境", "变量与数据类型", "条件与循环", "turtle 绘图"],
         grade: "七年级", format: "PPTX",
-        file: "/resources/Python入门-课件说明.txt",
+        link: "https://1814543784.share.123pan.cn/123pan/4SrZVv-jdXM",
       },
     ],
   },
@@ -75,24 +75,28 @@ const resourceCategories: ResourceCategory[] = [
         description: "通过互动实验探究凸透镜成像规律，包含 5 个教学环节和分组实验方案。",
         topics: ["探究凸透镜成像规律", "物距与像距的关系", "成像规律应用"],
         grade: "八年级", format: "DOCX",
+        link: "https://1814543784.share.123pan.cn/123pan/4SrZVv-NvtI",
       },
       {
         title: "《电路连接》实验课教案",
         description: "学生动手连接串并联电路，学习电路图绘制与故障排查。",
         topics: ["串联电路连接", "并联电路连接", "电路故障排查"],
         grade: "九年级", format: "DOCX",
+        link: "https://1814543784.share.123pan.cn/123pan/4SrZVv-b8UM",
       },
       {
         title: "《Scratch 编程》单元教案",
         description: "6 课时的 Scratch 编程单元设计，从界面认识到综合项目。",
         topics: ["顺序与循环", "条件分支", "变量与列表", "综合项目"],
         grade: "七年级", format: "DOCX",
+        link: "https://1814543784.share.123pan.cn/123pan/4SrZVv-XpVM",
       },
       {
         title: "《网络信息安全》主题教案",
         description: "结合真实案例，培养学生的网络安全意识和信息辨别能力。",
         topics: ["密码安全", "隐私保护", "网络诈骗识别", "健康上网"],
         grade: "七年级", format: "DOCX",
+        link: "https://1814543784.share.123pan.cn/123pan/4SrZVv-T3XM",
       },
     ],
   },
@@ -109,24 +113,28 @@ const resourceCategories: ResourceCategory[] = [
         description: "声现象、光现象、物态变化等章节的单元测试卷，含参考答案。",
         topics: ["声现象", "光现象", "物态变化"],
         grade: "八年级", format: "PDF",
+        link: "https://1814543784.share.123pan.cn/123pan/4SrZVv-QG1M",
       },
       {
         title: "九年级物理中考模拟卷",
         description: "按照中考题型和难度设计的模拟试卷，含详细解析。",
         topics: ["力学综合", "电学综合", "热学与光学"],
         grade: "九年级", format: "PDF",
+        link: "https://1814543784.share.123pan.cn/123pan/4SrZVv-EG1M",
       },
       {
         title: "信息技术基础练习题",
         description: "计算机基础、网络应用、信息安全等知识点的配套练习。",
         topics: ["计算机基础", "网络应用", "信息安全"],
         grade: "七年级", format: "PDF",
+        link: "https://1814543784.share.123pan.cn/123pan/4SrZVv-nrHM",
       },
       {
         title: "编程思维训练题集",
         description: "不依赖具体编程语言的思维训练题，培养计算思维。",
         topics: ["逻辑推理", "算法思维", "模式识别", "问题分解"],
         grade: "七年级", format: "PDF",
+        link: "https://1814543784.share.123pan.cn/123pan/4SrZVv-npVM",
       },
     ],
   },
@@ -194,15 +202,15 @@ export default function ResourcesPage() {
                               <span key={t} className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">{t}</span>
                             ))}
                           </div>
-                          {item.file ? (
+                          {item.link ? (
                             <a
-                              href={item.file}
+                              href={item.link}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-1 text-blue-600 text-sm font-medium hover:text-blue-700 transition-colors"
                             >
-                              <Eye className="w-3.5 h-3.5" />
-                              预览资源
+                              <ExternalLink className="w-3.5 h-3.5" />
+                              网盘下载
                             </a>
                           ) : (
                             <span className="inline-flex items-center gap-1 text-gray-400 text-sm">
