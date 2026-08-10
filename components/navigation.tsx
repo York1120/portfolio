@@ -15,6 +15,7 @@ const navItems: NavItem[] = [
   { label: "首页", href: "/" },
   {
     label: "物理教学",
+    href: "/physics",
     children: [
       { label: "声学", href: "/physics/acoustics" },
       { label: "光学", href: "/physics/optics" },
@@ -25,6 +26,7 @@ const navItems: NavItem[] = [
   },
   {
     label: "信息技术",
+    href: "/it-education",
     children: [
       { label: "编程入门", href: "/it-education#programming" },
       { label: "信息技术基础", href: "/it-education#basics" },
@@ -32,6 +34,7 @@ const navItems: NavItem[] = [
   },
   {
     label: "教学资源",
+    href: "/resources",
     children: [
       { label: "课件下载", href: "/resources#courseware" },
       { label: "教案分享", href: "/resources#plans" },
@@ -40,6 +43,7 @@ const navItems: NavItem[] = [
   },
   {
     label: "在线工具",
+    href: "/tools",
     children: [
       { label: "班级排座位系统", href: "/tools" },
       { label: "AI 教学平台", href: "/tools#ai" },
@@ -89,7 +93,9 @@ export function Navigation() {
                 onMouseLeave={() => setOpenDropdown(null)}
               >
                 {item.children ? (
-                  <button
+                  <Link
+                    href={item.href!}
+                    onClick={() => setOpenDropdown(null)}
                     className={cn(
                       "flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                       isParentActive(item) ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
@@ -97,7 +103,7 @@ export function Navigation() {
                   >
                     {item.label}
                     <ChevronDown className="w-3.5 h-3.5" />
-                  </button>
+                  </Link>
                 ) : (
                   <Link
                     href={item.href!}
@@ -149,16 +155,25 @@ export function Navigation() {
               <div key={item.label}>
                 {item.children ? (
                   <>
-                    <button
-                      className={cn(
-                        "flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                        isParentActive(item) ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:bg-gray-50"
-                      )}
-                      onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
-                    >
-                      {item.label}
-                      <ChevronDown className={cn("w-4 h-4 transition-transform", openDropdown === item.label ? "rotate-180" : "")} />
-                    </button>
+                    <div className="flex items-center">
+                      <Link
+                        href={item.href!}
+                        className={cn(
+                          "flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                          isParentActive(item) ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:bg-gray-50"
+                        )}
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                      <button
+                        aria-label={`展开 ${item.label}`}
+                        className="p-2 rounded-lg text-gray-700 hover:bg-gray-50"
+                        onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
+                      >
+                        <ChevronDown className={cn("w-4 h-4 transition-transform", openDropdown === item.label ? "rotate-180" : "")} />
+                      </button>
+                    </div>
                     {openDropdown === item.label && (
                       <div className="ml-4 mt-1 space-y-1 pb-2">
                         {item.children.map((child) => (
