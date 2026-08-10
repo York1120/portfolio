@@ -109,19 +109,21 @@ export function Navigation() {
                 )}
 
                 {item.children && openDropdown === item.label && (
-                  <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 animate-fade-in-down z-50">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.label}
-                        href={child.href}
-                        className={cn(
-                          "block px-4 py-2 text-sm transition-colors",
-                          isActive(child.href) ? "text-blue-600 bg-blue-50 font-medium" : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
-                        )}
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
+                  <div className="absolute top-full left-0 pt-1 z-50">
+                    <div className="w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 animate-fade-in-down">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.label}
+                          href={child.href}
+                          className={cn(
+                            "block px-4 py-2 text-sm transition-colors",
+                            isActive(child.href) ? "text-blue-600 bg-blue-50 font-medium" : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+                          )}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
