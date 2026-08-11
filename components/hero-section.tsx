@@ -4,6 +4,8 @@ import Link from "next/link"
 export function HeroSection() {
   return (
     <section className="relative -mt-16 overflow-hidden bg-gradient-to-br from-blue-50 via-white to-orange-50">
+      {/* 顶部渐变过渡带：与回弹时露出的 canvas 底色（#eff6ff）无缝衔接 */}
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-blue-50 to-transparent" />
       <div className="max-w-7xl mx-auto px-4 pt-36 pb-20 md:pt-44 md:pb-28">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* 左侧文字 */}
