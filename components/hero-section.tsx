@@ -3,8 +3,8 @@ import Link from "next/link"
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-orange-50">
-      <div className="max-w-7xl mx-auto px-4 py-20 md:py-28">
+    <section className="relative -mt-16 overflow-hidden bg-gradient-to-br from-blue-50 via-white to-orange-50">
+      <div className="max-w-7xl mx-auto px-4 pt-36 pb-20 md:pt-44 md:pb-28">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* 左侧文字 */}
           <div className="max-w-xl">
