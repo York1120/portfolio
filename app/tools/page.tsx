@@ -22,7 +22,8 @@ const tools: Tool[] = [
   {
     title: "班级排座位系统",
     description: "智能排座位工具，支持自定义规则、随机排座、导出座位表，让班级管理更高效。",
-    href: "https://yorkeducation.eu.cc/",
+    href: "https://class-seating.mynameisyork.workers.dev/",
+    // href: "https://yorkeducation.eu.cc/",
     icon: Users,
     color: "text-emerald-600",
     bgColor: "bg-emerald-50",
