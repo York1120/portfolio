@@ -123,7 +123,7 @@ export function Navigation() {
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xs">York</span>
             </div>
-            <span className="text-lg font-bold text-gray-900 hidden sm:block">周老师教学园地</span>
+            <span className="text-lg font-bold text-gray-900 hidden sm:block max-sm:block">周老师教学园地</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
