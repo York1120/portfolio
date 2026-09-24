@@ -22,8 +22,7 @@ const tools: Tool[] = [
   {
     title: "班级排座位系统",
     description: "智能排座位工具，支持自定义规则、随机排座、导出座位表，让班级管理更高效。",
-    href: "https://class-seating.mynameisyork.workers.dev/",
-    // href: "https://yorkeducation.eu.cc/",
+    href: "https://seating.yorkeducation.eu.cc/",
     icon: Users,
     color: "text-emerald-600",
     bgColor: "bg-emerald-50",
@@ -42,7 +41,7 @@ const tools: Tool[] = [
     id: "ai",
     title: "AI 教学平台",
     description: "免登录的 AI 教学辅助平台，支持智能问答、文本生成等，为教学提供 AI 助力。",
-    href: "https://yuquan.eu.cc/",
+    href: "https://ai.yorkeducation.eu.cc/",
     icon: Cpu,
     color: "text-purple-600",
     bgColor: "bg-purple-50",
