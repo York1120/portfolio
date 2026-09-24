@@ -136,7 +136,7 @@ export default function ITEducationPage() {
   const [expandedItem, setExpandedItem] = useState<string | null>(null)
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
+    <div className="max-w-7xl mx-auto px-4 py-12 max-sm:py-8">
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-1.5 rounded-full text-sm font-medium mb-4">
           <Monitor className="w-4 h-4" />
@@ -148,7 +148,7 @@ export default function ITEducationPage() {
         </p>
       </div>
 
-      <div className="space-y-16">
+      <div className="space-y-16 max-sm:space-y-10">
         {topics.map((topic) => {
           const Icon = topic.icon
           return (
@@ -216,7 +216,7 @@ export default function ITEducationPage() {
       </div>
 
       {/* 学习路径图 */}
-      <div className="mt-16 bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-100 rounded-2xl p-8 md:p-10">
+      <div className="mt-16 bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-100 rounded-2xl p-8 max-sm:p-5 md:p-10">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">推荐学习路径</h2>
         <div className="grid md:grid-cols-4 gap-4">
           {[

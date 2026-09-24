@@ -2,14 +2,14 @@
 
 export default function AboutPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
+    <div className="max-w-4xl mx-auto px-4 py-12 max-sm:py-8">
       {/* 页面标题 */}
       <div className="text-center mb-12">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">关于周老师</h1>
         <p className="text-gray-600 text-lg">一名热爱教学的初中物理与信息技术教师</p>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-2xl p-8 md:p-10 mb-8">
+      <div className="bg-white border border-gray-200 rounded-2xl p-8 max-sm:p-5 md:p-10 mb-8">
         <div className="flex flex-col md:flex-row gap-8 items-start">
           {/* 头像 */}
           <div className="flex-shrink-0">
@@ -46,7 +46,7 @@ export default function AboutPage() {
       {/* 教学领域 */}
       <h2 className="text-2xl font-bold text-gray-900 mb-6">教学领域</h2>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        <div className="bg-blue-50 border border-blue-100 rounded-xl p-6">
+        <div className="bg-blue-50 border border-blue-100 rounded-xl p-6 max-sm:p-4">
           <div className="flex items-center gap-3 mb-3">
             <FlaskConical className="w-5 h-5 text-blue-600" />
             <h3 className="font-bold text-gray-900">物理教学</h3>
@@ -55,7 +55,7 @@ export default function AboutPage() {
             覆盖声学、光学、热学、力学、电学五大领域，十余个互动实验，让物理学习更直观。
           </p>
         </div>
-        <div className="bg-purple-50 border border-purple-100 rounded-xl p-6">
+        <div className="bg-purple-50 border border-purple-100 rounded-xl p-6 max-sm:p-4">
           <div className="flex items-center gap-3 mb-3">
             <Monitor className="w-5 h-5 text-purple-600" />
             <h3 className="font-bold text-gray-900">信息技术</h3>
@@ -67,7 +67,7 @@ export default function AboutPage() {
       </div>
 
       {/* 联系方式 */}
-      <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-center">
+      <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8 max-sm:p-5 text-center">
         <h2 className="text-xl font-bold text-gray-900 mb-4">联系方式</h2>
         <div className="inline-flex items-center gap-2 text-gray-600">
           <Mail className="w-5 h-5 text-blue-600" />

@@ -144,7 +144,7 @@ export default function ResourcesPage() {
   const [expandedCat, setExpandedCat] = useState<string | null>(null)
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
+    <div className="max-w-7xl mx-auto px-4 py-12 max-sm:py-8">
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-1.5 rounded-full text-sm font-medium mb-4">
           <BookOpen className="w-4 h-4" />
@@ -229,7 +229,7 @@ export default function ResourcesPage() {
         })}
       </div>
 
-      <div className="mt-12 bg-blue-50 border border-blue-100 rounded-2xl p-8 text-center">
+      <div className="mt-12 bg-blue-50 border border-blue-100 rounded-2xl p-8 max-sm:p-5 text-center">
         <p className="text-gray-600 mb-4">
           资源正在持续更新中。如需特定资源，欢迎通过邮箱联系周老师。
         </p>

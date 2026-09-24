@@ -3,13 +3,13 @@ import Link from "next/link"
 
 export default function AcousticsPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
+    <div className="max-w-4xl mx-auto px-4 py-12 max-sm:py-8">
       <Link href="/physics/course" className="inline-flex items-center gap-1 text-gray-500 hover:text-blue-600 transition-colors mb-8 text-sm">
         <ArrowLeft className="w-4 h-4" />
         返回物理教学
       </Link>
 
-      <div className="bg-white border border-gray-200 rounded-2xl p-8 md:p-10 mb-8">
+      <div className="bg-white border border-gray-200 rounded-2xl p-8 max-sm:p-5 md:p-10 mb-8">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
             <FlaskConical className="w-6 h-6 text-blue-600" />
@@ -27,7 +27,7 @@ export default function AcousticsPage() {
         <div className="space-y-8">
           <section>
             <h2 className="text-xl font-bold text-gray-900 mb-4">声音的产生与传播</h2>
-            <div className="bg-gray-50 rounded-xl p-6">
+            <div className="bg-gray-50 rounded-xl p-6 max-sm:p-4">
               <p className="text-gray-600 mb-4">声音由物体振动产生，通过介质（固体、液体、气体）传播。</p>
               <ul className="space-y-2">
                 {["声音的产生：一切发声的物体都在振动", "传播需要介质：真空不能传声", "声速：在固体中最快，气体中最慢", "回声：声音遇到障碍物反射回来", "人耳听到声音的过程"].map((item, i) => (
@@ -42,7 +42,7 @@ export default function AcousticsPage() {
 
           <section>
             <h2 className="text-xl font-bold text-gray-900 mb-4">声音的特性</h2>
-            <div className="bg-gray-50 rounded-xl p-6">
+            <div className="bg-gray-50 rounded-xl p-6 max-sm:p-4">
               <p className="text-gray-600 mb-4">音调、响度和音色是声音的三个主要特性。</p>
               <ul className="space-y-2">
                 {["音调：由频率决定，频率越高音调越高", "响度：由振幅决定，振幅越大响度越大", "音色：由发声体材料和结构决定", "超声波与次声波：人耳听不到的声音", "练习：区分不同乐器的音色"].map((item, i) => (
@@ -57,7 +57,7 @@ export default function AcousticsPage() {
 
           <section>
             <h2 className="text-xl font-bold text-gray-900 mb-4">噪声的危害与控制</h2>
-            <div className="bg-gray-50 rounded-xl p-6">
+            <div className="bg-gray-50 rounded-xl p-6 max-sm:p-4">
               <p className="text-gray-600 mb-4">了解噪声的来源、危害以及控制方法。</p>
               <ul className="space-y-2">
                 {["噪声的定义：从物理和环保两个角度", "噪声的等级：分贝（dB）为单位", "噪声的危害：影响听力、睡眠和健康", "控制噪声的三条途径：声源处、传播中、人耳处", "练习：分析生活中的噪声控制措施"].map((item, i) => (
@@ -71,7 +71,7 @@ export default function AcousticsPage() {
           </section>
         </div>
 
-        <div className="mt-8 bg-blue-50 border border-blue-100 rounded-xl p-6">
+        <div className="mt-8 bg-blue-50 border border-blue-100 rounded-xl p-6 max-sm:p-4">
           <h3 className="font-bold text-gray-900 mb-2">互动实验</h3>
           <p className="text-gray-600 text-sm mb-3">通过互动实验直观理解声学概念。</p>
           <div className="flex flex-wrap gap-2">

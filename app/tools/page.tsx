@@ -62,7 +62,7 @@ export default function ToolsPage() {
   const [expandedTool, setExpandedTool] = useState<string | null>(null)
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
+    <div className="max-w-7xl mx-auto px-4 py-12 max-sm:py-8">
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-1.5 rounded-full text-sm font-medium mb-4">
           <Wrench className="w-4 h-4" />
@@ -83,7 +83,7 @@ export default function ToolsPage() {
               key={tool.title}
               className={"bg-white border-2 " + tool.borderColor + " rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300"}
             >
-              <div className="p-8">
+              <div className="p-8 max-sm:p-5">
                 <div className={"w-14 h-14 " + tool.bgColor + " rounded-2xl flex items-center justify-center mb-5"}>
                   <Icon className={"w-7 h-7 " + tool.color} />
                 </div>
@@ -143,7 +143,7 @@ export default function ToolsPage() {
       </div>
 
       {/* 工具开发计划 */}
-      <div className="mt-16 bg-gradient-to-br from-gray-50 to-blue-50 border border-gray-200 rounded-2xl p-8 max-w-4xl mx-auto">
+      <div className="mt-16 bg-gradient-to-br from-gray-50 to-blue-50 border border-gray-200 rounded-2xl p-8 max-sm:p-5 max-w-4xl mx-auto">
         <h2 className="text-xl font-bold text-gray-900 mb-4">即将推出的工具</h2>
         <div className="grid sm:grid-cols-3 gap-4">
           {[

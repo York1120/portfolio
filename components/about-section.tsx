@@ -3,7 +3,7 @@ import Image from "next/image"
 
 export function AboutSection() {
   return (
-    <section className="py-16 md:py-24 bg-gray-50">
+    <section className="py-16 max-sm:py-12 md:py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* 左侧头像/装饰区 */}

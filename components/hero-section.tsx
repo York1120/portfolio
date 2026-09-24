@@ -6,7 +6,7 @@ export function HeroSection() {
     <section className="relative -mt-16 overflow-hidden bg-gradient-to-br from-blue-50 via-white to-orange-50">
       {/* 顶部渐变过渡带：与回弹时露出的 canvas 底色（#eff6ff）无缝衔接 */}
       <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-blue-50 to-transparent" />
-      <div className="max-w-7xl mx-auto px-4 pt-36 pb-20 md:pt-44 md:pb-28">
+      <div className="max-w-7xl mx-auto px-4 pt-36 pb-20 max-sm:pt-28 max-sm:pb-16 md:pt-44 md:pb-28">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* 左侧文字 */}
           <div className="max-w-xl">
@@ -17,7 +17,7 @@ export function HeroSection() {
             </div>
 
             {/* 标题 */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
+            <h1 className="text-4xl max-sm:text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
               你好，我是
               <span className="text-blue-600"> 周老师</span>
               <br />

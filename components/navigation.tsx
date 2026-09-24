@@ -183,7 +183,7 @@ export function Navigation() {
           </nav>
 
           <button
-            className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100"
+            className="md:hidden p-2 max-sm:p-2.5 rounded-lg text-gray-700 hover:bg-gray-100"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="菜单"
           >
@@ -192,7 +192,7 @@ export function Navigation() {
         </div>
 
       {mobileOpen && (
-        <div className="md:hidden border-t border-white/50 bg-white/60">
+        <div className="md:hidden border-t border-white/50 bg-white/60 max-sm:max-h-[72vh] max-sm:overflow-y-auto max-sm:overscroll-contain">
           <div className="px-4 py-3 space-y-1">
             {navItems.map((item) => (
               <div key={item.label}>
@@ -203,7 +203,7 @@ export function Navigation() {
                         href={item.href!}
                         plain={item.plain}
                         className={cn(
-                          "flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                          "flex-1 px-3 py-2 max-sm:py-3 rounded-lg text-sm font-medium transition-colors",
                           isParentActive(item) ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:bg-gray-50"
                         )}
                         onClick={() => setMobileOpen(false)}
@@ -226,7 +226,7 @@ export function Navigation() {
                             href={child.href}
                             plain={child.plain}
                             className={cn(
-                              "block px-3 py-2 rounded-lg text-sm transition-colors",
+                              "block px-3 py-2 max-sm:py-3 rounded-lg text-sm transition-colors",
                               isActive(child.href) ? "text-blue-600 bg-blue-50 font-medium" : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"
                             )}
                             onClick={() => setMobileOpen(false)}
@@ -241,7 +241,7 @@ export function Navigation() {
                   <Link
                     href={item.href!}
                     className={cn(
-                      "block px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                      "block px-3 py-2 max-sm:py-3 rounded-lg text-sm font-medium transition-colors",
                       isActive(item.href) ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:bg-gray-50"
                     )}
                     onClick={() => setMobileOpen(false)}

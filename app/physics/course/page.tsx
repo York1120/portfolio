@@ -139,7 +139,7 @@ export default function PhysicsPage() {
   const [expandedExp, setExpandedExp] = useState<string | null>(null)
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
+    <div className="max-w-7xl mx-auto px-4 py-12 max-sm:py-8">
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-medium mb-4">
           <FlaskConical className="w-4 h-4" />
@@ -151,7 +151,7 @@ export default function PhysicsPage() {
         </p>
       </div>
 
-      <div className="space-y-16">
+      <div className="space-y-16 max-sm:space-y-10">
         {categories.map((category) => (
           <section key={category.name}>
             <div className="flex items-center justify-between mb-6">
