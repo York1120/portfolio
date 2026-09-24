@@ -1,0 +1,390 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="分子热运动微观示意图 — 观察固体、液体、气体在不同温度下的分子运动情况。">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>分子热运动微观示意图 | York 周老师物理</title>
+  <meta property="og:title" content="分子热运动微观示意图 | York 周老师物理">
+  <meta property="og:description" content="分子热运动微观示意图 — 观察固体、液体、气体在不同温度下的分子运动情况。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .exp-page { padding-top: 96px; padding-bottom: 40px; }
+    .lab-hero { margin-bottom: 24px; }
+    .lab-hero h1 { margin: 0 0 8px; font-size: 28px; color: var(--brand); }
+    .lab-hero p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .lab-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+    .lab-main { display: flex; flex-direction: column; gap: 18px; }
+    .lab-bottom { display: flex; flex-direction: column; gap: 18px; }
+    .lab-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-soft); }
+    .lab-card h2 { margin: 0 0 12px; font-size: 18px; color: var(--brand); }
+    .lab-card h3 { margin: 0 0 10px; font-size: 15px; color: var(--ink); }
+    .lab-card p { margin: 8px 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .lab-sidebar { display: flex; flex-direction: column; gap: 18px; }
+    .steps { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 1.9; }
+    .notice { background: #fffbf0; border-color: #f0dca0; }
+    .metric-row { display: flex; gap: 16px; }
+    .metric { flex: 1; text-align: center; padding: 12px; background: var(--surface-soft); border-radius: 12px; }
+    .metric strong { display: block; font-size: 20px; color: var(--brand); }
+    .metric span { font-size: 12px; color: var(--muted); }
+    .related-list a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--brand-2); font-size: 14px; font-weight: 600; text-decoration: none; }
+    .related-list a:hover { background: var(--surface-soft); }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; color: #fff; transition: opacity .2s, transform .2s; }
+    .btn:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--brand-2), var(--tech)); }
+    .btn-danger { background: linear-gradient(135deg, #e53935, #ef5350); }
+    .btn-secondary { background: var(--line); color: var(--ink); }
+    .btn-secondary:hover { background: #c8d6e5; }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .record-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .record-table th { background: var(--surface-soft); padding: 8px 6px; text-align: center; font-weight: 600; color: var(--ink); border: 1px solid var(--line); }
+    .record-table td { padding: 6px; text-align: center; border: 1px solid var(--line); color: var(--muted); }
+    .record-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+    .molecule-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 16px; }
+    .matter-container { height: 340px; border: 2px solid var(--line); border-radius: 12px; position: relative; overflow: hidden; background: var(--surface); }
+    #solid-container { background: #f9f9f9; }
+    #liquid-container { background: #e3f2fd; }
+    #gas-container { background: #e8f5e9; }
+    .matter-label { position: absolute; top: 10px; left: 10px; font-weight: 700; font-size: 15px; color: var(--ink); z-index: 10; background: rgba(255,255,255,0.85); padding: 3px 10px; border-radius: 6px; }
+    .particle { position: absolute; border-radius: 50%; z-index: 5; }
+    .iron-atom { background-color: #e74c3c; }
+    .oxygen-atom { background-color: #3498db; }
+    .hydrogen-atom { background-color: #8B4513; }
+    .molecule { position: absolute; }
+    .temp-control { display: flex; align-items: center; gap: 14px; padding: 14px 0; flex-wrap: wrap; }
+    .temp-control label { font-weight: 600; font-size: 14px; color: var(--ink); min-width: 80px; }
+    .temp-control input[type="range"] { flex: 1; max-width: 400px; }
+    .temp-display { font-size: 22px; font-weight: 700; color: #e74c3c; min-width: 100px; }
+    .desc-list { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    @media (max-width: 960px) { .lab-layout { grid-template-columns: 1fr; } .lab-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } .molecule-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) { .lab-sidebar { grid-template-columns: 1fr; } }
+    @media (max-width: 680px) { .lab-hero h1 { font-size: 22px; } }
+    @media (max-width: 480px) { .exp-page { padding-top: 80px; } .lab-hero h1 { font-size: 20px; } .lab-card { padding: 14px; } .matter-container { height: 260px; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-shell">
+  <div class="container">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+        <span class="brand-mark">Phy</span>
+        <span>York 周老师物理<small>Professional Physics Lab</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+        <div class="menu-item"><a class="menu-top" href="index.html#acoustics">声学</a><div class="submenu"><a href="02-frequency.html">频率发声器</a><a href="03-noise.html">噪声检测仪</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#optics">光学</a><div class="submenu"><a href="04-pinhole.html">小孔成像虚拟实验</a><a href="06-rgb.html">光的三原色组合游戏</a><a href="07-lens.html">凸透镜成像虚拟实验</a><a href="10-refraction.html">光的反射与折射定律</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#thermal">热学</a><div class="submenu"><a href="08-molecule.html">分子热运动微观示意图</a><a href="09-engine.html">四冲程汽油机示意图</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#mechanics">力学</a><div class="submenu"><a href="01-length.html">长度读取训练平台</a><a href="12-buoyancy.html">木块浮力图像</a><a href="13-torricelli.html">托里拆利实验</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#electricity">电学</a><div class="submenu"><a href="15-circuit.html">电路连接与欧姆定律</a><a href="16-resistors.html">电阻的串联与并联</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#quiz">知识测验</a><div class="submenu"><a href="11-review.html">初中物理知识点复习</a><a href="14-quiz.html">《物理原来很有趣》测验</a></div></div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="container exp-page">
+  <div class="lab-hero">
+    <h1>分子热运动微观示意图</h1>
+    <p>调节温度滑块，观察固体、液体、气体在不同温度下的分子（原子）运动情况。</p>
+  </div>
+
+  <div class="lab-layout">
+    <div class="lab-main">
+      <div class="lab-card">
+        <h2>模拟实验区</h2>
+        <div class="molecule-grid">
+          <div class="matter-container" id="solid-container"><div class="matter-label">固体（铁原子）</div></div>
+          <div class="matter-container" id="liquid-container"><div class="matter-label">液体（水分子）</div></div>
+          <div class="matter-container" id="gas-container"><div class="matter-label">气体（氧气分子）</div></div>
+        </div>
+        <div class="temp-control">
+          <label>温度调节：</label>
+          <input type="range" id="temperatureSlider" min="0" max="100" value="50">
+          <span class="temp-display" id="tempDisplay">50°C</span>
+        </div>
+      </div>
+
+      <div class="lab-bottom">
+        <div class="lab-card">
+          <h2>实验步骤</h2>
+          <ol class="steps">
+            <li>拖动温度滑块（0-100°C），观察三种物态中分子运动速度的变化。</li>
+            <li>固体（铁原子）：80个红色球体，排列紧密，在固定位置附近振动。</li>
+            <li>液体（水分子）：30个水分子（氧原子+两个氢原子，键角104.5°），可自由移动。</li>
+            <li>气体（氧气分子）：12个双原子氧分子，快速运动充满整个容器。</li>
+          </ol>
+        </div>
+        <div class="lab-card notice">
+          <h2>知识要点</h2>
+          <p>温度越高，分子热运动越剧烈。固体分子间作用力最大，气体分子间作用力最小（可忽略）。</p>
+        </div>
+        <div class="lab-card">
+          <h2>数据记录</h2>
+          <div style="overflow-x:auto;">
+            <table class="record-table" id="recordTable">
+              <thead><tr><th>#</th><th>温度(°C)</th><th>固体振动</th><th>液体运动</th><th>气体运动</th></tr></thead>
+              <tbody id="recordBody"></tbody>
+            </table>
+          </div>
+          <div class="record-actions">
+            <button class="btn btn-primary" onclick="recordData()">记录数据</button>
+            <button class="btn btn-secondary" onclick="exportRecords()">导出 CSV</button>
+            <button class="btn btn-danger" onclick="clearRecords()">清空数据</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab-sidebar">
+      <div class="lab-card">
+        <h2>原理说明</h2>
+        <p>一切物质的分子都在不停地做无规则运动，这种运动叫分子热运动。温度是分子热运动剧烈程度的标志。固体分子排列紧密，液体分子可以滑动，气体分子几乎不受约束。</p>
+      </div>
+      <div class="lab-card">
+        <h2>实时数据</h2>
+        <div class="metric-row">
+          <div class="metric"><strong id="timer">0s</strong><span>实验用时</span></div>
+        </div>
+      </div>
+      <div class="lab-card">
+        <h2>相关实验</h2>
+        <div class="related-list">
+          <a href="09-engine.html">→ 四冲程汽油机示意图</a>
+          <a href="01-length.html">→ 长度读取训练平台</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>York 周老师物理</strong><p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p><p>© 2026 York Physics Lab. All Rights Reserved.</p></div>
+    <div><strong>联系方式</strong><p>周煜全老师</p><p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p></div>
+    <div><strong>特别鸣谢</strong><p>龙外物理科组</p><p>梁卓栋老师</p></div>
+  </div>
+</footer>
+
+<script>
+// ===== Timer + Ops =====
+let elapsedSeconds = 0;
+setInterval(function() { elapsedSeconds++; var m = Math.floor(elapsedSeconds/60), s = elapsedSeconds%60; document.getElementById('timer').textContent = m + 'm' + s + 's'; }, 1000);
+
+// ===== Records =====
+let records = [];
+function recordData() { records.push({ temp: temperatureFactor * 100 }); renderRecords() }
+function renderRecords() {
+  var tbody = document.getElementById('recordBody');
+  tbody.innerHTML = records.map(function(r,i){
+    var solidDesc = '缓慢振动', liquidDesc = '缓慢流动', gasDesc = '缓慢飘动';
+    var t = r.temp;
+    if (t > 70) { solidDesc = '剧烈振动'; liquidDesc = '快速流动'; gasDesc = '高速飞驰'; }
+    else if (t > 30) { solidDesc = '中等振动'; liquidDesc = '中等流动'; gasDesc = '快速运动'; }
+    return '<tr><td>'+(i+1)+'</td><td>'+Math.round(t)+'</td><td>'+solidDesc+'</td><td>'+liquidDesc+'</td><td>'+gasDesc+'</td></tr>';
+  }).join('');
+}
+function exportRecords() {
+  if (!records.length) return;
+  var csv = '序号,温度(°C),固体振动,液体运动,气体运动\n' + records.map(function(r,i){ return (i+1)+','+Math.round(r.temp)+',,,;'; }).join('\n');
+  var blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '分子热运动数据.csv'; a.click();
+}
+function clearRecords() { records = []; renderRecords(); }
+
+// ===== Experiment =====
+const SOLID_COUNT = 80, LIQUID_COUNT = 30, GAS_COUNT = 12;
+const IRON_SIZE = 16, OXY_SIZE = 10, HYDRO_SIZE = 6;
+
+let solidSpeedRange = [0.1, 0.5], liquidSpeedRange = [1, 3], gasSpeedRange = [3, 8];
+let temperatureFactor = 0.5;
+
+const solidContainer = document.getElementById('solid-container');
+const liquidContainer = document.getElementById('liquid-container');
+const gasContainer = document.getElementById('gas-container');
+const temperatureSlider = document.getElementById('temperatureSlider');
+const tempDisplay = document.getElementById('tempDisplay');
+
+let solidParticles = [], liquidMolecules = [], gasMolecules = [];
+
+function initParticles() {
+  solidContainer.innerHTML = '<div class="matter-label">固体（铁原子）</div>';
+  liquidContainer.innerHTML = '<div class="matter-label">液体（水分子）</div>';
+  gasContainer.innerHTML = '<div class="matter-label">气体（氧气分子）</div>';
+  solidParticles = []; liquidMolecules = []; gasMolecules = [];
+  for (let i = 0; i < SOLID_COUNT; i++) createSolidParticle();
+  for (let i = 0; i < LIQUID_COUNT; i++) createWaterMolecule();
+  for (let i = 0; i < GAS_COUNT; i++) createOxygenMolecule();
+}
+
+function createSolidParticle() {
+  var el = document.createElement('div');
+  el.className = 'particle iron-atom';
+  el.style.width = IRON_SIZE + 'px'; el.style.height = IRON_SIZE + 'px';
+  var w = solidContainer.offsetWidth, h = solidContainer.offsetHeight;
+  var cols = Math.floor(Math.sqrt(SOLID_COUNT)), rows = Math.ceil(SOLID_COUNT / cols);
+  var sx = w / (cols + 1), sy = h / (rows + 1);
+  var idx = solidParticles.length;
+  var col = idx % cols, row = Math.floor(idx / cols);
+  var x = sx * (col + 1) - IRON_SIZE/2, y = sy * (row + 1) - IRON_SIZE/2;
+  el.style.left = x + 'px'; el.style.top = y + 'px';
+  solidContainer.appendChild(el);
+  solidParticles.push({
+    element: el, x: x, y: y, originalX: x, originalY: y,
+    vx: (Math.random()*2-1)*solidSpeedRange[1]*temperatureFactor,
+    vy: (Math.random()*2-1)*solidSpeedRange[1]*temperatureFactor, size: IRON_SIZE
+  });
+}
+
+function createWaterMolecule() {
+  var mol = document.createElement('div'); mol.className = 'molecule';
+  var w = liquidContainer.offsetWidth, h = liquidContainer.offsetHeight;
+  var cx = Math.random()*(w-40), cy = Math.random()*(h-40);
+  mol.style.left = cx+'px'; mol.style.top = cy+'px';
+  var oxy = document.createElement('div');
+  oxy.className = 'particle oxygen-atom'; oxy.style.width = OXY_SIZE+'px'; oxy.style.height = OXY_SIZE+'px';
+  oxy.style.left='0px'; oxy.style.top='0px'; mol.appendChild(oxy);
+  var angle = 104.5 * Math.PI / 180, bond = 15;
+  var h1 = document.createElement('div');
+  h1.className = 'particle hydrogen-atom'; h1.style.width = HYDRO_SIZE+'px'; h1.style.height = HYDRO_SIZE+'px';
+  h1.style.left = (-bond*Math.sin(angle/2))+'px'; h1.style.top = (-bond*Math.cos(angle/2))+'px'; mol.appendChild(h1);
+  var h2 = document.createElement('div');
+  h2.className = 'particle hydrogen-atom'; h2.style.width = HYDRO_SIZE+'px'; h2.style.height = HYDRO_SIZE+'px';
+  h2.style.left = (bond*Math.sin(angle/2))+'px'; h2.style.top = (-bond*Math.cos(angle/2))+'px'; mol.appendChild(h2);
+  var dir = Math.random()*Math.PI*2;
+  var spd = liquidSpeedRange[0]+Math.random()*(liquidSpeedRange[1]-liquidSpeedRange[0]);
+  liquidContainer.appendChild(mol);
+  liquidMolecules.push({
+    element: mol, x: cx, y: cy,
+    vx: Math.cos(dir)*spd*temperatureFactor, vy: Math.sin(dir)*spd*temperatureFactor, size: OXY_SIZE,
+    atoms: [oxy, h1, h2]
+  });
+}
+
+function createOxygenMolecule() {
+  var mol = document.createElement('div'); mol.className = 'molecule';
+  var w = gasContainer.offsetWidth, h = gasContainer.offsetHeight;
+  var cx = Math.random()*(w-30), cy = Math.random()*(h-30);
+  mol.style.left = cx+'px'; mol.style.top = cy+'px';
+  var o1 = document.createElement('div');
+  o1.className = 'particle oxygen-atom'; o1.style.width = OXY_SIZE+'px'; o1.style.height = OXY_SIZE+'px';
+  o1.style.left='-10px'; o1.style.top='0px'; mol.appendChild(o1);
+  var o2 = document.createElement('div');
+  o2.className = 'particle oxygen-atom'; o2.style.width = OXY_SIZE+'px'; o2.style.height = OXY_SIZE+'px';
+  o2.style.left='10px'; o2.style.top='0px'; mol.appendChild(o2);
+  var dir = Math.random()*Math.PI*2;
+  var spd = gasSpeedRange[0]+Math.random()*(gasSpeedRange[1]-gasSpeedRange[0]);
+  gasContainer.appendChild(mol);
+  gasMolecules.push({
+    element: mol, x: cx, y: cy,
+    vx: Math.cos(dir)*spd*temperatureFactor, vy: Math.sin(dir)*spd*temperatureFactor, size: OXY_SIZE,
+    atoms: [o1, o2]
+  });
+}
+
+function updateParticles() {
+  solidParticles.forEach(function(p){
+    if (p.x < p.originalX-5 || p.x > p.originalX+5) p.vx *= -1;
+    if (p.y < p.originalY-5 || p.y > p.originalY+5) p.vy *= -1;
+    p.x += p.vx; p.y += p.vy;
+    p.element.style.left = p.x+'px'; p.element.style.top = p.y+'px';
+  });
+  liquidMolecules.forEach(function(m){
+    var w = liquidContainer.offsetWidth, h = liquidContainer.offsetHeight;
+    if (m.x <= 0 || m.x >= w-40) m.vx *= -1;
+    if (m.y <= 0 || m.y >= h-40) m.vy *= -1;
+    m.x += m.vx; m.y += m.vy;
+    m.element.style.left = m.x+'px'; m.element.style.top = m.y+'px';
+  });
+  gasMolecules.forEach(function(m){
+    var w = gasContainer.offsetWidth, h = gasContainer.offsetHeight;
+    if (m.x <= 0 || m.x >= w-30) m.vx *= -1;
+    if (m.y <= 0 || m.y >= h-30) m.vy *= -1;
+    m.x += m.vx; m.y += m.vy;
+    m.element.style.left = m.x+'px'; m.element.style.top = m.y+'px';
+  });
+  requestAnimationFrame(updateParticles);
+}
+
+function updateSpeeds() {
+  solidParticles.forEach(function(p){
+    p.vx = (Math.random()*2-1)*solidSpeedRange[1]*temperatureFactor;
+    p.vy = (Math.random()*2-1)*solidSpeedRange[1]*temperatureFactor;
+  });
+  liquidMolecules.forEach(function(m){
+    var cs = Math.sqrt(m.vx*m.vx+m.vy*m.vy) || 1;
+    var ns = (liquidSpeedRange[0]+(liquidSpeedRange[1]-liquidSpeedRange[0])*temperatureFactor)*(0.8+Math.random()*0.4);
+    m.vx = (m.vx/cs)*ns; m.vy = (m.vy/cs)*ns;
+  });
+  gasMolecules.forEach(function(m){
+    var cs = Math.sqrt(m.vx*m.vx+m.vy*m.vy) || 1;
+    var ns = (gasSpeedRange[0]+(gasSpeedRange[1]-gasSpeedRange[0])*temperatureFactor)*(0.8+Math.random()*0.4);
+    m.vx = (m.vx/cs)*ns; m.vy = (m.vy/cs)*ns;
+  });
+}
+
+temperatureSlider.addEventListener('input', function(){
+  var val = parseInt(this.value);
+  tempDisplay.textContent = val + '°C';
+  temperatureFactor = val / 100;
+  updateSpeeds();
+});
+
+window.addEventListener('load', function(){
+  initParticles();
+  updateParticles();
+});
+
+// ===== Hamburger Menu =====
+(function(){
+  var btn = document.getElementById('menuToggle'), menu = document.getElementById('categoryMenu');
+  if (btn && menu) {
+    btn.addEventListener('click', function() {
+      var open = menu.classList.toggle('nav-open');
+      btn.classList.toggle('is-active');
+      btn.setAttribute('aria-expanded', open);
+    });
+    menu.querySelectorAll('a').forEach(function(l) {
+      l.addEventListener('click', function() { menu.classList.remove('nav-open'); btn.classList.remove('is-active'); btn.setAttribute('aria-expanded','false'); });
+    });
+  }
+})();
+(function(){
+  var items = document.querySelectorAll('.menu-item');
+  items.forEach(function(item) {
+    var top = item.querySelector('.menu-top'), sub = item.querySelector('.submenu');
+    if (top && sub && sub.children.length > 1) {
+      top.addEventListener('click', function(e) {
+        if ('ontouchstart' in window && window.innerWidth <= 680) {
+          var isOpen = sub.classList.contains('open');
+          item.parentNode.querySelectorAll('.submenu.open').forEach(function(s) { if (s !== sub) s.classList.remove('open'); });
+          if (!isOpen) { e.preventDefault(); sub.classList.add('open'); }
+        }
+      });
+    }
+  });
+})();
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+
+

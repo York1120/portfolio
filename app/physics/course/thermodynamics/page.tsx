@@ -1,10 +1,10 @@
-﻿import { ArrowLeft, FlaskConical, ExternalLink } from "lucide-react"
+﻿import { ArrowLeft, FlaskConical, ArrowRight } from "lucide-react"
 import Link from "next/link"
 
 export default function ThermodynamicsPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <Link href="/physics" className="inline-flex items-center gap-1 text-gray-500 hover:text-blue-600 transition-colors mb-8 text-sm">
+      <Link href="/physics/course" className="inline-flex items-center gap-1 text-gray-500 hover:text-blue-600 transition-colors mb-8 text-sm">
         <ArrowLeft className="w-4 h-4" />
         返回物理教学
       </Link>
@@ -65,8 +65,8 @@ export default function ThermodynamicsPage() {
         <div className="mt-8 bg-blue-50 border border-blue-100 rounded-xl p-6">
           <h3 className="font-bold text-gray-900 mb-2">互动实验</h3>
           <div className="flex flex-wrap gap-2">
-            <a href="https://yorkphysics.eu.cc/08-molecule.html" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">分子热运动 <ExternalLink className="w-3 h-3" /></a>
-            <a href="https://yorkphysics.eu.cc/09-engine.html" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">四冲程汽油机 <ExternalLink className="w-3 h-3" /></a>
+            <a href="/physics/08-molecule.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">分子热运动 <ArrowRight className="w-3 h-3" /></a>
+            <a href="/physics/09-engine.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">四冲程汽油机 <ArrowRight className="w-3 h-3" /></a>
           </div>
         </div>
       </div>

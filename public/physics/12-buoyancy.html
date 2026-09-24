@@ -1,0 +1,549 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="木块浮力图像显示平台 — 模拟木块在水中的浮力变化，观察浮力与水深的关系。">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>木块浮力图像 | York 周老师物理</title>
+  <meta property="og:title" content="木块浮力图像 | York 周老师物理">
+  <meta property="og:description" content="木块浮力图像显示平台 — 模拟木块在水中的浮力变化，观察浮力与水深的关系。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .exp-page { padding-top: 96px; padding-bottom: 40px; }
+    .lab-hero { margin-bottom: 24px; }
+    .lab-hero h1 { margin: 0 0 8px; font-size: 28px; color: var(--brand); }
+    .lab-hero p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .lab-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+    .lab-main { display: flex; flex-direction: column; gap: 18px; }
+    .lab-bottom { display: flex; flex-direction: column; gap: 18px; }
+    .lab-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-soft); }
+    .lab-card h2 { margin: 0 0 12px; font-size: 18px; color: var(--brand); }
+    .lab-card h3 { margin: 0 0 10px; font-size: 15px; color: var(--ink); }
+    .lab-card p { margin: 8px 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .lab-sidebar { display: flex; flex-direction: column; gap: 18px; }
+    .steps { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 1.9; }
+    .notice { background: #fffbf0; border-color: #f0dca0; }
+    .metric-row { display: flex; gap: 16px; }
+    .metric { flex: 1; text-align: center; padding: 12px; background: var(--surface-soft); border-radius: 12px; }
+    .metric strong { display: block; font-size: 20px; color: var(--brand); }
+    .metric span { font-size: 12px; color: var(--muted); }
+    .related-list a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--brand-2); font-size: 14px; font-weight: 600; text-decoration: none; }
+    .related-list a:hover { background: var(--surface-soft); }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; color: #fff; transition: opacity .2s, transform .2s; }
+    .btn:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--brand-2), var(--tech)); }
+    .btn-danger { background: linear-gradient(135deg, #e53935, #ef5350); }
+    .btn-secondary { background: var(--line); color: var(--ink); }
+    .btn-secondary:hover { background: #c8d6e5; }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .record-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .record-table th { background: var(--surface-soft); padding: 8px 6px; text-align: center; font-weight: 600; color: var(--ink); border: 1px solid var(--line); }
+    .record-table td { padding: 6px; text-align: center; border: 1px solid var(--line); color: var(--muted); }
+    .record-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+    .buoyancy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .water-tank-wrap { position: relative; width: 200px; height: 200px; border: 3px solid #333; margin: 0 auto; background: linear-gradient(to bottom, #e6f3ff 0%, #b3d9ff 100%); overflow: hidden; border-radius: 8px; }
+    .water { position: absolute; bottom: 0; width: 100%; background: linear-gradient(to bottom, rgba(0,120,255,0.3), rgba(0,120,255,0.6)); transition: height .3s; }
+    .wood-block { position: absolute; width: 100px; height: 100px; background: #8B4513; border: 2px solid #654321; border-radius: 4px; transition: bottom .3s; z-index: 2; left: 50px; }
+    .rope { position: absolute; width: 2px; background: #8B4513; z-index: 1; transition: height .3s; left: 100px; }
+    .tank-center { text-align: center; }
+    .slider-row { display: flex; align-items: center; gap: 12px; margin: 10px 0; flex-wrap: wrap; }
+    .slider-row label { font-weight: 600; font-size: 14px; min-width: 70px; }
+    .slider-row input[type="range"] { flex: 1; max-width: 300px; }
+    .depth-val, .force-val { font-weight: 700; color: var(--brand-2); font-size: 16px; }
+    .stage-box { background: #f0f8ff; padding: 12px; border-radius: 8px; border-left: 4px solid #0078ff; margin-top: 12px; }
+    .stage-box h4 { margin: 0 0 6px; color: #0078ff; }
+    .stage-box p { margin: 3px 0; font-size: 13px; color: var(--muted); }
+    .chart-canvas { width: 100%; max-width: 460px; height: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; display: block; margin: 0 auto; }
+    .constants { background: #fff3cd; padding: 10px 14px; border-radius: 8px; border-left: 4px solid #ffc107; margin-bottom: 12px; font-size: 13px; color: var(--muted); line-height: 1.7; }
+    @media (max-width: 960px) { .lab-layout { grid-template-columns: 1fr; } .lab-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } .buoyancy-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) { .lab-sidebar { grid-template-columns: 1fr; } }
+    @media (max-width: 680px) { .lab-hero h1 { font-size: 22px; } }
+    @media (max-width: 480px) { .exp-page { padding-top: 80px; } .lab-hero h1 { font-size: 20px; } .lab-card { padding: 14px; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-shell">
+  <div class="container">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+        <span class="brand-mark">Phy</span>
+        <span>York 周老师物理<small>Professional Physics Lab</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+        <div class="menu-item"><a class="menu-top" href="index.html#acoustics">声学</a><div class="submenu"><a href="02-frequency.html">频率发声器</a><a href="03-noise.html">噪声检测仪</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#optics">光学</a><div class="submenu"><a href="04-pinhole.html">小孔成像虚拟实验</a><a href="06-rgb.html">光的三原色组合游戏</a><a href="07-lens.html">凸透镜成像虚拟实验</a><a href="10-refraction.html">光的反射与折射定律</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#thermal">热学</a><div class="submenu"><a href="08-molecule.html">分子热运动微观示意图</a><a href="09-engine.html">四冲程汽油机示意图</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#mechanics">力学</a><div class="submenu"><a href="01-length.html">长度读取训练平台</a><a href="12-buoyancy.html">木块浮力图像</a><a href="13-torricelli.html">托里拆利实验</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#electricity">电学</a><div class="submenu"><a href="15-circuit.html">电路连接与欧姆定律</a><a href="16-resistors.html">电阻的串联与并联</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#quiz">知识测验</a><div class="submenu"><a href="11-review.html">初中物理知识点复习</a><a href="14-quiz.html">《物理原来很有趣》测验</a></div></div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="container exp-page">
+  <div class="lab-hero">
+    <h1>木块浮力图像显示平台</h1>
+    <p>调节水深，观察木块所受浮力的变化，理解浮力与排开液体体积的关系。</p>
+  </div>
+
+  <div class="lab-layout">
+    <div class="lab-main">
+      <div class="lab-card">
+        <h2>实验操作区</h2>
+        <div class="constants"><strong>物理常数：</strong>木块边长 10cm，质量 0.6kg，重力 6N，绳子长度 6cm，g=10N/kg</div>
+        <div class="buoyancy-grid">
+          <div>
+            <div class="tank-center">
+              <div class="water-tank-wrap" id="waterTank">
+                <div class="water" id="water"></div>
+                <div class="rope" id="rope"></div>
+                <div class="wood-block" id="woodBlock"></div>
+              </div>
+            </div>
+            <div class="slider-row">
+              <label>水深调节：</label>
+              <input type="range" id="depthSlider" min="0" max="20" value="0" step="1">
+              <span class="depth-val"><span id="currentDepth">0</span> cm</span>
+            </div>
+            <div style="text-align:center;font-weight:600;color:var(--brand-2);">当前浮力：<span id="currentForce">0</span> N</div>
+            <div class="stage-box" id="stageInfo">
+              <h4>阶段一：水深0-6cm</h4>
+              <p>• 浮力增大，浮力小于木块重力</p>
+              <p>• 木块沉底状态</p>
+            </div>
+          </div>
+          <div>
+            <canvas id="forceChart" width="500" height="300" class="chart-canvas" style="width:100%;height:auto;max-width:460px;"></canvas>
+            <div style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.7;">
+              <strong>浮力变化阶段：</strong><br>
+              <strong>阶段一 (0-6cm)：</strong>浮力从0N线性增加到6N，木块沉底<br>
+              <strong>阶段二 (6-12cm)：</strong>浮力保持6N不变，木块漂浮<br>
+              <strong>阶段三 (12-16cm)：</strong>浮力从6N增加到10N，绳子拉紧<br>
+              <strong>阶段四 (16-20cm)：</strong>浮力保持10N不变，木块完全浸没
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-bottom">
+        <div class="lab-card">
+          <h2>实验步骤</h2>
+          <ol class="steps">
+            <li>拖动水深滑块（0-20cm），观察水箱中水位和木块位置的变化。</li>
+            <li>观察右侧浮力-水深关系图像，理解浮力随水深的变化规律。</li>
+            <li>注意四个阶段的浮力变化特点：沉底→漂浮→拉紧→完全浸没。</li>
+            <li>点击"记录数据"保存当前水深和浮力值。</li>
+          </ol>
+        </div>
+        <div class="lab-card notice">
+          <h2>知识要点</h2>
+          <p>浮力大小与物体排开液体的体积有关，与浸没深度无关（完全浸没后）。F<sub>浮</sub> = ρ<sub>液</sub>gV<sub>排</sub></p>
+        </div>
+        <div class="lab-card">
+          <h2>数据记录</h2>
+          <div style="overflow-x:auto;">
+            <table class="record-table" id="recordTable">
+              <thead><tr><th>#</th><th>水深(cm)</th><th>浮力(N)</th><th>阶段</th></tr></thead>
+              <tbody id="recordBody"></tbody>
+            </table>
+          </div>
+          <div class="record-actions">
+            <button class="btn btn-primary" onclick="recordData()">记录数据</button>
+            <button class="btn btn-secondary" onclick="exportRecords()">导出 CSV</button>
+            <button class="btn btn-danger" onclick="clearRecords()">清空数据</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab-sidebar">
+      <div class="lab-card">
+        <h2>原理说明</h2>
+        <p>根据阿基米德原理，浸在液体中的物体受到向上的浮力，浮力大小等于它排开的液体所受的重力。木块在水中经历沉底、漂浮、绳拉紧、完全浸没四个阶段。</p>
+        <p style="font-weight:600;color:var(--brand);">F<sub>浮</sub> = G<sub>排</sub> = ρ<sub>液</sub>gV<sub>排</sub></p>
+      </div>
+      <div class="lab-card">
+        <h2>实时数据</h2>
+        <div class="metric-row">
+          <div class="metric"><strong id="timer">0s</strong><span>实验用时</span></div>
+        </div>
+      </div>
+      <div class="lab-card">
+        <h2>相关实验</h2>
+        <div class="related-list">
+          <a href="13-torricelli.html">→ 托里拆利实验</a>
+          <a href="01-length.html">→ 长度读取训练平台</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>York 周老师物理</strong><p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p><p>© 2026 York Physics Lab. All Rights Reserved.</p></div>
+    <div><strong>联系方式</strong><p>周煜全老师</p><p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p></div>
+    <div><strong>特别鸣谢</strong><p>龙外物理科组</p><p>梁卓栋老师</p></div>
+  </div>
+</footer>
+
+<script>
+// ===== Timer + Ops =====
+let elapsedSeconds = 0;
+setInterval(function() { elapsedSeconds++; var m = Math.floor(elapsedSeconds/60), s = elapsedSeconds%60; document.getElementById('timer').textContent = m + 'm' + s + 's'; }, 1000);
+
+// ===== Records =====
+let records = [];
+function recordData() { var d = parseInt(depthSlider.value); records.push({ depth: d, force: calculateBuoyancy(d) }); renderRecords() }
+function renderRecords() {
+  var tbody = document.getElementById('recordBody');
+  tbody.innerHTML = records.map(function(r,i){
+    var stage = '沉底';
+    if (r.depth > 16) stage = '完全浸没';
+    else if (r.depth > 12) stage = '拉紧浸没';
+    else if (r.depth > 6) stage = '漂浮';
+    return '<tr><td>'+(i+1)+'</td><td>'+r.depth+'</td><td>'+r.force.toFixed(1)+'</td><td>'+stage+'</td></tr>';
+  }).join('');
+}
+function exportRecords() {
+  if (!records.length) return;
+  var csv = '序号,水深(cm),浮力(N),阶段\n' + records.map(function(r,i){ return (i+1)+','+r.depth+','+r.force.toFixed(1); }).join('\n');
+  var blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '浮力数据.csv'; a.click();
+}
+function clearRecords() { records = []; renderRecords(); }
+
+// ===== Experiment =====
+// 物理常数
+        const WOOD_SIZE = 10; // cm
+        const WOOD_MASS = 0.6; // kg
+        const WOOD_WEIGHT = WOOD_MASS * 10; // 6N
+        const ROPE_LENGTH = 4; // cm
+        const TANK_HEIGHT = 20; // cm
+        const TANK_WIDTH = 25; // cm
+        const g = 10; // N/kg
+        const WATER_DENSITY = 1000; // kg/m³
+        
+        // 获取DOM元素
+        const waterTank = document.getElementById('waterTank');
+        const water = document.getElementById('water');
+        const woodBlock = document.getElementById('woodBlock');
+        const rope = document.getElementById('rope');
+        const depthSlider = document.getElementById('depthSlider');
+        const currentDepth = document.getElementById('currentDepth');
+        const currentForce = document.getElementById('currentForce');
+        const stageInfo = document.getElementById('stageInfo');
+        const canvas = document.getElementById('forceChart');
+        const ctx = canvas.getContext('2d');
+        
+        // 初始化水箱和木块
+        function initSimulation() {
+            // 设置木块初始位置（沉底）
+            woodBlock.style.width = '100px';
+            woodBlock.style.height = '100px';
+            woodBlock.style.bottom = '0px';
+            woodBlock.style.left = '50px'; // 居中
+            
+            // 设置绳子
+            rope.style.height = '0px';
+            rope.style.left = '100px'; // 木块中心下方
+            rope.style.bottom = '0px';
+            
+            updateWaterDepth(0);
+            drawForceChart(0);
+        }
+        
+        // 计算浮力
+        function calculateBuoyancy(depth) {
+            if (depth <= 0) return 0;
+            
+            // 阶段一：0-6cm，木块沉底，浮力线性增加
+            if (depth <= 6) {
+                return (depth / 6) * WOOD_WEIGHT;
+            }
+            
+            // 阶段二：6-12cm，木块漂浮，浮力等于重力
+            if (depth <= 12) {
+                return WOOD_WEIGHT;
+            }
+            
+            // 阶段三：12-16cm，绳子拉紧，木块逐渐浸没
+            if (depth <= 16) {
+                const submergedHeight = depth - 12; // 浸没高度
+                const submergedVolume = submergedHeight * WOOD_SIZE * WOOD_SIZE / 1000000; // m³
+                return WOOD_WEIGHT + (submergedVolume * WATER_DENSITY * g);
+            }
+            
+            // 阶段四：16-20cm，木块完全浸没
+            const fullVolume = WOOD_SIZE * WOOD_SIZE * WOOD_SIZE / 1000000; // m³
+            return fullVolume * WATER_DENSITY * g;
+        }
+        
+        // 更新水深显示
+        function updateWaterDepth(depth) {
+            const waterHeight = (depth / TANK_HEIGHT) * 200; // 转换为像素
+            water.style.height = waterHeight + 'px';
+            currentDepth.textContent = depth;
+            
+            const buoyancy = calculateBuoyancy(depth);
+            currentForce.textContent = buoyancy.toFixed(1);
+            
+            // 更新木块位置和绳子状态
+            updateWoodPosition(depth, buoyancy);
+            
+            // 更新阶段信息
+            updateStageInfo(depth);
+            
+            // 更新图表
+            drawForceChart(depth);
+        }
+        
+        // 更新木块位置
+        function updateWoodPosition(depth, buoyancy) {
+            const pixelPerCm = 200 / TANK_HEIGHT; // 每厘米对应的像素
+            
+            if (depth <= 6) {
+                // 阶段一：沉底
+                woodBlock.style.bottom = '0px';
+                rope.style.height = '0px';
+            } else if (depth <= 12) {
+                // 阶段二：漂浮 - 显示松弛的绳子
+                const floatHeight = (depth - 6) * pixelPerCm;
+                woodBlock.style.bottom = floatHeight + 'px';
+                // 绳子松弛状态，显示为木块底部到水箱底部的距离
+                rope.style.height = floatHeight + 'px';
+                rope.style.bottom = '0px';
+            } else {
+                // 阶段三和阶段四：木块高度保持不变（保持在12cm时的最高位置）
+                const maxFloatHeight = (12 - 6) * pixelPerCm; // 12cm时的漂浮高度
+                woodBlock.style.bottom = maxFloatHeight + 'px';
+                // 绳子拉紧状态，长度为木块底部到水箱底部的距离
+                rope.style.height = maxFloatHeight + 'px';
+                rope.style.bottom = '0px';
+            }
+        }
+        
+        // 更新阶段信息
+        function updateStageInfo(depth) {
+            let stageTitle = '';
+            let stageDescription = '';
+            
+            if (depth <= 6) {
+                stageTitle = '阶段一：水深0-6cm';
+                stageDescription = '• 浮力增大，浮力小于木块重力<br>• 木块沉底状态';
+            } else if (depth <= 12) {
+                stageTitle = '阶段二：水深6-12cm';
+                stageDescription = '• 浮力不变，等于重力(6N)<br>• 木块漂浮状态<br>• 绳子松弛状态，长度为木块底部到水箱底部的距离';
+            } else if (depth <= 16) {
+                stageTitle = '阶段三：水深12-16cm';
+                stageDescription = '• 浮力增大，绳子拉紧<br>• 木块高度不变，逐渐浸没，浮力等于排开水所受重力';
+            } else {
+                stageTitle = '阶段四：水深16cm以上';
+                stageDescription = '• 浮力不变(10N)<br>• 木块高度不变，完全浸没状态';
+            }
+            
+            stageInfo.innerHTML = `<h4>${stageTitle}</h4><p>${stageDescription}</p>`;
+        }
+        
+        // 绘制浮力图表
+        function drawForceChart(currentDepth) {
+            // 清除画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 设置图表尺寸和边距
+            const margin = 40;
+            const chartWidth = canvas.width - 2 * margin;
+            const chartHeight = canvas.height - 2 * margin;
+            
+            // 绘制细蓝色网格（横轴每cm，纵轴每N）
+            ctx.strokeStyle = '#0000FF';
+            ctx.lineWidth = 0.3;
+            
+            // 水平网格线（纵轴每N）
+            for (let i = 0; i <= 15; i++) {
+                const y = margin + (chartHeight - (i * chartHeight / 15));
+                ctx.beginPath();
+                ctx.moveTo(margin, y);
+                ctx.lineTo(canvas.width - margin, y);
+                ctx.stroke();
+            }
+            
+            // 垂直网格线（横轴每cm）
+            for (let i = 0; i <= 20; i++) {
+                const x = margin + (i * chartWidth / 20);
+                ctx.beginPath();
+                ctx.moveTo(x, margin);
+                ctx.lineTo(x, canvas.height - margin);
+                ctx.stroke();
+            }
+            
+            // 绘制坐标轴
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            
+            // X轴
+            ctx.beginPath();
+            ctx.moveTo(margin, canvas.height - margin);
+            ctx.lineTo(canvas.width - margin, canvas.height - margin);
+            ctx.stroke();
+            
+            // Y轴
+            ctx.beginPath();
+            ctx.moveTo(margin, margin);
+            ctx.lineTo(margin, canvas.height - margin);
+            ctx.stroke();
+            
+            // 绘制坐标轴箭头
+            ctx.fillStyle = '#333';
+            
+            // X轴箭头
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - margin, canvas.height - margin);
+            ctx.lineTo(canvas.width - margin - 10, canvas.height - margin - 5);
+            ctx.lineTo(canvas.width - margin - 10, canvas.height - margin + 5);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Y轴箭头
+            ctx.beginPath();
+            ctx.moveTo(margin, margin);
+            ctx.lineTo(margin - 5, margin + 10);
+            ctx.lineTo(margin + 5, margin + 10);
+            ctx.closePath();
+            ctx.fill();
+            
+            // 坐标轴标签
+            ctx.fillStyle = '#333';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('水深 (cm)', canvas.width / 2, canvas.height - 10);
+            
+            ctx.save();
+            ctx.translate(15, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.textAlign = 'center';
+            ctx.fillText('浮力 (N)', 0, 0);
+            ctx.restore();
+            
+            // 主要刻度标签（每5cm和每3N）
+            ctx.fillStyle = '#666';
+            ctx.font = '12px Arial';
+            
+            // 横轴主要刻度标签
+            for (let i = 0; i <= 4; i++) {
+                const x = margin + (i * 5 * chartWidth / 20);
+                ctx.textAlign = 'center';
+                ctx.fillText((i * 5) + 'cm', x, canvas.height - margin + 15);
+            }
+            
+            // 纵轴主要刻度标签
+            for (let i = 0; i <= 5; i++) {
+                const y = margin + (chartHeight - (i * 3 * chartHeight / 15));
+                ctx.textAlign = 'right';
+                ctx.fillText((i * 3) + 'N', margin - 5, y + 4);
+            }
+            
+            // 绘制浮力曲线
+            ctx.strokeStyle = '#0078ff';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            for (let depth = 0; depth <= 20; depth += 0.1) {
+                const buoyancy = calculateBuoyancy(depth);
+                const x = margin + (depth / 20) * chartWidth;
+                const y = canvas.height - margin - (buoyancy / 15) * chartHeight;
+                
+                if (depth === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            
+            ctx.stroke();
+            
+            // 绘制当前点
+            if (currentDepth >= 0) {
+                const currentBuoyancy = calculateBuoyancy(currentDepth);
+                const x = margin + (currentDepth / 20) * chartWidth;
+                const y = canvas.height - margin - (currentBuoyancy / 15) * chartHeight;
+                
+                ctx.fillStyle = '#ff4444';
+                ctx.beginPath();
+                ctx.arc(x, y, 6, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // 显示当前值
+                ctx.fillStyle = '#ff4444';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(`(${currentDepth}cm, ${currentBuoyancy.toFixed(1)}N)`, x, y - 10);
+            }
+        }
+        
+        // 事件监听
+        depthSlider.addEventListener('input', function() {
+            const depth = parseInt(this.value);
+            updateWaterDepth(depth);
+        });
+        
+        // 初始化
+        window.addEventListener('load', initSimulation);
+</script>
+
+<script>
+// ===== Hamburger Menu =====
+(function(){
+  var btn = document.getElementById('menuToggle'), menu = document.getElementById('categoryMenu');
+  if (btn && menu) {
+    btn.addEventListener('click', function() {
+      var open = menu.classList.toggle('nav-open');
+      btn.classList.toggle('is-active');
+      btn.setAttribute('aria-expanded', open);
+    });
+    menu.querySelectorAll('a').forEach(function(l) {
+      l.addEventListener('click', function() { menu.classList.remove('nav-open'); btn.classList.remove('is-active'); btn.setAttribute('aria-expanded','false'); });
+    });
+  }
+})();
+(function(){
+  var items = document.querySelectorAll('.menu-item');
+  items.forEach(function(item) {
+    var top = item.querySelector('.menu-top'), sub = item.querySelector('.submenu');
+    if (top && sub && sub.children.length > 1) {
+      top.addEventListener('click', function(e) {
+        if ('ontouchstart' in window && window.innerWidth <= 680) {
+          var isOpen = sub.classList.contains('open');
+          item.parentNode.querySelectorAll('.submenu.open').forEach(function(s) { if (s !== sub) s.classList.remove('open'); });
+          if (!isOpen) { e.preventDefault(); sub.classList.add('open'); }
+        }
+      });
+    }
+  });
+})();
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+
+

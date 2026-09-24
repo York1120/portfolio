@@ -1,0 +1,601 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="托里拆利实验 — 模拟大气压测量实验，观察不同液体和条件下的气压变化。">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>托里拆利实验 | York 周老师物理</title>
+  <meta property="og:title" content="托里拆利实验 | York 周老师物理">
+  <meta property="og:description" content="托里拆利实验 — 模拟大气压测量实验，观察不同液体和条件下的气压变化。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .exp-page { padding-top: 96px; padding-bottom: 40px; }
+    .lab-hero { margin-bottom: 24px; }
+    .lab-hero h1 { margin: 0 0 8px; font-size: 28px; color: var(--brand); }
+    .lab-hero p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .lab-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+    .lab-main { display: flex; flex-direction: column; gap: 18px; }
+    .lab-bottom { display: flex; flex-direction: column; gap: 18px; }
+    .lab-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-soft); }
+    .lab-card h2 { margin: 0 0 12px; font-size: 18px; color: var(--brand); }
+    .lab-card h3 { margin: 0 0 10px; font-size: 15px; color: var(--ink); }
+    .lab-card p { margin: 8px 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .lab-sidebar { display: flex; flex-direction: column; gap: 18px; }
+    .steps { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 1.9; }
+    .notice { background: #fffbf0; border-color: #f0dca0; }
+    .metric-row { display: flex; gap: 16px; }
+    .metric { flex: 1; text-align: center; padding: 12px; background: var(--surface-soft); border-radius: 12px; }
+    .metric strong { display: block; font-size: 20px; color: var(--brand); }
+    .metric span { font-size: 12px; color: var(--muted); }
+    .related-list a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--brand-2); font-size: 14px; font-weight: 600; text-decoration: none; }
+    .related-list a:hover { background: var(--surface-soft); }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; color: #fff; transition: opacity .2s, transform .2s; }
+    .btn:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--brand-2), var(--tech)); }
+    .btn-danger { background: linear-gradient(135deg, #e53935, #ef5350); }
+    .btn-secondary { background: var(--line); color: var(--ink); }
+    .btn-secondary:hover { background: #c8d6e5; }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .record-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .record-table th { background: var(--surface-soft); padding: 8px 6px; text-align: center; font-weight: 600; color: var(--ink); border: 1px solid var(--line); }
+    .record-table td { padding: 6px; text-align: center; border: 1px solid var(--line); color: var(--muted); }
+    .record-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+    canvas { background: radial-gradient(ellipse at center, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px; display: block; margin: 0 auto; max-width: 100%; height: auto; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+    .controls-wrap { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; }
+    .control-group-t { flex: 1; min-width: 140px; }
+    .control-group-t label { display: block; font-weight: 600; font-size: 13px; color: var(--ink); margin-bottom: 4px; }
+    .fluid-selector, .tube-selector { display: flex; gap: 6px; }
+    .fluid-btn, .tube-btn { flex: 1; padding: 8px; border: 2px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 8px; cursor: pointer; transition: all .2s; font-size: 13px; font-weight: 600; }
+    .fluid-btn.active, .tube-btn.active { background: var(--brand-2); color: #fff; border-color: var(--brand-2); }
+    .step-indicator { background: var(--surface-soft); border-radius: 10px; padding: 12px; text-align: center; margin-bottom: 12px; border: 1px solid var(--line); }
+    .step-indicator h4 { margin: 0 0 4px; color: var(--brand); font-size: 15px; }
+    .step-indicator p { margin: 0; font-size: 13px; color: var(--muted); }
+    .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .data-item { display: flex; justify-content: space-between; padding: 6px 10px; background: var(--surface-soft); border-radius: 6px; font-size: 13px; }
+    .data-item .dv { font-weight: 700; color: var(--brand-2); }
+    .btn-inline { display: block; width: 100%; padding: 10px; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; color: #fff; transition: opacity .2s, transform .2s; margin-bottom: 6px; }
+    .btn-inline:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-inline:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .btn-start { background: linear-gradient(135deg, #667eea, #764ba2); }
+    .btn-reset { background: var(--line); color: var(--ink); }
+    .btn-reset:hover { background: #c8d6e5; }
+    .slider-inline { display: flex; align-items: center; gap: 8px; }
+    .slider-inline input[type="range"] { flex: 1; }
+    .slider-inline .sv { min-width: 50px; text-align: center; font-weight: 700; font-size: 13px; color: var(--brand-2); }
+    @media (max-width: 960px) { .lab-layout { grid-template-columns: 1fr; } .lab-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } }
+    @media (max-width: 760px) { .lab-sidebar { grid-template-columns: 1fr; } .data-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 680px) { .lab-hero h1 { font-size: 22px; } }
+    @media (max-width: 480px) { .exp-page { padding-top: 80px; } .lab-hero h1 { font-size: 20px; } .lab-card { padding: 14px; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-shell">
+  <div class="container">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+        <span class="brand-mark">Phy</span>
+        <span>York 周老师物理<small>Professional Physics Lab</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+        <div class="menu-item"><a class="menu-top" href="index.html#acoustics">声学</a><div class="submenu"><a href="02-frequency.html">频率发声器</a><a href="03-noise.html">噪声检测仪</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#optics">光学</a><div class="submenu"><a href="04-pinhole.html">小孔成像虚拟实验</a><a href="06-rgb.html">光的三原色组合游戏</a><a href="07-lens.html">凸透镜成像虚拟实验</a><a href="10-refraction.html">光的反射与折射定律</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#thermal">热学</a><div class="submenu"><a href="08-molecule.html">分子热运动微观示意图</a><a href="09-engine.html">四冲程汽油机示意图</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#mechanics">力学</a><div class="submenu"><a href="01-length.html">长度读取训练平台</a><a href="12-buoyancy.html">木块浮力图像</a><a href="13-torricelli.html">托里拆利实验</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#electricity">电学</a><div class="submenu"><a href="15-circuit.html">电路连接与欧姆定律</a><a href="16-resistors.html">电阻的串联与并联</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#quiz">知识测验</a><div class="submenu"><a href="11-review.html">初中物理知识点复习</a><a href="14-quiz.html">《物理原来很有趣》测验</a></div></div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="container exp-page">
+  <div class="lab-hero">
+    <h1>托里拆利实验</h1>
+    <p>模拟大气压测量实验 — 液体充满 → 下降形成真空 → 液面水平</p>
+  </div>
+
+  <div class="lab-layout">
+    <div class="lab-main">
+      <div class="lab-card">
+        <h2>模拟实验区</h2>
+        <canvas id="simCanvas" width="750" height="580"></canvas>
+      </div>
+
+      <div class="lab-bottom">
+        <div class="lab-card">
+          <h2>实验步骤</h2>
+          <ol class="steps">
+            <li>选择实验液体（水银/水）和试管粗细。</li>
+            <li>点击"开始实验"观察液体下降，上方形成真空。</li>
+            <li>调节倾斜角度（0-25°），观察液柱长度变化，理解垂直高度不变。</li>
+            <li>调节海拔高度（0-3000m），观察大气压变化对液柱高度的影响。</li>
+          </ol>
+        </div>
+        <div class="lab-card notice">
+          <h2>知识要点</h2>
+          <p>托里拆利实验测量了大气压的值。垂直高度只与大气压有关，与管径、倾斜角度无关。P<sub>0</sub> = ρgh，标准大气压 P<sub>0</sub> = 1.013×10⁵ Pa</p>
+        </div>
+        <div class="lab-card">
+          <h2>数据记录</h2>
+          <div style="overflow-x:auto;">
+            <table class="record-table" id="recordTable">
+              <thead><tr><th>#</th><th>液体</th><th>垂直高度</th><th>倾斜角</th><th>大气压(Pa)</th></tr></thead>
+              <tbody id="recordBody"></tbody>
+            </table>
+          </div>
+          <div class="record-actions">
+            <button class="btn btn-primary" onclick="recordData()">记录数据</button>
+            <button class="btn btn-secondary" onclick="exportRecords()">导出 CSV</button>
+            <button class="btn btn-danger" onclick="clearRecords()">清空数据</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab-sidebar">
+      <div class="lab-card">
+        <div class="step-indicator" id="stepIndicator">
+          <h4>准备就绪</h4>
+          <p>试管已充满液体，点击下方"开始实验"</p>
+        </div>
+
+        <div class="control-group-t" style="margin-bottom:10px;">
+          <label>选择液体</label>
+          <div class="fluid-selector">
+            <button class="fluid-btn active" onclick="setFluid('mercury')" id="btnHg">水银</button>
+            <button class="fluid-btn" onclick="setFluid('water')" id="btnWater">水</button>
+          </div>
+        </div>
+
+        <div class="control-group-t" style="margin-bottom:10px;">
+          <label>试管粗细</label>
+          <div class="tube-selector">
+            <button class="tube-btn" onclick="setTubeSize('thin')" id="btnThin">细管</button>
+            <button class="tube-btn active" onclick="setTubeSize('medium')" id="btnMedium">中管</button>
+            <button class="tube-btn" onclick="setTubeSize('thick')" id="btnThick">粗管</button>
+          </div>
+        </div>
+
+        <button class="btn-inline btn-start" onclick="startExperiment()" id="startBtn">开始实验</button>
+        <button class="btn-inline btn-reset" onclick="resetExperiment()">重置</button>
+
+        <div class="control-group-t" style="margin-top:8px;">
+          <label>倾斜角度</label>
+          <div class="slider-inline">
+            <input type="range" id="tiltSlider" min="0" max="25" value="0" step="0.5">
+            <span class="sv" id="tiltValue">0°</span>
+          </div>
+        </div>
+
+        <div class="control-group-t">
+          <label>海拔高度</label>
+          <div class="slider-inline">
+            <input type="range" id="altitudeSlider" min="0" max="3000" value="0" step="100">
+            <span class="sv" id="altValue">0m</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h2>实验数据</h2>
+        <div class="data-grid">
+          <div class="data-item"><span>实验用时</span><span class="dv" id="timer">0s</span></div>
+          <div class="data-item"><span>垂直高度</span><span class="dv" id="vHeight">--</span></div>
+          <div class="data-item"><span>管内液柱</span><span class="dv" id="tLength">--</span></div>
+          <div class="data-item"><span>倾斜角度</span><span class="dv" id="tAngle">0°</span></div>
+          <div class="data-item"><span>试管内径</span><span class="dv" id="tubeWidth">中管</span></div>
+          <div class="data-item"><span>大气压强</span><span class="dv" id="pressure">101325 Pa</span></div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h2>相关实验</h2>
+        <div class="related-list">
+          <a href="12-buoyancy.html">→ 木块浮力图像</a>
+          <a href="01-length.html">→ 长度读取训练平台</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>York 周老师物理</strong><p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p><p>© 2026 York Physics Lab. All Rights Reserved.</p></div>
+    <div><strong>联系方式</strong><p>周煜全老师</p><p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p></div>
+    <div><strong>特别鸣谢</strong><p>龙外物理科组</p><p>梁卓栋老师</p></div>
+  </div>
+</footer>
+
+<script>
+// ===== Timer + Ops =====
+let elapsedSeconds = 0;
+setInterval(function() { elapsedSeconds++; var m = Math.floor(elapsedSeconds/60), s = elapsedSeconds%60; document.getElementById('timer').textContent = m + 'm' + s + 's'; }, 1000);
+
+// ===== Records =====
+let records = [];
+function recordData() {
+  records.push({
+    fluid: state.fluid === 'mercury' ? '水银' : '水',
+    vh: state.verticalHeight,
+    tilt: state.tiltAngle,
+    pressure: Math.round(calculatePressure(state.altitude))
+  });
+  renderRecords()
+}
+function renderRecords() {
+  var tbody = document.getElementById('recordBody');
+  tbody.innerHTML = records.map(function(r,i){
+    var h = r.fluid === '水银' ? (r.vh*1000).toFixed(1)+'mm' : r.vh.toFixed(2)+'m';
+    return '<tr><td>'+(i+1)+'</td><td>'+r.fluid+'</td><td>'+h+'</td><td>'+r.tilt+'°</td><td>'+r.pressure+'</td></tr>';
+  }).join('');
+}
+function exportRecords() {
+  if (!records.length) return;
+  var csv = '序号,液体,垂直高度,倾斜角,大气压\n' + records.map(function(r,i){ return (i+1)+','+r.fluid+','+r.vh+','+r.tilt+','+r.pressure; }).join('\n');
+  var blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '托里拆利数据.csv'; a.click();
+}
+function clearRecords() { records = []; renderRecords(); }
+
+// ===== Experiment =====
+const canvasT = document.getElementById('simCanvas');
+const ctxT = canvasT.getContext('2d');
+
+const FLUIDS = {
+  mercury: { name: '水银', density: 13595, color: '#A0A0A0', highlight: '#D8D8D8', shadow: '#707070', stdHeight: 0.76, getScale: function(){ return 280; } },
+  water: { name: '水', density: 1000, color: '#4FC3F7', highlight: '#B3E5FC', shadow: '#0288D1', stdHeight: 10.33, getScale: function(){ return 28; } }
+};
+const TUBE_SIZES = { thin: { width: 35, name: '细管', label: '15mm' }, medium: { width: 50, name: '中管', label: '25mm' }, thick: { width: 75, name: '粗管', label: '40mm' } };
+
+let state = { fluid: 'mercury', tubeSize: 'medium', phase: 'ready', verticalHeight: 0, currentLiquidLevel: 0, tiltAngle: 0, altitude: 0, isFull: true, tubeTooShort: false, idealHeight: 0 };
+const G = 9.8, P0 = 101325;
+
+function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+function calculatePressure(alt) { return P0 * Math.pow(1 - 2.25577e-5 * alt, 5.25588); }
+function calculateHeight(pressure, density) { return pressure / (density * G); }
+
+function getTubeFullHeight() {
+  var f = FLUIDS[state.fluid];
+  return (state.fluid === 'mercury' ? 1.2 : 13.0) * f.getScale();
+}
+
+function getTubeLengthMeters() {
+  return state.fluid === 'mercury' ? 1.2 : 13.0;
+}
+
+function formatHeight(value) {
+  return state.fluid === 'mercury' ? (value * 1000).toFixed(1) + ' mm' : value.toFixed(2) + ' m';
+}
+
+function calculateEquilibrium() {
+  var f = FLUIDS[state.fluid];
+  var tr = state.tiltAngle * Math.PI / 180;
+  var pressure = calculatePressure(state.altitude);
+  var idealHeight = calculateHeight(pressure, f.density);
+  var idealColumnLength = idealHeight / Math.cos(tr);
+  var tubeLength = getTubeLengthMeters();
+  var tubeTooShort = idealColumnLength > tubeLength;
+  var columnLength = tubeTooShort ? tubeLength : idealColumnLength;
+  var verticalHeight = columnLength * Math.cos(tr);
+  return {
+    pressure: pressure,
+    idealHeight: idealHeight,
+    idealColumnLength: idealColumnLength,
+    tubeTooShort: tubeTooShort,
+    columnLength: columnLength,
+    verticalHeight: verticalHeight,
+    liquidLevelPx: columnLength * f.getScale()
+  };
+}
+
+function applyEquilibrium() {
+  var eq = calculateEquilibrium();
+  state.idealHeight = eq.idealHeight;
+  state.verticalHeight = eq.verticalHeight;
+  state.currentLiquidLevel = eq.liquidLevelPx;
+  state.tubeTooShort = eq.tubeTooShort;
+  state.isFull = eq.tubeTooShort;
+  return eq;
+}
+
+function setFluid(type) {
+  if (state.phase !== 'ready' && state.phase !== 'settled') return;
+  state.fluid = type;
+  document.getElementById('btnHg').classList.toggle('active', type === 'mercury');
+  document.getElementById('btnWater').classList.toggle('active', type === 'water');
+  if (state.phase === 'ready') { state.isFull = true; state.currentLiquidLevel = getTubeFullHeight(); }
+  if (state.phase === 'settled') applyEquilibrium();
+  drawTorricelli(); updateTorrDisplay();
+}
+
+function setTubeSize(size) {
+  if (state.phase !== 'ready' && state.phase !== 'settled') return;
+  state.tubeSize = size;
+  document.getElementById('btnThin').classList.toggle('active', size === 'thin');
+  document.getElementById('btnMedium').classList.toggle('active', size === 'medium');
+  document.getElementById('btnThick').classList.toggle('active', size === 'thick');
+  if (state.phase === 'ready') { state.isFull = true; state.currentLiquidLevel = getTubeFullHeight(); }
+  if (state.phase === 'settled') applyEquilibrium();
+  drawTorricelli(); updateTorrDisplay();
+}
+
+function updateTiltT(val) {
+  if (state.phase === 'dropping') return;
+  state.tiltAngle = parseFloat(val);
+  if (state.phase === 'settled' && state.verticalHeight > 0) {
+    applyEquilibrium();
+  }
+  document.getElementById('tiltValue').textContent = val + '°';
+  drawTorricelli(); updateTorrDisplay();
+}
+
+function updateAltitudeT(val) {
+  var alt = parseInt(val);
+  state.altitude = alt;
+  document.getElementById('altValue').textContent = alt + 'm';
+  if (state.phase === 'settled') {
+    applyEquilibrium();
+    drawTorricelli(); updateTorrDisplay();
+  }
+}
+
+function startExperiment() {
+  if (state.phase !== 'ready') return;
+  state.phase = 'dropping'; state.isFull = false;
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('stepIndicator').querySelector('h4').textContent = '液体下降中...';
+  document.getElementById('stepIndicator').querySelector('p').textContent = '液体正在下降，上方形成真空';
+  var f = FLUIDS[state.fluid], tr = state.tiltAngle * Math.PI / 180;
+  var eq = calculateEquilibrium();
+  var targetVH = eq.verticalHeight;
+  var targetLL = eq.liquidLevelPx;
+  var startLL = state.currentLiquidLevel, startTime = null, duration = 2500;
+  (function animate(ts) {
+    if (!startTime) startTime = ts;
+    var progress = Math.min((ts - startTime) / duration, 1);
+    var eased = easeOutCubic(progress);
+    state.currentLiquidLevel = startLL - (startLL - targetLL) * eased;
+    state.verticalHeight = (state.currentLiquidLevel / f.getScale()) * Math.cos(tr);
+    state.tubeTooShort = eq.tubeTooShort;
+    drawTorricelli(); updateTorrDisplay();
+    if (progress < 1) requestAnimationFrame(animate);
+    else {
+      state.phase = 'settled'; state.verticalHeight = targetVH; state.currentLiquidLevel = targetLL;
+      state.idealHeight = eq.idealHeight; state.tubeTooShort = eq.tubeTooShort; state.isFull = eq.tubeTooShort;
+      document.getElementById('stepIndicator').querySelector('h4').textContent = '实验完成';
+      document.getElementById('stepIndicator').querySelector('p').textContent = '液面已平衡，可调整角度观察';
+      document.getElementById('startBtn').disabled = false;
+      drawTorricelli(); updateTorrDisplay();
+    }
+  })(performance.now());
+}
+
+function resetExperiment() {
+  state.phase = 'ready'; state.verticalHeight = 0; state.isFull = true; state.tiltAngle = 0;
+  state.currentLiquidLevel = getTubeFullHeight();
+  document.getElementById('tiltSlider').value = 0; document.getElementById('tiltValue').textContent = '0°';
+  document.getElementById('altitudeSlider').value = 0; document.getElementById('altValue').textContent = '0m';
+  state.altitude = 0; document.getElementById('startBtn').disabled = false;
+  document.getElementById('stepIndicator').querySelector('h4').textContent = '准备就绪';
+  document.getElementById('stepIndicator').querySelector('p').textContent = '试管已充满液体，点击"开始实验"';
+  drawTorricelli(); updateTorrDisplay();
+}
+
+function updateTorrDisplay() {
+  var f = FLUIDS[state.fluid], tc = TUBE_SIZES[state.tubeSize], tr = state.tiltAngle * Math.PI / 180;
+  var hText = state.phase === 'ready' ? '--' : (state.fluid === 'mercury' ? (state.verticalHeight*1000).toFixed(1)+' mm' : state.verticalHeight.toFixed(2)+' m');
+  document.getElementById('vHeight').textContent = hText;
+  if (state.phase === 'ready') document.getElementById('tLength').textContent = '充满';
+  else { var tl = state.verticalHeight / Math.cos(tr); document.getElementById('tLength').textContent = state.fluid === 'mercury' ? (tl*1000).toFixed(1)+' mm' : tl.toFixed(2)+' m'; }
+  document.getElementById('tAngle').textContent = state.tiltAngle.toFixed(1) + '°';
+  document.getElementById('tubeWidth').textContent = tc.name;
+  document.getElementById('pressure').textContent = Math.round(calculatePressure(state.altitude)) + ' Pa';
+}
+
+function drawTorricelli() {
+  var W = canvasT.width, H = canvasT.height;
+  var bg = ctxT.createRadialGradient(W/2, H/2, 0, W/2, H/2, W);
+  bg.addColorStop(0, '#f8f9fa'); bg.addColorStop(1, '#dee2e6');
+  ctxT.fillStyle = bg; ctxT.fillRect(0, 0, W, H);
+  var f = FLUIDS[state.fluid], scale = f.getScale(), tc = TUBE_SIZES[state.tubeSize];
+  var cx = W/2 + 40, gy = H - 60, tw = 280, th = 70, tx = cx - tw/2, ty = gy - th;
+
+  var gg = ctxT.createLinearGradient(0, gy, 0, H);
+  gg.addColorStop(0, '#8D6E63'); gg.addColorStop(1, '#5D4037');
+  ctxT.fillStyle = gg; ctxT.fillRect(0, gy, W, H - gy);
+  ctxT.fillStyle = 'rgba(0,0,0,0.1)';
+  for (var i = 0; i < W; i += 25) ctxT.fillRect(i, gy+5, 12, 3);
+  ctxT.fillStyle = 'rgba(180,180,180,0.3)'; ctxT.strokeStyle = '#888'; ctxT.lineWidth = 3;
+  ctxT.fillRect(tx, ty, tw, th); ctxT.strokeRect(tx, ty, tw, th);
+
+  if (state.phase !== 'ready') {
+    var tr = state.tiltAngle * Math.PI / 180, tby = ty + 15;
+    var tltY = tby - state.verticalHeight * scale;
+    var tblY = ty + th, tld = Math.max(5, Math.min(tblY - tltY, th - 10)), tlY2 = tblY - tld;
+    var tlg = ctxT.createLinearGradient(tx, tlY2, tx+tw, tlY2);
+    tlg.addColorStop(0, f.shadow); tlg.addColorStop(0.3, f.color); tlg.addColorStop(0.7, f.highlight); tlg.addColorStop(1, f.shadow);
+    ctxT.fillStyle = tlg; ctxT.globalAlpha = 0.9;
+    ctxT.fillRect(tx+8, tlY2, tw-16, tld-5); ctxT.globalAlpha = 1;
+    ctxT.fillStyle = f.highlight; ctxT.fillRect(tx+8, tlY2, tw-16, 3);
+    ctxT.fillStyle = 'rgba(255,255,255,0.3)'; ctxT.fillRect(tx+30, tlY2+6, tw-70, 10);
+    if (state.phase === 'settled') {
+      ctxT.fillStyle = 'rgba(0,100,200,0.8)'; ctxT.font = 'bold 12px Arial'; ctxT.textAlign = 'center';
+      ctxT.fillText('↔ 液面相平', cx, tlY2-8);
+    }
+  }
+
+  var tubeW = tc.width, tubeHM = state.fluid === 'mercury' ? 1.2 : 13.0, tubeHPx = tubeHM * scale, tubeBY = ty + 15;
+
+  // drawTube
+  (function(){
+    var x = cx, y = tubeBY, width = tubeW, height = tubeHPx, tiltAngle = state.tiltAngle, liquidLevel = state.currentLiquidLevel, isFull = state.isFull;
+    var sc = f.getScale(), tiltRad = tiltAngle * Math.PI / 180;
+    ctxT.save(); ctxT.translate(x, y);
+    var wallTh = Math.max(3, width * 0.08), innerW = width - wallTh*2, cylH = height - width/2, topCY = -cylH - width/2;
+    ctxT.save(); ctxT.rotate(-tiltRad);
+    var gg2 = ctxT.createLinearGradient(-width/2-5, 0, width/2+5, 0);
+    gg2.addColorStop(0, 'rgba(180,200,220,0.7)'); gg2.addColorStop(0.1, 'rgba(220,235,255,0.9)');
+    gg2.addColorStop(0.25, 'rgba(200,220,240,0.5)'); gg2.addColorStop(0.5, 'rgba(255,255,255,0.95)');
+    gg2.addColorStop(0.75, 'rgba(200,220,240,0.5)'); gg2.addColorStop(0.9, 'rgba(220,235,255,0.9)');
+    gg2.addColorStop(1, 'rgba(180,200,220,0.7)');
+    ctxT.fillStyle = gg2;
+    ctxT.beginPath(); ctxT.moveTo(-width/2, 0); ctxT.lineTo(-width/2, -cylH);
+    ctxT.arc(0, topCY, width/2, Math.PI, 0, true); ctxT.lineTo(width/2, 0); ctxT.closePath(); ctxT.fill();
+    ctxT.strokeStyle = 'rgba(255,255,255,0.9)'; ctxT.lineWidth = Math.max(2, width*0.04);
+    ctxT.beginPath(); ctxT.moveTo(-width/2+1, 0); ctxT.lineTo(-width/2+1, -cylH);
+    ctxT.arc(0, topCY, width/2-1, Math.PI, 0, true); ctxT.lineTo(width/2-1, 0); ctxT.stroke();
+    ctxT.restore();
+
+    if (liquidLevel > 0) {
+      var lg = ctxT.createLinearGradient(-innerW, 0, innerW, 0);
+      lg.addColorStop(0, f.shadow); lg.addColorStop(0.3, f.color); lg.addColorStop(0.5, f.highlight); lg.addColorStop(0.7, f.color); lg.addColorStop(1, f.shadow);
+      ctxT.fillStyle = lg;
+      ctxT.save();
+      ctxT.rotate(-tiltRad);
+      ctxT.beginPath();
+      ctxT.moveTo(-innerW/2, 0);
+      ctxT.lineTo(-innerW/2, -cylH);
+      ctxT.arc(0, topCY, innerW/2, Math.PI, 0, true);
+      ctxT.lineTo(innerW/2, 0);
+      ctxT.closePath();
+      ctxT.clip();
+      if (isFull || liquidLevel >= cylH + innerW/2 - 5) {
+        ctxT.fillRect(-innerW/2, -cylH - innerW, innerW, cylH + innerW + 2);
+      } else {
+        ctxT.rotate(tiltRad);
+        var surfaceY = -state.verticalHeight * sc;
+        ctxT.beginPath();
+        ctxT.rect(-height, surfaceY, height * 2, height + innerW);
+        ctxT.fill();
+        ctxT.strokeStyle = 'rgba(255,255,255,0.9)'; ctxT.lineWidth = 2;
+        ctxT.beginPath(); ctxT.moveTo(-height, surfaceY); ctxT.lineTo(height, surfaceY); ctxT.stroke();
+      }
+      ctxT.restore();
+    }
+
+    ctxT.save(); ctxT.rotate(-tiltRad);
+    ctxT.fillStyle = 'rgba(255,255,255,0.8)';
+    ctxT.beginPath(); ctxT.arc(0, topCY, width/2-2, Math.PI*1.3, Math.PI*1.7, false); ctxT.lineTo(0, topCY); ctxT.closePath(); ctxT.fill();
+    ctxT.restore();
+    ctxT.restore();
+  })();
+
+  // Height indicator line
+  if (state.phase !== 'ready') {
+    var tby2 = ty + 15, ltY2 = tby2 - state.verticalHeight * scale;
+    ctxT.setLineDash([8,5]); ctxT.strokeStyle = '#e74c3c'; ctxT.lineWidth = 3;
+    var lx2 = cx - 90;
+    ctxT.beginPath(); ctxT.moveTo(lx2, tby2); ctxT.lineTo(lx2, ltY2); ctxT.stroke();
+    ctxT.fillStyle = '#e74c3c';
+    ctxT.beginPath(); ctxT.arc(lx2, tby2, 5, 0, Math.PI*2); ctxT.arc(lx2, ltY2, 5, 0, Math.PI*2); ctxT.fill();
+    ctxT.setLineDash([]);
+    var midY2 = (tby2 + ltY2)/2;
+    ctxT.beginPath(); ctxT.moveTo(lx2+10, tby2-8); ctxT.lineTo(lx2+10, midY2); ctxT.lineTo(lx2+6, midY2-4);
+    ctxT.moveTo(lx2+10, midY2); ctxT.lineTo(lx2+14, midY2-4);
+    ctxT.moveTo(lx2+10, ltY2+8); ctxT.lineTo(lx2+10, midY2); ctxT.lineTo(lx2+6, midY2+4);
+    ctxT.moveTo(lx2+10, midY2); ctxT.lineTo(lx2+14, midY2+4);
+    ctxT.strokeStyle = '#e74c3c'; ctxT.lineWidth = 2; ctxT.stroke();
+
+    ctxT.fillStyle = '#e74c3c'; ctxT.font = 'bold 13px Arial'; ctxT.textAlign = 'right';
+    ctxT.fillText('垂直高度', lx2-15, midY2-8);
+    ctxT.font = 'bold 15px Arial';
+    var labelT = state.fluid === 'mercury' ? (state.verticalHeight*1000).toFixed(1)+' mm' : state.verticalHeight.toFixed(2)+' m';
+    ctxT.fillText(labelT, lx2-15, midY2+12);
+  }
+
+  // Pressure arrow
+  var ax = cx + 200, ay = tby2 !== undefined ? tby2 : ty+15;
+  ctxT.strokeStyle = '#e74c3c'; ctxT.lineWidth = 3;
+  ctxT.beginPath(); ctxT.moveTo(ax, ay-80); ctxT.lineTo(ax, ay); ctxT.stroke();
+  ctxT.fillStyle = '#e74c3c';
+  ctxT.beginPath(); ctxT.moveTo(ax-8, ay-12); ctxT.lineTo(ax, ay); ctxT.lineTo(ax+8, ay-12); ctxT.closePath(); ctxT.fill();
+  ctxT.fillStyle = '#e74c3c'; ctxT.font = 'bold 13px Arial'; ctxT.textAlign = 'left';
+  ctxT.fillText('大气压强', ax+12, ay-40);
+  ctxT.font = '11px Arial';
+  ctxT.fillText('P₀ = '+Math.round(calculatePressure(state.altitude))+' Pa', ax+12, ay-25);
+
+  // Legend
+  ctxT.fillStyle = 'rgba(0,0,0,0.75)';
+  ctxT.beginPath(); ctxT.roundRect(10, 10, 210, 100, 10); ctxT.fill();
+  ctxT.fillStyle = '#ffd700'; ctxT.font = 'bold 14px Arial'; ctxT.textAlign = 'left';
+  ctxT.fillText('⚗️ 实验参数', 20, 25);
+  ctxT.fillStyle = '#fff'; ctxT.font = '12px Arial';
+  ctxT.fillText('液体: '+f.name, 20, 45);
+  ctxT.fillText('密度: '+f.density+' kg/m³', 20, 62);
+  ctxT.fillText('试管: '+tc.name+' ('+tc.label+')', 20, 79);
+  var stText = state.phase === 'ready' ? '液体充满' : state.phase === 'dropping' ? '下降中...' : '已平衡';
+  ctxT.fillText('状态: '+stText, 20, 96);
+}
+
+if (!CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function(x,y,w,h,r){
+    if (w<2*r) r=w/2; if (h<2*r) r=h/2;
+    this.moveTo(x+r,y); this.arcTo(x+w,y,x+w,y+h,r); this.arcTo(x+w,y+h,x,y+h,r); this.arcTo(x,y+h,x,y,r); this.arcTo(x,y,x+w,y,r); this.closePath(); return this;
+  };
+}
+
+document.getElementById('tiltSlider').addEventListener('input', function(){ updateTiltT(this.value); });
+document.getElementById('altitudeSlider').addEventListener('input', function(){ updateAltitudeT(this.value); });
+
+window.onload = function() {
+  state.currentLiquidLevel = getTubeFullHeight();
+  document.getElementById('stepIndicator').querySelector('h4').textContent = '准备就绪';
+  document.getElementById('stepIndicator').querySelector('p').textContent = '试管已充满液体，点击"开始实验"';
+  drawTorricelli(); updateTorrDisplay();
+};
+
+// ===== Hamburger Menu =====
+(function(){
+  var btn = document.getElementById('menuToggle'), menu = document.getElementById('categoryMenu');
+  if (btn && menu) {
+    btn.addEventListener('click', function() {
+      var open = menu.classList.toggle('nav-open');
+      btn.classList.toggle('is-active');
+      btn.setAttribute('aria-expanded', open);
+    });
+    menu.querySelectorAll('a').forEach(function(l) {
+      l.addEventListener('click', function() { menu.classList.remove('nav-open'); btn.classList.remove('is-active'); btn.setAttribute('aria-expanded','false'); });
+    });
+  }
+})();
+(function(){
+  var items = document.querySelectorAll('.menu-item');
+  items.forEach(function(item) {
+    var top = item.querySelector('.menu-top'), sub = item.querySelector('.submenu');
+    if (top && sub && sub.children.length > 1) {
+      top.addEventListener('click', function(e) {
+        if ('ontouchstart' in window && window.innerWidth <= 680) {
+          var isOpen = sub.classList.contains('open');
+          item.parentNode.querySelectorAll('.submenu.open').forEach(function(s) { if (s !== sub) s.classList.remove('open'); });
+          if (!isOpen) { e.preventDefault(); sub.classList.add('open'); }
+        }
+      });
+    }
+  });
+})();
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+
+

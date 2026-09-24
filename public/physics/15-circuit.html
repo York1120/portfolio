@@ -1,0 +1,650 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="电路连接与欧姆定律 — 模拟简单电路，调节电压和电阻，观察电流变化规律。">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>电路连接与欧姆定律 | York 周老师物理</title>
+  <meta property="og:title" content="电路连接与欧姆定律 | York 周老师物理">
+  <meta property="og:description" content="电路连接与欧姆定律 — 模拟简单电路，调节电压和电阻，观察电流变化规律。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .exp-page { padding-top: 96px; padding-bottom: 40px; }
+    .lab-hero { margin-bottom: 24px; }
+    .lab-hero h1 { margin: 0 0 8px; font-size: 28px; color: var(--brand); }
+    .lab-hero p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .lab-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+    .lab-main { display: flex; flex-direction: column; gap: 18px; }
+    .lab-bottom { display: flex; flex-direction: column; gap: 18px; }
+    .lab-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-soft); }
+    .lab-card h2 { margin: 0 0 12px; font-size: 18px; color: var(--brand); }
+    .lab-card h3 { margin: 0 0 10px; font-size: 15px; color: var(--ink); }
+    .lab-card p { margin: 8px 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .lab-sidebar { display: flex; flex-direction: column; gap: 18px; }
+    .steps { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 1.9; }
+    .notice { background: #fffbf0; border-color: #f0dca0; }
+    .metric-row { display: flex; gap: 16px; }
+    .metric { flex: 1; text-align: center; padding: 12px; background: var(--surface-soft); border-radius: 12px; }
+    .metric strong { display: block; font-size: 20px; color: var(--brand); }
+    .metric span { font-size: 12px; color: var(--muted); }
+    .related-list a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--brand-2); font-size: 14px; font-weight: 600; text-decoration: none; }
+    .related-list a:hover { background: var(--surface-soft); }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; color: #fff; transition: opacity .2s, transform .2s; }
+    .btn:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--brand-2), var(--tech)); }
+    .btn-danger { background: linear-gradient(135deg, #e53935, #ef5350); }
+    .btn-secondary { background: var(--line); color: var(--ink); }
+    .btn-secondary:hover { background: #c8d6e5; }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .record-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .record-table th { background: var(--surface-soft); padding: 8px 6px; text-align: center; font-weight: 600; color: var(--ink); border: 1px solid var(--line); }
+    .record-table td { padding: 6px; text-align: center; border: 1px solid var(--line); color: var(--muted); }
+    .record-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .canvas-wrap { width: 100%; overflow-x: auto; }
+    .canvas-wrap canvas { display: block; margin: 0 auto; width: 100%; height: auto; max-width: 700px; background: #fff; border: 1px solid var(--line); border-radius: 8px; }
+    .ctrl-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 8px 0; }
+    .ctrl-row label { font-size: 14px; font-weight: 600; color: var(--ink); min-width: 80px; }
+    .ctrl-row input[type="range"] { flex: 1; max-width: 300px; }
+    .ctrl-row .val { min-width: 70px; text-align: center; font-weight: 700; color: var(--brand-2); font-size: 16px; }
+    .readout { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 10px 0; }
+    .readout-item { text-align: center; padding: 12px; background: var(--surface-soft); border-radius: 10px; }
+    .readout-item strong { display: block; font-size: 22px; color: var(--brand-2); }
+    .readout-item span { font-size: 12px; color: var(--muted); }
+    .formula { padding: 14px; background: var(--surface-soft); border-radius: 12px; text-align: center; font-size: 18px; margin: 8px 0; }
+    .legend { display: flex; gap: 16px; flex-wrap: wrap; padding: 8px 0; font-size: 13px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 20px; height: 4px; border-radius: 2px; }
+    @media (max-width: 960px) { .lab-layout { grid-template-columns: 1fr; } .lab-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } .readout { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 760px) { .lab-sidebar { grid-template-columns: 1fr; } }
+    @media (max-width: 680px) { .lab-hero h1 { font-size: 22px; } }
+    @media (max-width: 480px) { .exp-page { padding-top: 80px; } .lab-hero h1 { font-size: 20px; } .lab-card { padding: 14px; } .readout { grid-template-columns: 1fr 1fr; } .readout-item strong { font-size: 18px; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-shell">
+  <div class="container">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+        <span class="brand-mark">Phy</span>
+        <span>York 周老师物理<small>Professional Physics Lab</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+        <div class="menu-item"><a class="menu-top" href="index.html#acoustics">声学</a><div class="submenu"><a href="02-frequency.html">频率发声器</a><a href="03-noise.html">噪声检测仪</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#optics">光学</a><div class="submenu"><a href="04-pinhole.html">小孔成像虚拟实验</a><a href="06-rgb.html">光的三原色组合游戏</a><a href="07-lens.html">凸透镜成像虚拟实验</a><a href="10-refraction.html">光的反射与折射定律</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#thermal">热学</a><div class="submenu"><a href="08-molecule.html">分子热运动微观示意图</a><a href="09-engine.html">四冲程汽油机示意图</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#mechanics">力学</a><div class="submenu"><a href="01-length.html">长度读取训练平台</a><a href="12-buoyancy.html">木块浮力图像</a><a href="13-torricelli.html">托里拆利实验</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#electricity">电学</a><div class="submenu"><a href="15-circuit.html">电路连接与欧姆定律</a><a href="16-resistors.html">电阻的串联与并联</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#quiz">知识测验</a><div class="submenu"><a href="11-review.html">初中物理知识点复习</a><a href="14-quiz.html">《物理原来很有趣》测验</a></div></div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="container exp-page">
+  <div class="lab-hero">
+    <h1>电路连接与欧姆定律</h1>
+    <p>调节电压和电阻，观察电流变化，验证 I = U / R。</p>
+  </div>
+
+  <div class="lab-layout">
+    <div class="lab-main">
+      <div class="lab-card">
+        <h2>实验操作区</h2>
+        <div class="canvas-wrap">
+          <canvas id="circuitCanvas" width="700" height="380"></canvas>
+        </div>
+        <div class="legend">
+          <span class="legend-item"><span class="legend-dot" style="background:#e74c3c;"></span> 电源</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#8B4513;"></span> 定值电阻</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#f39c12;"></span> 灯泡</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#3498db;"></span> 电流方向</span>
+        </div>
+        <div class="ctrl-row">
+          <label>电压 U:</label>
+          <input type="range" id="voltageSlider" min="1" max="12" value="6" step="0.5">
+          <span class="val" id="voltageDisplay">6.0 V</span>
+        </div>
+        <div class="ctrl-row">
+          <label>电阻 R:</label>
+          <input type="range" id="resistanceSlider" min="1" max="20" value="10" step="0.5">
+          <span class="val" id="resistanceDisplay">10.0 Ω</span>
+        </div>
+        <div class="readout">
+          <div class="readout-item"><strong id="currentDisplay">0.60</strong><span>电流 I (A)</span></div>
+          <div class="readout-item"><strong id="voltageReadout">6.0</strong><span>电压 U (V)</span></div>
+          <div class="readout-item"><strong id="resistanceReadout">10.0</strong><span>电阻 R (Ω)</span></div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="recordData()">记录数据</button>
+        </div>
+      </div>
+
+      <div class="lab-bottom">
+        <div class="lab-card">
+          <h2>实验步骤</h2>
+          <ol class="steps">
+            <li>拖动电压滑块（1-12V），观察电流变化，注意灯泡亮度的改变。</li>
+            <li>拖动电阻滑块（1-20Ω），保持电压不变，观察电流如何变化。</li>
+            <li>每次调节后，读取电流表数值，验证 I = U / R。</li>
+            <li>点击"记录数据"保存实验参数，分析电压、电阻与电流的关系。</li>
+          </ol>
+        </div>
+        <div class="lab-card notice">
+          <h2>知识要点</h2>
+          <p>欧姆定律：导体中的电流 I，跟导体两端的电压 U 成正比，跟导体的电阻 R 成反比。公式：I = U / R。单位：电压（V）、电阻（Ω）、电流（A）。</p>
+        </div>
+        <div class="lab-card">
+          <h2>数据记录</h2>
+          <div style="overflow-x:auto;">
+            <table class="record-table" id="recordTable">
+              <thead><tr><th>#</th><th>电压 U(V)</th><th>电阻 R(Ω)</th><th>电流 I(A)</th></tr></thead>
+              <tbody id="recordBody"></tbody>
+            </table>
+          </div>
+          <div class="record-actions">
+            <button class="btn btn-secondary" onclick="exportRecords()">导出 CSV</button>
+            <button class="btn btn-danger" onclick="clearRecords()">清空数据</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab-sidebar">
+      <div class="lab-card">
+        <h2>原理说明</h2>
+        <p>欧姆定律是电学中最基本的定律之一，描述了电压、电流和电阻三者之间的关系。</p>
+        <div class="formula">I = U / R</div>
+        <p>其中 I 为电流（A），U 为电压（V），R 为电阻（Ω）。</p>
+      </div>
+      <div class="lab-card">
+        <h2>实时数据</h2>
+        <div class="metric-row">
+          <div class="metric"><strong id="timer">0s</strong><span>实验用时</span></div>
+        </div>
+      </div>
+      <div class="lab-card">
+        <h2>相关实验</h2>
+        <div class="related-list">
+          <a href="16-resistors.html">→ 电阻的串联与并联</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>York 周老师物理</strong><p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p><p>© 2026 York Physics Lab. All Rights Reserved.</p></div>
+    <div><strong>联系方式</strong><p>周煜全老师</p><p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p></div>
+    <div><strong>特别鸣谢</strong><p>龙外物理科组</p><p>梁卓栋老师</p></div>
+  </div>
+</footer>
+
+<script>
+// ===== Timer =====
+let elapsedSeconds = 0;
+setInterval(function() { elapsedSeconds++; var m = Math.floor(elapsedSeconds/60), s = elapsedSeconds%60; document.getElementById('timer').textContent = m + 'm' + s + 's'; }, 1000);
+
+// ===== Records =====
+let records = [];
+function recordData() {
+  var u = parseFloat(document.getElementById('voltageSlider').value);
+  var r = parseFloat(document.getElementById('resistanceSlider').value);
+  var i = u / r;
+  records.push({ u: u, r: r, i: i });
+  renderRecords();
+}
+function renderRecords() {
+  var tbody = document.getElementById('recordBody');
+  tbody.innerHTML = records.map(function(r, i) {
+    return '<tr><td>'+(i+1)+'</td><td>'+r.u.toFixed(1)+'</td><td>'+r.r.toFixed(1)+'</td><td>'+r.i.toFixed(3)+'</td></tr>';
+  }).join('');
+}
+function exportRecords() {
+  if (!records.length) return;
+  var csv = '序号,电压U(V),电阻R(Ω),电流I(A)\n' + records.map(function(r,i){ return (i+1)+','+r.u.toFixed(1)+','+r.r.toFixed(1)+','+r.i.toFixed(3); }).join('\n');
+  var blob = new Blob(['\ufeff' + csv], {type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '欧姆定律数据.csv'; a.click();
+}
+function clearRecords() { records = []; renderRecords(); }
+
+// ===== Experiment =====
+var canvas = document.getElementById('circuitCanvas');
+var ctx = canvas.getContext('2d');
+var W = canvas.width, H = canvas.height;
+var currentArrowTime = 0;
+var currentVoltage = 6;
+var currentResistance = 10;
+
+// ---- 人教版标准元件绘制函数 ----
+
+// 电池组（竖直方向）：人教版符号 — 细长线(+)和粗短线(-)交替，位置固定不随节数变化
+function drawBatteryVertical(x, cy, cellCount) {
+  var cellH = 16;       // 每节高度
+  var totalH = cellCount * cellH;
+  var startY = cy - totalH / 2;
+
+  ctx.strokeStyle = '#333';
+  for (var i = 0; i < cellCount; i++) {
+    var y = startY + i * cellH;
+    // 细长线（正极）
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(x - 7, y + 3);
+    ctx.lineTo(x + 7, y + 3);
+    ctx.stroke();
+    // 粗短线（负极）
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(x - 3, y + 11);
+    ctx.lineTo(x + 3, y + 11);
+    ctx.stroke();
+  }
+  ctx.lineWidth = 2;
+
+  // + / − 标记
+  ctx.fillStyle = '#e74c3c';
+  ctx.font = 'bold 13px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText('+', x - 18, startY + 6);
+  ctx.fillText('−', x - 18, startY + totalH - 4);
+  ctx.fillStyle = '#333';
+  ctx.font = '12px Arial';
+  // ctx.fillText('电源', x+25, startY + totalH - 20);
+  ctx.fillText('电源', x+25, cy + 10);
+}
+
+// 定值电阻（竖直方向）：人教版符号 — 空心矩形 □，引线与导线颜色一致
+function drawResistorVertical(x, cy, h, label, value) {
+  var w = 24;
+  // 上部导线
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(x, cy - h/2 - 20);
+  ctx.lineTo(x, cy - h/2);
+  ctx.stroke();
+  // 下部导线
+  ctx.beginPath();
+  ctx.moveTo(x, cy + h/2);
+  ctx.lineTo(x, cy + h/2 + 20);
+  ctx.stroke();
+  // 白色填充矩形（不透明）
+ctx.fillStyle = '#fff';       // 白色填充
+ctx.fillRect(x - w/2, cy - h/2, w, h); // 画填充
+ctx.strokeStyle = '#333';     // 边框不变
+ctx.lineWidth = 2;
+ctx.strokeRect(x - w/2, cy - h/2, w, h);
+  // 标签
+  ctx.fillStyle = '#333';
+  ctx.font = '12px Arial';
+  ctx.textAlign = 'center';
+  // ctx.fillText(label + '=' + value.toFixed(1) + 'Ω', x, cy + h/2 + 38);
+  ctx.fillText(label + '=' + value.toFixed(1) + 'Ω', x-50, cy + h/2-25);
+}
+
+// 灯泡：人教版符号 — 圆圈内画×，导线断开在圆圈两侧
+function drawBulb(cx, cy, r, glowIntensity) {
+  // 圆圈
+  ctx.strokeStyle = '#f39c12';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.stroke();
+  // 内部 ×
+  ctx.strokeStyle = '#f39c12';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(cx - r * 0.6, cy - r * 0.6);
+  ctx.lineTo(cx + r * 0.6, cy + r * 0.6);
+  ctx.moveTo(cx + r * 0.6, cy - r * 0.6);
+  ctx.lineTo(cx - r * 0.6, cy + r * 0.6);
+  ctx.stroke();
+  // 发光效果
+  if (glowIntensity > 0) {
+    var grad = ctx.createRadialGradient(cx, cy, 2, cx, cy, r * 1.8);
+    grad.addColorStop(0, 'rgba(255,200,50,' + glowIntensity + ')');
+    grad.addColorStop(1, 'rgba(255,200,50,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 1.8, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.fillStyle = '#333';
+  ctx.font = '12px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText('灯泡', cx, cy - r - 16);
+}
+
+// 电流表：人教版符号 — 圆圈内写 A，导线断开在圆圈两侧
+function drawAmmeter(cx, cy, r, current) {
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.fillStyle = '#333';
+  ctx.font = 'bold 16px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('A', cx, cy);
+  ctx.textBaseline = 'alphabetic';
+  // 电流读数
+  ctx.fillStyle = '#e74c3c';
+  ctx.font = 'bold 14px Arial';
+  ctx.fillText(current.toFixed(2) + 'A', cx, cy + r + 22);
+}
+
+// 连接点
+function drawJunction(x, y) {
+  ctx.fillStyle = '#333';
+  ctx.beginPath();
+  ctx.arc(x, y, 3, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+// ---- 主绘制函数 ----
+function drawCircuit(voltage, resistance) {
+  ctx.clearRect(0, 0, W, H);
+  var I = voltage / resistance;
+  var cx = W / 2, cy = H / 2;
+  var halfW = 230, halfH = 80;
+  var rBulb = 16, rAmm = 16;
+  var flowStep = 50;
+  var flowSpeed = 30 + Math.min(I, 2) * 30;
+  var flowOffset = (currentArrowTime * flowSpeed / 1000) % flowStep;
+
+  // ---- 顶部：公式 U = I · R（PhET风格：符号大小随数值变化） ----
+  var uSize = 16 + voltage * 1.2;
+  var iSize = 16 + I * 6;
+  var rSize = 16 + resistance * 0.7;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#e74c3c';
+  ctx.font = 'bold ' + Math.min(uSize, 40) + 'px Arial';
+  ctx.fillText('U', 170, 28);
+  ctx.fillStyle = '#333';
+  ctx.font = 'bold 22px Arial';
+  ctx.fillText('=', 230, 28);
+  ctx.fillStyle = '#3498db';
+  ctx.font = 'bold ' + Math.min(iSize, 40) + 'px Arial';
+  ctx.fillText('I', 290, 28);
+  ctx.fillStyle = '#333';
+  ctx.font = 'bold 18px Arial';
+  ctx.fillText('×', 345, 28);
+  ctx.fillStyle = '#8B4513';
+  ctx.font = 'bold ' + Math.min(rSize, 40) + 'px Arial';
+  ctx.fillText('R', 400, 28);
+  ctx.textBaseline = 'alphabetic';
+
+  // ---- 电路：矩形回路，横平竖直 ----
+  // 上边导线：从左端到灯泡左沿，再从灯泡右沿到右端
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cx - halfW, cy - halfH);
+  ctx.lineTo(cx - rBulb, cy - halfH);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(cx + rBulb, cy - halfH);
+  ctx.lineTo(cx + halfW, cy - halfH);
+  ctx.stroke();
+
+  // 右边导线
+  ctx.beginPath();
+  ctx.moveTo(cx + halfW, cy - halfH);
+  ctx.lineTo(cx + halfW, cy + halfH);
+  ctx.stroke();
+
+  // 下边导线：从右端到电流表右沿，再从电流表左沿到左端
+  ctx.beginPath();
+  ctx.moveTo(cx + halfW, cy + halfH);
+  ctx.lineTo(cx + rAmm, cy + halfH);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(cx - halfW, cy + halfH);
+  ctx.lineTo(cx - rAmm, cy + halfH);
+  ctx.stroke();
+
+  // 左边导线：下端到电池下沿，电池上沿到上端
+  var px = cx - halfW;
+  var cellCount = Math.max(1, Math.round(voltage / 2));
+  var cellH = 16;
+  var batTotalH = cellCount * cellH;
+  ctx.beginPath();
+  ctx.moveTo(px, cy - halfH);
+  ctx.lineTo(px, cy - batTotalH/2);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(px, cy + batTotalH/2);
+  ctx.lineTo(px, cy + halfH);
+  ctx.stroke();
+
+  // 四角连接点
+  drawJunction(cx - halfW, cy - halfH);
+  drawJunction(cx + halfW, cy - halfH);
+  drawJunction(cx + halfW, cy + halfH);
+  drawJunction(cx - halfW, cy + halfH);
+
+  // ---- 电源（左侧竖直段）：位置固定居中 ----
+  drawBatteryVertical(px, cy, cellCount);
+
+  // ---- 定值电阻（右侧竖直段） ----
+  drawResistorVertical(cx + halfW, cy, 60, 'R', resistance);
+
+  // ---- 灯泡（顶部居中）：导线断开在两侧 ----
+  var glow = Math.min(1, I / 1.5);
+  drawBulb(cx, cy - halfH, rBulb, glow);
+
+  // ---- 电流表（底部居中）：导线断开在两侧 ----
+  drawAmmeter(cx, cy + halfH, rAmm, I);
+
+  // ---- 电流方向箭头 ----
+  var arrowSize = Math.min(15, 7 + I * 5);
+  ctx.fillStyle = '#3498db';
+
+  function drawCurrentArrow(x, y, direction) {
+    ctx.beginPath();
+    if (direction === 'right') {
+      ctx.moveTo(x + arrowSize, y);
+      ctx.lineTo(x, y - 5);
+      ctx.lineTo(x, y + 5);
+    } else if (direction === 'left') {
+      ctx.moveTo(x - arrowSize, y);
+      ctx.lineTo(x, y - 5);
+      ctx.lineTo(x, y + 5);
+    } else if (direction === 'down') {
+      ctx.moveTo(x, y + arrowSize);
+      ctx.lineTo(x - 5, y);
+      ctx.lineTo(x + 5, y);
+    } else {
+      ctx.moveTo(x, y - arrowSize);
+      ctx.lineTo(x - 5, y);
+      ctx.lineTo(x + 5, y);
+    }
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function drawArrowsOnHorizontal(x1, x2, y, direction) {
+    var minX = Math.min(x1, x2), maxX = Math.max(x1, x2);
+    var start = direction === 'left' ? maxX - 14 - flowOffset : minX + 14 + flowOffset;
+    var step = direction === 'left' ? -flowStep : flowStep;
+    for (var x = start; direction === 'left' ? x > minX + 14 : x < maxX - 14; x += step) {
+      drawCurrentArrow(x, y, direction);
+    }
+  }
+
+  function drawArrowsOnVertical(x, y1, y2, direction) {
+    var minY = Math.min(y1, y2), maxY = Math.max(y1, y2);
+    var start = direction === 'up' ? maxY - 14 - flowOffset : minY + 14 + flowOffset;
+    var step = direction === 'up' ? -flowStep : flowStep;
+    for (var y = start; direction === 'up' ? y > minY + 14 : y < maxY - 14; y += step) {
+      drawCurrentArrow(x, y, direction);
+    }
+  }
+
+  var ay = cy - halfH - 8;
+  drawArrowsOnHorizontal(cx - halfW + 15, cx - rBulb - 8, ay, 'right');
+  drawArrowsOnHorizontal(cx + rBulb + 8, cx + halfW - 15, ay, 'right');
+
+  var ax = cx + halfW + 35;
+  drawArrowsOnVertical(ax, cy - halfH + 15, cy + halfH - 15, 'down');
+
+  ay = cy + halfH + 10;
+  drawArrowsOnHorizontal(cx + rAmm + 8, cx + halfW - 15, ay, 'left');
+  drawArrowsOnHorizontal(cx - halfW + 15, cx - rAmm - 8, ay, 'left');
+
+  ax = px - 22;
+  drawArrowsOnVertical(ax, cy - halfH + 15, cy + halfH - 15, 'up');
+
+  /*
+
+  // 上边导线：从左到右
+  var ay = cy - halfH - 8;
+  // 灯泡左侧
+  if (cx - halfW + 40 < cx - rBulb) {
+    ctx.beginPath();
+    ctx.moveTo(cx - halfW + 40, ay);
+    ctx.lineTo(cx - halfW + 55, ay - 4);
+    ctx.lineTo(cx - halfW + 55, ay + 4);
+    ctx.closePath();
+    ctx.fill();
+  }
+  // 灯泡右侧
+  if (cx + rBulb + 30 < cx + halfW) {
+    ctx.beginPath();
+    ctx.moveTo(cx + rBulb + 30, ay);
+    ctx.lineTo(cx + rBulb + 45, ay - 4);
+    ctx.lineTo(cx + rBulb + 45, ay + 4);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // 右边导线：从上到下
+  var ax = cx + halfW + 10;
+  for (var ay2 = cy - halfH + 40; ay2 < cy + halfH - 30; ay2 += 50) {
+    ctx.beginPath();
+    ctx.moveTo(ax, ay2);
+    ctx.lineTo(ax - 4, ay2 + arrowSize);
+    ctx.lineTo(ax + 4, ay2 + arrowSize);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // 下边导线：从右到左
+  ay = cy + halfH + 10;
+  // 电流表右侧
+  if (cx + rAmm + 30 < cx + halfW) {
+    ctx.beginPath();
+    ctx.moveTo(cx + halfW - 50, ay);
+    ctx.lineTo(cx + halfW - 65, ay - 4);
+    ctx.lineTo(cx + halfW - 65, ay + 4);
+    ctx.closePath();
+    ctx.fill();
+  }
+  // 电流表左侧
+  ctx.beginPath();
+  ctx.moveTo(cx - rAmm - 30, ay);
+  ctx.lineTo(cx - rAmm - 45, ay - 4);
+  ctx.lineTo(cx - rAmm - 45, ay + 4);
+  ctx.closePath();
+  ctx.fill();
+
+  // 左边导线：从下到上
+  ax = px - 10;
+  for (var ay3 = cy + halfH - 40; ay3 > cy - halfH + 30; ay3 -= 50) {
+    ctx.beginPath();
+    ctx.moveTo(ax, ay3);
+    ctx.lineTo(ax - 4, ay3 - arrowSize);
+    ctx.lineTo(ax + 4, ay3 - arrowSize);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // I = 标签在电路上方
+  ctx.fillStyle = '#3498db';
+  */
+  ctx.font = '15px Arial';
+  ctx.textAlign = 'left';
+  ctx.fillText('I = ' + I.toFixed(2) + ' A', cx + halfW + 30, cy - halfH - 12);
+}
+
+function updateExperiment() {
+  var u = parseFloat(document.getElementById('voltageSlider').value);
+  var r = parseFloat(document.getElementById('resistanceSlider').value);
+  var i = u / r;
+  document.getElementById('voltageDisplay').textContent = u.toFixed(1) + ' V';
+  document.getElementById('resistanceDisplay').textContent = r.toFixed(1) + ' Ω';
+  document.getElementById('currentDisplay').textContent = i.toFixed(2);
+  document.getElementById('voltageReadout').textContent = u.toFixed(1);
+  document.getElementById('resistanceReadout').textContent = r.toFixed(1);
+}
+
+document.getElementById('voltageSlider').addEventListener('input', updateExperiment);
+document.getElementById('resistanceSlider').addEventListener('input', updateExperiment);
+
+function animateCircuit(timestamp) {
+  currentArrowTime = timestamp || 0;
+  var u = parseFloat(document.getElementById('voltageSlider').value);
+  var r = parseFloat(document.getElementById('resistanceSlider').value);
+  drawCircuit(u, r);
+  requestAnimationFrame(animateCircuit);
+}
+
+updateExperiment();
+requestAnimationFrame(animateCircuit);
+
+// ===== Hamburger Menu =====
+(function(){
+  var btn = document.getElementById('menuToggle'), menu = document.getElementById('categoryMenu');
+  if (btn && menu) {
+    btn.addEventListener('click', function() {
+      var open = menu.classList.toggle('nav-open');
+      btn.classList.toggle('is-active');
+      btn.setAttribute('aria-expanded', open);
+    });
+    menu.querySelectorAll('a').forEach(function(l) {
+      l.addEventListener('click', function() { menu.classList.remove('nav-open'); btn.classList.remove('is-active'); btn.setAttribute('aria-expanded','false'); });
+    });
+  }
+})();
+(function(){
+  var items = document.querySelectorAll('.menu-item');
+  items.forEach(function(item) {
+    var top = item.querySelector('.menu-top'), sub = item.querySelector('.submenu');
+    if (top && sub && sub.children.length > 1) {
+      top.addEventListener('click', function(e) {
+        if ('ontouchstart' in window && window.innerWidth <= 680) {
+          var isOpen = sub.classList.contains('open');
+          item.parentNode.querySelectorAll('.submenu.open').forEach(function(s) { if (s !== sub) s.classList.remove('open'); });
+          if (!isOpen) { e.preventDefault(); sub.classList.add('open'); }
+        }
+      });
+    }
+  });
+})();
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+
+

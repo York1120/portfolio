@@ -1,0 +1,988 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="频率发声器互动实验，调节频率与振幅，观察波形变化，理解音调、响度与振动参数的关系。">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>频率发声器 | York 周老师物理</title>
+  <meta property="og:title" content="频率发声器 | York 周老师物理">
+  <meta property="og:description" content="频率发声器互动实验，调节频率与振幅，观察波形变化，理解音调、响度与振动参数的关系。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: var(--bg); }
+
+    .exp-page { padding-top: 96px; padding-bottom: 40px; }
+
+    .lab-hero { margin-bottom: 24px; }
+
+    .lab-hero h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      color: var(--brand);
+    }
+
+    .lab-hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .lab-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .lab-main {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .lab-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .lab-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .lab-card h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      color: var(--brand);
+    }
+
+    .lab-card h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: var(--ink);
+    }
+
+    .lab-card p {
+      margin: 8px 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .lab-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .formula {
+      padding: 14px;
+      background: var(--surface-soft);
+      border-radius: 12px;
+      text-align: center;
+      font-size: 18px;
+      margin: 8px 0;
+    }
+
+    .variable-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 8px 0;
+    }
+
+    .variable-table th,
+    .variable-table td {
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      text-align: left;
+    }
+
+    .variable-table th {
+      background: var(--surface-soft);
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .variable-table td { color: var(--ink); }
+
+    .metric-row { display: flex; gap: 16px; }
+
+    .metric {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      background: var(--surface-soft);
+      border-radius: 12px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 20px;
+      color: var(--brand);
+    }
+
+    .metric span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .related-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .related-list a {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: var(--brand-2);
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .related-list a:hover { background: var(--surface-soft); }
+
+    .steps {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    .notice {
+      background: #fffbf0;
+      border-color: #f0dca0;
+    }
+
+    /* ===== 频率发声器专属样式 ===== */
+    .preset-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .preset-btn {
+      padding: 8px 16px;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand-2);
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .preset-btn:hover {
+      background: rgba(35, 167, 230, 0.15);
+      border-color: var(--tech);
+    }
+
+    .preset-btn:active { transform: scale(0.96); }
+
+    .control-group { margin-bottom: 18px; }
+
+    .control-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    .control-group .value-num {
+      color: var(--brand-2);
+      font-size: 16px;
+    }
+
+    .control-group .unit-label { color: var(--muted); }
+
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .slider-container input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--line);
+      outline: none;
+    }
+
+    .slider-container input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-2), var(--tech));
+      cursor: pointer;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 6px rgba(17, 38, 64, 0.2);
+    }
+
+    .slider-container input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-2), var(--tech));
+      cursor: pointer;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 6px rgba(17, 38, 64, 0.2);
+    }
+
+    .num-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .num-input-wrap input[type="number"] {
+      width: 72px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      background: #fff;
+      outline: none;
+      -moz-appearance: textfield;
+    }
+
+    .num-input-wrap input[type="number"]::-webkit-outer-spin-button,
+    .num-input-wrap input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .step-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .step-btn {
+      width: 26px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 10px;
+      color: var(--muted);
+      user-select: none;
+      transition: background 0.15s;
+    }
+
+    .step-btn:hover { background: #dce8f5; }
+    .step-btn:active { background: #c8d8e8; }
+
+    .play-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--brand-2), var(--tech));
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      margin-bottom: 18px;
+    }
+
+    .play-btn:hover { opacity: 0.88; }
+    .play-btn.playing { background: linear-gradient(135deg, #e53935, #ef5350); }
+
+    #oscilloscope {
+      width: 100%;
+      height: 220px;
+      background: #fbfdff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #waveform {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    canvas { display: block; }
+
+    .osc-info {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      z-index: 10;
+    }
+
+    .osc-info span { font-weight: 700; color: var(--ink); }
+
+    .record-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .record-table th,
+    .record-table td {
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .record-table th {
+      background: var(--surface-soft);
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .record-table td { color: var(--ink); }
+
+    .record-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background: var(--surface-soft); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand-2), var(--tech));
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .btn-primary:hover { opacity: 0.88; }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #e53935, #ef5350);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .btn-danger:hover { opacity: 0.88; }
+
+    .result {
+      min-height: 28px;
+      margin-top: 12px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    @media (max-width: 960px) {
+      .lab-layout { grid-template-columns: 1fr; }
+      .lab-sidebar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .lab-sidebar { grid-template-columns: 1fr; }
+      .exp-page { padding-top: 96px; }
+    }
+
+    @media (max-width: 680px) {
+      .lab-hero h1 { font-size: 22px; }
+      #oscilloscope { height: 160px; }
+      .slider-container { flex-direction: column; align-items: stretch; }
+    }
+
+    @media (max-width: 480px) {
+      .exp-page { padding-top: 80px; }
+      .lab-hero h1 { font-size: 20px; }
+      .lab-card { padding: 14px; }
+      .preset-btn { padding: 6px 12px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============ 共享导航 ============ -->
+<div class="nav-shell">
+  <div class="container">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+        <span class="brand-mark">Phy</span>
+        <span>York 周老师物理<small>Professional Physics Lab</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+      <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#acoustics">声学</a>
+          <div class="submenu">
+            <a href="02-frequency.html">频率发声器</a>
+            <a href="03-noise.html">噪声检测仪</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#optics">光学</a>
+          <div class="submenu">
+            <a href="04-pinhole.html">小孔成像虚拟实验</a>
+            
+            <a href="06-rgb.html">光的三原色组合游戏</a>
+            <a href="07-lens.html">凸透镜成像虚拟实验</a>
+            <a href="10-refraction.html">光的反射与折射定律</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#thermal">热学</a>
+          <div class="submenu">
+            <a href="08-molecule.html">分子热运动微观示意图</a>
+            <a href="09-engine.html">四冲程汽油机示意图</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#mechanics">力学</a>
+          <div class="submenu">
+            <a href="01-length.html">长度读取训练平台</a>
+            <a href="12-buoyancy.html">木块浮力图像</a>
+            <a href="13-torricelli.html">托里拆利实验</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#electricity">电学</a>
+          <div class="submenu">
+            <a href="15-circuit.html">电路连接与欧姆定律</a>
+            <a href="16-resistors.html">电阻的串联与并联</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#quiz">知识测验</a>
+          <div class="submenu">
+            <a href="11-review.html">初中物理知识点复习</a>
+            <a href="14-quiz.html">《物理原来很有趣》测验</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- ============ 实验内容 ============ -->
+<main class="container exp-page">
+  <section class="lab-hero">
+    <h1>频率发声器</h1>
+    <p>调节频率与振幅，观察波形变化，理解音调、响度与振动参数的关系。</p>
+  </section>
+
+  <div class="lab-layout">
+    <div class="lab-main">
+      <!-- 互动实验区 -->
+      <section class="lab-card">
+        <h2>互动实验区</h2>
+        <p>拖动滑块调节频率和振幅，点击播放按钮产生对应波形声音。</p>
+
+        <div class="preset-buttons">
+          <button class="preset-btn" data-frequency="100">100Hz</button>
+          <button class="preset-btn" data-frequency="200">200Hz</button>
+          <button class="preset-btn" data-frequency="400">400Hz</button>
+          <button class="preset-btn" data-frequency="800">800Hz</button>
+          <button class="preset-btn" data-frequency="1600">1600Hz</button>
+          <button class="preset-btn" data-frequency="3200">3200Hz</button>
+          <button class="preset-btn" data-frequency="6400">6400Hz</button>
+        </div>
+
+        <div class="control-group">
+          <label for="frequency">频率：<span class="value-num" id="frequency-value">440</span><span class="unit-label"> Hz</span></label>
+          <div class="slider-container">
+            <input type="range" id="frequency" min="0" max="20000" value="440" step="1">
+            <div class="num-input-wrap">
+              <input type="number" id="frequency-input" min="0" max="20000" value="440">
+              <div class="step-btns">
+                <div class="step-btn" id="frequency-up">&#9650;</div>
+                <div class="step-btn" id="frequency-down">&#9660;</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="amplitude">振幅：<span class="value-num" id="amplitude-value">50</span></label>
+          <div class="slider-container">
+            <input type="range" id="amplitude" min="0" max="100" value="50">
+            <div class="num-input-wrap">
+              <input type="number" id="amplitude-input" min="0" max="100" value="50">
+              <div class="step-btns">
+                <div class="step-btn" id="amplitude-up">&#9650;</div>
+                <div class="step-btn" id="amplitude-down">&#9660;</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button id="play-button" class="play-btn">&#9654; 播放</button>
+
+        <div id="oscilloscope">
+          <canvas id="waveform"></canvas>
+          <div class="osc-info">
+            <span id="osc-freq">频率: 440Hz</span> |
+            <span id="osc-amp">振幅: 50</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="lab-bottom">
+        <!-- 实验步骤 -->
+        <section class="lab-card">
+          <h2>实验步骤</h2>
+          <ol class="steps">
+            <li>拖动频率滑块，观察音调高低变化，频率越高音调越高。</li>
+            <li>拖动振幅滑块，观察响度大小变化，振幅越大响度越大。</li>
+            <li>点击预设频率按钮（如 440Hz、800Hz）快速切换到典型频率。</li>
+            <li>点击播放按钮发声，同时观察示波器中的波形变化。</li>
+          </ol>
+        </section>
+
+        <!-- 注意事项 -->
+        <section class="lab-card notice">
+          <h2>注意事项</h2>
+          <p>人耳可听频率范围约为 20 Hz – 20000 Hz。低于 20 Hz 为次声波，高于 20000 Hz 为超声波，人耳无法感知。长时间使用高音量可能造成听力疲劳，建议适度使用。</p>
+        </section>
+
+        <!-- 数据记录 -->
+        <section class="lab-card">
+          <h2>数据记录</h2>
+          <table class="record-table">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>频率 (Hz)</th>
+                <th>振幅</th>
+                <th>波形特征</th>
+              </tr>
+            </thead>
+            <tbody id="recordBody">
+              <tr><td colspan="4">暂无记录。</td></tr>
+            </tbody>
+          </table>
+          <div class="record-actions">
+            <button class="btn btn-primary" id="exportRecords" type="button">导出文本</button>
+            <button class="btn" id="clearRecords" type="button">清空记录</button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- 侧边栏 -->
+    <aside class="lab-sidebar">
+      <section class="lab-card">
+        <h2>原理说明</h2>
+        <p>声音由物体振动产生，以波的形式传播。描述声波的两个核心参数：</p>
+        <p><strong>频率</strong>决定音调高低：频率越大，音调越高。<br><strong>振幅</strong>决定响度大小：振幅越大，声音越强。</p>
+        
+      </section>
+
+      <section class="lab-card">
+        <h2>实时数据</h2>
+        <div class="metric-row">
+          <div class="metric"><strong id="timer">00:00</strong><span>实验停留时长</span></div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <h2>参考值</h2>
+        <table class="variable-table">
+          <tbody>
+            <tr><td>人耳可听范围</td><td>20 – 20000 Hz</td></tr>
+            <tr><td>钢琴中央 C</td><td>约 262 Hz</td></tr>
+            <tr><td>标准音 A₄</td><td>440 Hz</td></tr>
+            <tr><td>超声波</td><td>&gt; 20000 Hz</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="lab-card">
+        <h2>相关实验推荐</h2>
+        <div class="related-list">
+          <a href="03-noise.html">→ 噪声检测仪</a>
+          <a href="04-pinhole.html">→ 小孔成像虚拟实验</a>
+          <a href="11-review.html">→ 初中物理知识点复习</a>
+        </div>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<!-- ============ 共享页脚 ============ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div>
+      <strong>York 周老师物理</strong>
+      <p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p>
+      <p>&copy; 2026 York Physics Lab. All Rights Reserved.</p>
+    </div>
+    <div>
+      <strong>联系方式</strong>
+      <p>周煜全老师</p>
+      <p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p>
+    </div>
+    <div>
+      <strong>特别鸣谢</strong>
+      <p>龙外物理科组</p>
+      <p>梁卓栋老师</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ 脚本 ============ -->
+<script>
+  var frequencySlider = document.getElementById('frequency');
+  var frequencyInput = document.getElementById('frequency-input');
+  var frequencyValue = document.getElementById('frequency-value');
+  var frequencyUp = document.getElementById('frequency-up');
+  var frequencyDown = document.getElementById('frequency-down');
+
+  var amplitudeSlider = document.getElementById('amplitude');
+  var amplitudeInput = document.getElementById('amplitude-input');
+  var amplitudeValue = document.getElementById('amplitude-value');
+  var amplitudeUp = document.getElementById('amplitude-up');
+  var amplitudeDown = document.getElementById('amplitude-down');
+
+  var playButton = document.getElementById('play-button');
+  var presetButtons = document.querySelectorAll('.preset-btn');
+
+  var oscilloscope = document.getElementById('oscilloscope');
+  var waveformCanvas = document.getElementById('waveform');
+  var ctx = waveformCanvas.getContext('2d');
+  var oscFreqInfo = document.getElementById('osc-freq');
+  var oscAmpInfo = document.getElementById('osc-amp');
+
+  
+  var elapsedSeconds = 0;
+  var records = [];
+
+
+  function formatTimer() {
+    elapsedSeconds += 1;
+    var minutes = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
+    var seconds = String(elapsedSeconds % 60).padStart(2, '0');
+    document.getElementById('timer').textContent = minutes + ':' + seconds;
+  }
+
+  function resizeCanvas() {
+    waveformCanvas.width = oscilloscope.offsetWidth;
+    waveformCanvas.height = oscilloscope.offsetHeight;
+  }
+
+  var audioContext;
+  var oscillator;
+  var gainNode;
+  var analyser;
+  var isPlaying = false;
+  var animationId;
+  var dataArray;
+
+  function initAudioContext() {
+    if (!audioContext) {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 2048;
+    }
+  }
+
+  function updateFrequencyDisplay(value) {
+    frequencyValue.textContent = value;
+    oscFreqInfo.textContent = '频率: ' + value + 'Hz';
+  }
+
+  function updateAmplitudeDisplay(value) {
+    amplitudeValue.textContent = value;
+    oscAmpInfo.textContent = '振幅: ' + value;
+  }
+
+  function setFrequency(value) {
+    frequencySlider.value = value;
+    frequencyInput.value = value;
+    updateFrequencyDisplay(value);
+    if (isPlaying) {
+      oscillator.frequency.setValueAtTime(value, audioContext.currentTime);
+    }
+  }
+
+  function setAmplitude(value) {
+    amplitudeSlider.value = value;
+    amplitudeInput.value = value;
+    updateAmplitudeDisplay(value);
+    if (isPlaying) {
+      gainNode.gain.setValueAtTime(value / 100, audioContext.currentTime);
+    }
+  }
+
+  function drawWaveform() {
+    if (!isPlaying) return;
+    var width = waveformCanvas.width;
+    var height = waveformCanvas.height;
+    analyser.getByteTimeDomainData(dataArray);
+    ctx.fillStyle = '#fbfdff';
+    ctx.fillRect(0, 0, width, height);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#1766a6';
+    ctx.beginPath();
+    var sliceWidth = width / analyser.fftSize;
+    var x = 0;
+    for (var i = 0; i < analyser.fftSize; i++) {
+      var v = dataArray[i] / 128.0;
+      var y = v * height / 2;
+      if (i === 0) { ctx.moveTo(x, y); } else { ctx.lineTo(x, y); }
+      x += sliceWidth;
+    }
+    ctx.lineTo(width, height / 2);
+    ctx.stroke();
+    animationId = requestAnimationFrame(drawWaveform);
+  }
+
+  function playSound() {
+    if (isPlaying) return;
+    initAudioContext();
+    resizeCanvas();
+    var frequency = parseFloat(frequencyInput.value);
+    var amplitude = parseFloat(amplitudeInput.value) / 100;
+    oscillator = audioContext.createOscillator();
+    gainNode = audioContext.createGain();
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+    gainNode.gain.setValueAtTime(amplitude, audioContext.currentTime);
+    oscillator.connect(gainNode);
+    gainNode.connect(analyser);
+    analyser.connect(audioContext.destination);
+    dataArray = new Uint8Array(analyser.fftSize);
+    oscillator.start();
+    isPlaying = true;
+    playButton.textContent = '■ 停止';
+    playButton.classList.add('playing');
+
+    records.push({
+      freq: frequency,
+      amp: Math.round(amplitude * 100),
+      note: frequency + 'Hz ' + (amplitude > 0.5 ? '大音量' : '小音量')
+    });
+    renderRecords();
+
+    drawWaveform();
+  }
+
+  function stopSound() {
+    if (!isPlaying) return;
+    oscillator.stop();
+    cancelAnimationFrame(animationId);
+    isPlaying = false;
+    playButton.textContent = '▶ 播放';
+    playButton.classList.remove('playing');
+    ctx.fillStyle = '#fbfdff';
+    ctx.fillRect(0, 0, waveformCanvas.width, waveformCanvas.height);
+  }
+
+  function toggleSound() {
+    if (isPlaying) { stopSound(); } else { playSound(); }
+  }
+
+  function renderRecords() {
+    var body = document.getElementById('recordBody');
+    if (!records.length) {
+      body.innerHTML = '<tr><td colspan="4">暂无记录。</td></tr>';
+      return;
+    }
+    body.innerHTML = records.map(function (r, i) {
+      return '<tr><td>' + (i + 1) + '</td><td>' + r.freq + '</td><td>' + r.amp + '</td><td>' + r.note + '</td></tr>';
+    }).join('');
+  }
+
+  function exportRecords() {
+    var content = records.length
+      ? records.map(function (r, i) { return (i + 1) + '. 频率: ' + r.freq + 'Hz | 振幅: ' + r.amp + ' | ' + r.note; }).join('\n')
+      : '暂无实验记录';
+    var blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = 'frequency-records.txt';
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  frequencySlider.addEventListener('input', function () {
+    var value = this.value;
+    frequencyInput.value = value;
+    updateFrequencyDisplay(value);
+    if (isPlaying) { oscillator.frequency.setValueAtTime(value, audioContext.currentTime); }
+  });
+
+  frequencyInput.addEventListener('input', function () {
+    var value = Math.min(Math.max(this.value, 0), 20000);
+    this.value = value;
+    frequencySlider.value = value;
+    updateFrequencyDisplay(value);
+    if (isPlaying) { oscillator.frequency.setValueAtTime(value, audioContext.currentTime); }
+  });
+
+  frequencyUp.addEventListener('click', function () {
+    var value = parseInt(frequencyInput.value) + 1;
+    if (value > 20000) value = 20000;
+    setFrequency(value);
+  });
+
+  frequencyDown.addEventListener('click', function () {
+    var value = parseInt(frequencyInput.value) - 1;
+    if (value < 0) value = 0;
+    setFrequency(value);
+  });
+
+  amplitudeSlider.addEventListener('input', function () {
+    var value = this.value;
+    amplitudeInput.value = value;
+    updateAmplitudeDisplay(value);
+    if (isPlaying) { gainNode.gain.setValueAtTime(value / 100, audioContext.currentTime); }
+  });
+
+  amplitudeInput.addEventListener('input', function () {
+    var value = Math.min(Math.max(this.value, 0), 100);
+    this.value = value;
+    amplitudeSlider.value = value;
+    updateAmplitudeDisplay(value);
+    if (isPlaying) { gainNode.gain.setValueAtTime(value / 100, audioContext.currentTime); }
+  });
+
+  amplitudeUp.addEventListener('click', function () {
+    var value = parseInt(amplitudeInput.value) + 1;
+    if (value > 100) value = 100;
+    setAmplitude(value);
+  });
+
+  amplitudeDown.addEventListener('click', function () {
+    var value = parseInt(amplitudeInput.value) - 1;
+    if (value < 0) value = 0;
+    setAmplitude(value);
+  });
+
+  playButton.addEventListener('click', toggleSound);
+
+  presetButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var frequency = parseInt(this.dataset.frequency);
+      setFrequency(frequency);
+    });
+  });
+
+  window.addEventListener('resize', function () {
+    resizeCanvas();
+    if (isPlaying) { drawWaveform(); }
+  });
+
+  updateFrequencyDisplay(frequencySlider.value);
+  updateAmplitudeDisplay(amplitudeSlider.value);
+  resizeCanvas();
+  setInterval(formatTimer, 1000);
+
+  document.getElementById('exportRecords').addEventListener('click', exportRecords);
+  document.getElementById('clearRecords').addEventListener('click', function () {
+    records.length = 0;
+    renderRecords();
+  });
+
+  // ----- 移动端汉堡菜单 -----
+  (function () {
+    var toggleBtn = document.getElementById('menuToggle');
+    var menu = document.getElementById('categoryMenu');
+    if (toggleBtn && menu) {
+      toggleBtn.addEventListener('click', function () {
+        var isOpen = menu.classList.toggle('nav-open');
+        toggleBtn.classList.toggle('is-active');
+        toggleBtn.setAttribute('aria-expanded', isOpen);
+      });
+      menu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          menu.classList.remove('nav-open');
+          toggleBtn.classList.remove('is-active');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+  })();
+
+  (function () {
+    var menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach(function (item) {
+      var topLink = item.querySelector('.menu-top');
+      var sub = item.querySelector('.submenu');
+      if (topLink && sub && sub.children.length <= 1) return;
+      if (topLink && sub) {
+        topLink.addEventListener('click', function (e) {
+          if ('ontouchstart' in window && window.innerWidth <= 680) {
+            var isOpen = sub.classList.contains('open');
+            item.parentNode.querySelectorAll('.submenu.open').forEach(function (s) {
+              if (s !== sub) s.classList.remove('open');
+            });
+            if (!isOpen) { e.preventDefault(); sub.classList.add('open'); }
+          }
+        });
+      }
+    });
+  })();
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+
+

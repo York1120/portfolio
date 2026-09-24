@@ -1,0 +1,598 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="电阻的串联与并联 — 串联和并联电路中总电阻的计算与比较。">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>电阻的串联与并联 | York 周老师物理</title>
+  <meta property="og:title" content="电阻的串联与并联 | York 周老师物理">
+  <meta property="og:description" content="电阻的串联与并联 — 串联和并联电路中总电阻的计算与比较。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .exp-page { padding-top: 96px; padding-bottom: 40px; }
+    .lab-hero { margin-bottom: 24px; }
+    .lab-hero h1 { margin: 0 0 8px; font-size: 28px; color: var(--brand); }
+    .lab-hero p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .lab-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+    .lab-main { display: flex; flex-direction: column; gap: 18px; }
+    .lab-bottom { display: flex; flex-direction: column; gap: 18px; }
+    .lab-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-soft); }
+    .lab-card h2 { margin: 0 0 12px; font-size: 18px; color: var(--brand); }
+    .lab-card h3 { margin: 0 0 10px; font-size: 15px; color: var(--ink); }
+    .lab-card p { margin: 8px 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .lab-sidebar { display: flex; flex-direction: column; gap: 18px; }
+    .steps { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 1.9; }
+    .notice { background: #fffbf0; border-color: #f0dca0; }
+    .metric-row { display: flex; gap: 16px; }
+    .metric { flex: 1; text-align: center; padding: 12px; background: var(--surface-soft); border-radius: 12px; }
+    .metric strong { display: block; font-size: 20px; color: var(--brand); }
+    .metric span { font-size: 12px; color: var(--muted); }
+    .related-list a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--brand-2); font-size: 14px; font-weight: 600; text-decoration: none; }
+    .related-list a:hover { background: var(--surface-soft); }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; color: #fff; transition: opacity .2s, transform .2s; }
+    .btn:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--brand-2), var(--tech)); }
+    .btn-danger { background: linear-gradient(135deg, #e53935, #ef5350); }
+    .btn-secondary { background: var(--line); color: var(--ink); }
+    .btn-secondary:hover { background: #c8d6e5; }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .record-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .record-table th { background: var(--surface-soft); padding: 8px 6px; text-align: center; font-weight: 600; color: var(--ink); border: 1px solid var(--line); }
+    .record-table td { padding: 6px; text-align: center; border: 1px solid var(--line); color: var(--muted); }
+    .record-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .canvas-wrap { width: 100%; overflow-x: auto; }
+    .canvas-wrap canvas { display: block; margin: 0 auto; width: 100%; height: auto; max-width: 700px; background: #fff; border: 1px solid var(--line); border-radius: 8px; }
+    .ctrl-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 8px 0; }
+    .ctrl-row label { font-size: 14px; font-weight: 600; color: var(--ink); min-width: 80px; }
+    .ctrl-row input[type="range"] { flex: 1; max-width: 300px; }
+    .ctrl-row .val { min-width: 60px; text-align: center; font-weight: 700; color: var(--brand-2); font-size: 16px; }
+    .mode-switch { display: flex; gap: 0; margin-bottom: 12px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; width: fit-content; }
+    .mode-btn { padding: 10px 24px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; background: var(--surface); color: var(--muted); transition: all .2s; }
+    .mode-btn.active { background: linear-gradient(135deg, var(--brand-2), var(--tech)); color: #fff; }
+    .mode-btn:hover:not(.active) { background: var(--surface-soft); }
+    .result-box { padding: 14px; border-radius: 10px; text-align: center; font-size: 16px; margin: 10px 0; }
+    .result-box.series { background: #e3f2fd; border-left: 4px solid #1976d2; }
+    .result-box.parallel { background: #e8f5e9; border-left: 4px solid #388e3c; }
+    .result-box strong { font-size: 22px; color: var(--brand-2); }
+    .formula { padding: 14px; background: var(--surface-soft); border-radius: 12px; text-align: center; font-size: 18px; margin: 8px 0; }
+    @media (max-width: 960px) { .lab-layout { grid-template-columns: 1fr; } .lab-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } }
+    @media (max-width: 760px) { .lab-sidebar { grid-template-columns: 1fr; } }
+    @media (max-width: 680px) { .lab-hero h1 { font-size: 22px; } .mode-switch { width: 100%; } .mode-btn { flex: 1; text-align: center; } }
+    @media (max-width: 480px) { .exp-page { padding-top: 80px; } .lab-hero h1 { font-size: 20px; } .lab-card { padding: 14px; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-shell">
+  <div class="container">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+        <span class="brand-mark">Phy</span>
+        <span>York 周老师物理<small>Professional Physics Lab</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+        <div class="menu-item"><a class="menu-top" href="index.html#acoustics">声学</a><div class="submenu"><a href="02-frequency.html">频率发声器</a><a href="03-noise.html">噪声检测仪</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#optics">光学</a><div class="submenu"><a href="04-pinhole.html">小孔成像虚拟实验</a><a href="06-rgb.html">光的三原色组合游戏</a><a href="07-lens.html">凸透镜成像虚拟实验</a><a href="10-refraction.html">光的反射与折射定律</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#thermal">热学</a><div class="submenu"><a href="08-molecule.html">分子热运动微观示意图</a><a href="09-engine.html">四冲程汽油机示意图</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#mechanics">力学</a><div class="submenu"><a href="01-length.html">长度读取训练平台</a><a href="12-buoyancy.html">木块浮力图像</a><a href="13-torricelli.html">托里拆利实验</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#electricity">电学</a><div class="submenu"><a href="15-circuit.html">电路连接与欧姆定律</a><a href="16-resistors.html">电阻的串联与并联</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#quiz">知识测验</a><div class="submenu"><a href="11-review.html">初中物理知识点复习</a><a href="14-quiz.html">《物理原来很有趣》测验</a></div></div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="container exp-page">
+  <div class="lab-hero">
+    <h1>电阻的串联与并联</h1>
+    <p>比较串联和并联电路中总电阻的变化规律。</p>
+  </div>
+
+  <div class="lab-layout">
+    <div class="lab-main">
+      <div class="lab-card">
+        <h2>实验操作区</h2>
+        <div class="mode-switch">
+          <button class="mode-btn active" id="seriesBtn" onclick="setMode('series')">串联</button>
+          <button class="mode-btn" id="parallelBtn" onclick="setMode('parallel')">并联</button>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="resistorCanvas" width="700" height="350"></canvas>
+        </div>
+        <div class="ctrl-row">
+          <label>R₁ 阻值:</label>
+          <input type="range" id="r1Slider" min="1" max="20" value="5" step="0.5">
+          <span class="val" id="r1Display">5.0 Ω</span>
+        </div>
+        <div class="ctrl-row">
+          <label>R₂ 阻值:</label>
+          <input type="range" id="r2Slider" min="1" max="20" value="10" step="0.5">
+          <span class="val" id="r2Display">10.0 Ω</span>
+        </div>
+        <div class="result-box series" id="resultBox">
+          总电阻 R<sub>总</sub> = <strong id="totalResistance">15.0</strong> Ω
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="recordData()">记录数据</button>
+        </div>
+      </div>
+
+      <div class="lab-bottom">
+        <div class="lab-card">
+          <h2>实验步骤</h2>
+          <ol class="steps">
+            <li>切换"串联/并联"模式，观察两种电路中电阻的连接方式。</li>
+            <li>拖动 R₁ 和 R₂ 的滑块，改变两个电阻的阻值。</li>
+            <li>观察总电阻的变化，验证串联和并联的总电阻计算公式。</li>
+            <li>记录数据，比较串联和并联总电阻的区别。</li>
+          </ol>
+        </div>
+        <div class="lab-card notice">
+          <h2>知识要点</h2>
+          <p>串联电路：R<sub>总</sub> = R₁ + R₂（越串越大）；并联电路：1/R<sub>总</sub> = 1/R₁ + 1/R₂（越并越小，总电阻小于任何一个分电阻）。</p>
+        </div>
+        <div class="lab-card">
+          <h2>数据记录</h2>
+          <div style="overflow-x:auto;">
+            <table class="record-table" id="recordTable">
+              <thead><tr><th>#</th><th>连接方式</th><th>R₁(Ω)</th><th>R₂(Ω)</th><th>R<sub>总</sub>(Ω)</th></tr></thead>
+              <tbody id="recordBody"></tbody>
+            </table>
+          </div>
+          <div class="record-actions">
+            <button class="btn btn-secondary" onclick="exportRecords()">导出 CSV</button>
+            <button class="btn btn-danger" onclick="clearRecords()">清空数据</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab-sidebar">
+      <div class="lab-card">
+        <h2>原理说明</h2>
+        <p>串联电路中，电流依次通过各电阻，总电阻等于各电阻之和。</p>
+        <div class="formula">R<sub>串</sub> = R₁ + R₂</div>
+        <p>并联电路中，电流分流通过各电阻，总电阻的倒数等于各电阻倒数之和。</p>
+        <div class="formula">1/R<sub>并</sub> = 1/R₁ + 1/R₂</div>
+      </div>
+      <div class="lab-card">
+        <h2>实时数据</h2>
+        <div class="metric-row">
+          <div class="metric"><strong id="timer">0s</strong><span>实验用时</span></div>
+        </div>
+      </div>
+      <div class="lab-card">
+        <h2>相关实验</h2>
+        <div class="related-list">
+          <a href="15-circuit.html">→ 电路连接与欧姆定律</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>York 周老师物理</strong><p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p><p>© 2026 York Physics Lab. All Rights Reserved.</p></div>
+    <div><strong>联系方式</strong><p>周煜全老师</p><p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p></div>
+    <div><strong>特别鸣谢</strong><p>龙外物理科组</p><p>梁卓栋老师</p></div>
+  </div>
+</footer>
+
+<script>
+// ===== Timer =====
+let elapsedSeconds = 0;
+setInterval(function() { elapsedSeconds++; var m = Math.floor(elapsedSeconds/60), s = elapsedSeconds%60; document.getElementById('timer').textContent = m + 'm' + s + 's'; }, 1000);
+
+// ===== Records =====
+let records = [];
+let currentMode = 'series';
+function recordData() {
+  var r1 = parseFloat(document.getElementById('r1Slider').value);
+  var r2 = parseFloat(document.getElementById('r2Slider').value);
+  var total = currentMode === 'series' ? r1 + r2 : 1 / ((1/r1) + (1/r2));
+  records.push({ mode: currentMode, r1: r1, r2: r2, total: total });
+  renderRecords();
+}
+function renderRecords() {
+  var tbody = document.getElementById('recordBody');
+  tbody.innerHTML = records.map(function(r, i) {
+    var modeLabel = r.mode === 'series' ? '串联' : '并联';
+    return '<tr><td>'+(i+1)+'</td><td>'+modeLabel+'</td><td>'+r.r1.toFixed(1)+'</td><td>'+r.r2.toFixed(1)+'</td><td>'+r.total.toFixed(2)+'</td></tr>';
+  }).join('');
+}
+function exportRecords() {
+  if (!records.length) return;
+  var csv = '序号,连接方式,R1(Ω),R2(Ω),R总(Ω)\n' + records.map(function(r,i){
+    var modeLabel = r.mode === 'series' ? '串联' : '并联';
+    return (i+1)+','+modeLabel+','+r.r1.toFixed(1)+','+r.r2.toFixed(1)+','+r.total.toFixed(2);
+  }).join('\n');
+  var blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '电阻串并联数据.csv'; a.click();
+}
+function clearRecords() { records = []; renderRecords(); }
+
+// ===== Canvas =====
+var canvas = document.getElementById('resistorCanvas');
+var ctx = canvas.getContext('2d');
+var W = canvas.width, H = canvas.height;
+var currentArrowTime = 0;
+
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('seriesBtn').className = 'mode-btn' + (mode === 'series' ? ' active' : '');
+  document.getElementById('parallelBtn').className = 'mode-btn' + (mode === 'parallel' ? ' active' : '');
+}
+
+// ---- 人教版标准元件绘制函数 ----
+
+// 定值电阻（水平方向）：人教版符号 — 空心矩形
+function drawResistorH(x, y, w, h, label, value) {
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(x, y, w, h);
+  ctx.fillStyle = '#333';
+  ctx.font = '12px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText(label + '=' + value.toFixed(1) + 'Ω', x + w/2, y + h + 18);
+}
+
+// 电池组（竖直）：人教版符号 — 细长线(+)和粗短线(-)交替，居中固定
+function drawBatteryVert(x, cy, count) {
+  var cellH = 16;
+  var totalH = count * cellH;
+  var startY = cy - totalH / 2;
+  ctx.strokeStyle = '#333';
+  for (var i = 0; i < count; i++) {
+    var y = startY + i * cellH;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(x - 7, y + 3);
+    ctx.lineTo(x + 7, y + 3);
+    ctx.stroke();
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(x - 3, y + 11);
+    ctx.lineTo(x + 3, y + 11);
+    ctx.stroke();
+  }
+  ctx.lineWidth = 2;
+  ctx.fillStyle = '#e74c3c';
+  ctx.font = 'bold 12px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText('+', x - 16, startY + 6);
+  ctx.fillText('−', x - 16, startY + totalH - 2);
+  ctx.fillStyle = '#333';
+  ctx.font = '12px Arial';
+  // ctx.fillText('电源', x, startY + totalH + 22);
+  ctx.fillText('电源', x+25, cy + 10);
+}
+
+// 连接点
+function drawJunction(x, y) {
+  ctx.fillStyle = '#333';
+  ctx.beginPath();
+  ctx.arc(x, y, 3, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawCurrentArrow(x, y, angle, scale) {
+  var length = 16 * scale;
+  var halfWidth = 5 * scale;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  ctx.beginPath();
+  ctx.moveTo(length / 2, 0);
+  ctx.lineTo(-length / 2, -halfWidth);
+  ctx.lineTo(-length / 2, halfWidth);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawMovingArrowsOnLine(x1, y1, x2, y2, options) {
+  var dx = x2 - x1;
+  var dy = y2 - y1;
+  var len = Math.sqrt(dx * dx + dy * dy);
+  if (len < 36) return;
+  var spacing = (options && options.spacing) || 52;
+  var speed = (options && options.speed) || 42;
+  var scale = (options && options.scale) || 1;
+  var inset = (options && options.inset) || 18;
+  var angle = Math.atan2(dy, dx);
+  var usable = Math.max(0, len - inset * 2);
+  var offset = (currentArrowTime * speed / 1000) % spacing;
+  ctx.fillStyle = (options && options.color) || '#3498db';
+  for (var d = inset + offset; d < inset + usable; d += spacing) {
+    var t = d / len;
+    drawCurrentArrow(x1 + dx * t, y1 + dy * t, angle, scale);
+  }
+}
+
+function drawCurrentPath(points, options) {
+  for (var i = 0; i < points.length - 1; i++) {
+    drawMovingArrowsOnLine(points[i][0], points[i][1], points[i + 1][0], points[i + 1][1], options);
+  }
+}
+
+// ---- 串联电路：最简单的单一回路 ----
+//  电源(左) → R₁(上左) → R₂(上右) → 回到电源
+function drawSeries(r1, r2) {
+  var cx = W / 2, cy = H / 2;
+  var halfW = 240, halfH = 80;
+
+  // 外框导线
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 2;
+
+  // 上边导线：左→R1→R2→右
+  var rW = 50, rH = 24;
+  var r1x = cx - 60, r2x = cx + 60;
+  ctx.beginPath();
+  ctx.moveTo(cx - halfW, cy - halfH);
+  ctx.lineTo(r1x - rW/2, cy - halfH);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(r1x + rW/2, cy - halfH);
+  ctx.lineTo(r2x - rW/2, cy - halfH);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(r2x + rW/2, cy - halfH);
+  ctx.lineTo(cx + halfW, cy - halfH);
+  ctx.stroke();
+
+  // 右边导线
+  ctx.beginPath();
+  ctx.moveTo(cx + halfW, cy - halfH);
+  ctx.lineTo(cx + halfW, cy + halfH);
+  ctx.stroke();
+
+  // 下边导线
+  ctx.beginPath();
+  ctx.moveTo(cx + halfW, cy + halfH);
+  ctx.lineTo(cx - halfW, cy + halfH);
+  ctx.stroke();
+
+  // 左边导线：断开处插入电池
+  var px = cx - halfW;
+  var batCount = 3;
+  var batH = batCount * 16;
+  ctx.beginPath();
+  ctx.moveTo(px, cy - halfH);
+  ctx.lineTo(px, cy - batH/2);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(px, cy + batH/2);
+  ctx.lineTo(px, cy + halfH);
+  ctx.stroke();
+
+  // 四角连接点
+  drawJunction(cx - halfW, cy - halfH);
+  drawJunction(cx + halfW, cy - halfH);
+  drawJunction(cx + halfW, cy + halfH);
+  drawJunction(cx - halfW, cy + halfH);
+
+  // 电源
+  drawBatteryVert(px, cy, batCount);
+
+  // R₁（上边偏左）
+  drawResistorH(r1x - rW/2, cy - halfH - rH/2, rW, rH, 'R₁', r1);
+  drawJunction(r1x - rW/2, cy - halfH);
+  drawJunction(r1x + rW/2, cy - halfH);
+
+  // R₂（上边偏右）
+  drawResistorH(r2x - rW/2, cy - halfH - rH/2, rW, rH, 'R₂', r2);
+  drawJunction(r2x - rW/2, cy - halfH);
+  drawJunction(r2x + rW/2, cy - halfH);
+
+  var arrowOptions = { color: '#3498db', spacing: 52, speed: 52, scale: 1.08, inset: 18 };
+  var offset = 12;
+  var topY = cy - halfH - offset;
+  var rightX = cx + halfW + offset;
+  var bottomY = cy + halfH + offset;
+  var leftX = px - 16;
+  drawMovingArrowsOnLine(cx - halfW + 18, topY, r1x - rW/2 - 16, topY, arrowOptions);
+  drawMovingArrowsOnLine(r1x + rW/2 + 16, topY, r2x - rW/2 - 16, topY, arrowOptions);
+  drawMovingArrowsOnLine(r2x + rW/2 + 16, topY, cx + halfW - 18, topY, arrowOptions);
+  drawMovingArrowsOnLine(rightX, cy - halfH + 18, rightX, cy + halfH - 18, arrowOptions);
+  drawMovingArrowsOnLine(cx + halfW - 18, bottomY, cx - halfW + 18, bottomY, arrowOptions);
+  drawMovingArrowsOnLine(leftX, cy + halfH, leftX, cy + batH/2, arrowOptions);
+  drawMovingArrowsOnLine(leftX, cy - batH/2, leftX, cy - halfH, arrowOptions);
+
+  // I 标签
+  ctx.fillStyle = '#3498db';
+  ctx.font = '13px Arial';
+  ctx.textAlign = 'left';
+  ctx.fillText('I →', cx - halfW + 10, cy - halfH - 12);
+}
+
+// ---- 并联电路：正确拓扑 — 两条支路在同一对节点之间 ----
+//  电源(左) → 上支路R₁ (在顶线上) / 下支路R₂ (在中间横线上) → 汇合回到电源
+function drawParallel(r1, r2) {
+  var cx = W / 2, cy = H / 2;
+  var halfW = 230, halfH = 85;
+
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 2;
+
+  // 四个角坐标
+  var TLx = cx - halfW, TLy = cy - halfH;
+  var TRx = cx + halfW, TRy = cy - halfH;
+  var BRx = cx + halfW, BRy = cy + halfH;
+  var BLx = cx - halfW, BLy = cy + halfH;
+
+  // 分叉点和汇合点（在顶线上）
+  var forkX = TLx + 80;
+  var joinX = TRx - 80;
+  var branchY = cy;            // R₂ 分支的纵坐标
+  var rW = 50, rH = 24;
+  var r1cx = cx;               // R₁ 中心在顶线上
+  var r2cx = cx;               // R₂ 中心在中间分支上
+
+  // ---- 顶线：被 R₁ 断开 ----
+  ctx.beginPath(); ctx.moveTo(TLx, TLy); ctx.lineTo(r1cx - rW/2, TLy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(r1cx + rW/2, TLy); ctx.lineTo(TRx, TLy); ctx.stroke();
+
+  // ---- 右边线 ----
+  ctx.beginPath(); ctx.moveTo(TRx, TRy); ctx.lineTo(BRx, BRy); ctx.stroke();
+
+  // ---- 底边线 ----
+  ctx.beginPath(); ctx.moveTo(BRx, BRy); ctx.lineTo(BLx, BLy); ctx.stroke();
+
+  // ---- 左边线（被电池断开） ----
+  var batCount = 3;
+  var batH = batCount * 16;
+  ctx.beginPath(); ctx.moveTo(BLx, BLy); ctx.lineTo(BLx, cy + batH/2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(BLx, cy - batH/2); ctx.lineTo(BLx, TLy); ctx.stroke();
+
+  // ---- R₂ 支路（分叉→水平→汇合） ----
+  // 从分叉点向下
+  ctx.beginPath(); ctx.moveTo(forkX, TLy); ctx.lineTo(forkX, branchY); ctx.stroke();
+  // 分支水平线（被 R₂ 断开）
+  ctx.beginPath(); ctx.moveTo(forkX, branchY); ctx.lineTo(r2cx - rW/2, branchY); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(r2cx + rW/2, branchY); ctx.lineTo(joinX, branchY); ctx.stroke();
+  // 从汇合点向上回到顶线
+  ctx.beginPath(); ctx.moveTo(joinX, branchY); ctx.lineTo(joinX, TLy); ctx.stroke();
+
+  // ---- 连接点 ----
+  drawJunction(TLx, TLy);        // 左上角
+  drawJunction(TRx, TRy);        // 右上角
+  drawJunction(BRx, BRy);        // 右下角
+  drawJunction(BLx, BLy);        // 左下角
+  drawJunction(forkX, TLy);      // 顶线分叉
+  drawJunction(joinX, TLy);      // 顶线汇合
+  drawJunction(forkX, branchY);  // 分支分叉
+  drawJunction(joinX, branchY);  // 分支汇合
+
+  // ---- 电池 ----
+  drawBatteryVert(BLx, cy, batCount);
+
+  // ---- R₁（在顶线上，水平） ----
+  drawResistorH(r1cx - rW/2, TLy - rH/2, rW, rH, 'R₁', r1);
+  drawJunction(r1cx - rW/2, TLy);
+  drawJunction(r1cx + rW/2, TLy);
+
+  // ---- R₂（在中间支路上，水平） ----
+  drawResistorH(r2cx - rW/2, branchY - rH/2, rW, rH, 'R₂', r2);
+  drawJunction(r2cx - rW/2, branchY);
+  drawJunction(r2cx + rW/2, branchY);
+
+  var mainArrow = { color: '#3498db', spacing: 52, speed: 56, scale: 1.08, inset: 18 };
+  var branchArrow = { color: '#3498db', spacing: 52, speed: 50, scale: 1.02, inset: 18 };
+  var offset = 12;
+  var topY = TLy - offset;
+  var middleY = branchY + offset;
+  var rightX = TRx + offset;
+  var bottomY = BRy + offset;
+  var leftX = BLx - 16;
+
+  drawMovingArrowsOnLine(TLx + 18, topY, forkX - 14, topY, mainArrow);
+  drawMovingArrowsOnLine(forkX + 14, topY, r1cx - rW/2 - 16, topY, branchArrow);
+  drawMovingArrowsOnLine(r1cx + rW/2 + 16, topY, joinX - 14, topY, branchArrow);
+  drawMovingArrowsOnLine(forkX - offset, TLy + 18, forkX - offset, branchY - 18, branchArrow);
+  drawMovingArrowsOnLine(forkX + 14, middleY, r2cx - rW/2 - 16, middleY, branchArrow);
+  drawMovingArrowsOnLine(r2cx + rW/2 + 16, middleY, joinX - 14, middleY, branchArrow);
+  drawMovingArrowsOnLine(joinX + offset, branchY - 18, joinX + offset, TLy + 18, branchArrow);
+  drawMovingArrowsOnLine(joinX + 14, topY, TRx - 18, topY, mainArrow);
+  drawMovingArrowsOnLine(rightX, TRy + 18, rightX, BRy - 18, mainArrow);
+  drawMovingArrowsOnLine(BRx - 18, bottomY, BLx + 18, bottomY, mainArrow);
+  drawMovingArrowsOnLine(leftX, BLy, leftX, cy + batH/2, mainArrow);
+  drawMovingArrowsOnLine(leftX, cy - batH/2, leftX, TLy, mainArrow);
+
+  // 电流标签
+  ctx.fillStyle = '#3498db'; ctx.font = '13px Arial'; ctx.textAlign = 'left';
+  ctx.fillText('I →', TLx + 5, TLy - 12);
+  ctx.fillText('I₁ →', r1cx + 20, TLy - 12);
+  ctx.fillText('I₂ →', r2cx + 20, branchY - 12);
+}
+
+function drawExperiment() {
+  ctx.clearRect(0, 0, W, H);
+  var r1 = parseFloat(document.getElementById('r1Slider').value);
+  var r2 = parseFloat(document.getElementById('r2Slider').value);
+
+  if (currentMode === 'series') {
+    drawSeries(r1, r2);
+  } else {
+    drawParallel(r1, r2);
+  }
+
+  // 实时更新总电阻结果
+  var total = currentMode === 'series' ? r1 + r2 : 1 / ((1/r1) + (1/r2));
+
+
+  var box = document.getElementById('resultBox');
+  box.className = 'result-box ' + currentMode;
+  var modeLabel = currentMode === 'series' ? '串联' : '并联';
+  box.innerHTML = '总电阻 R<sub>总</sub> = <strong id="totalResistance">' + total.toFixed(2) + '</strong> Ω &nbsp;(' + modeLabel + ')';
+}
+
+function updateExperiment() {
+  document.getElementById('r1Display').textContent = parseFloat(document.getElementById('r1Slider').value).toFixed(1) + ' Ω';
+  document.getElementById('r2Display').textContent = parseFloat(document.getElementById('r2Slider').value).toFixed(1) + ' Ω';
+}
+
+document.getElementById('r1Slider').addEventListener('input', updateExperiment);
+document.getElementById('r2Slider').addEventListener('input', updateExperiment);
+
+function animateExperiment(timestamp) {
+  currentArrowTime = timestamp || 0;
+  drawExperiment();
+  requestAnimationFrame(animateExperiment);
+}
+
+requestAnimationFrame(animateExperiment);
+
+// ===== Hamburger Menu =====
+(function(){
+  var btn = document.getElementById('menuToggle'), menu = document.getElementById('categoryMenu');
+  if (btn && menu) {
+    btn.addEventListener('click', function() {
+      var open = menu.classList.toggle('nav-open');
+      btn.classList.toggle('is-active');
+      btn.setAttribute('aria-expanded', open);
+    });
+    menu.querySelectorAll('a').forEach(function(l) {
+      l.addEventListener('click', function() { menu.classList.remove('nav-open'); btn.classList.remove('is-active'); btn.setAttribute('aria-expanded','false'); });
+    });
+  }
+})();
+(function(){
+  var items = document.querySelectorAll('.menu-item');
+  items.forEach(function(item) {
+    var top = item.querySelector('.menu-top'), sub = item.querySelector('.submenu');
+    if (top && sub && sub.children.length > 1) {
+      top.addEventListener('click', function(e) {
+        if ('ontouchstart' in window && window.innerWidth <= 680) {
+          var isOpen = sub.classList.contains('open');
+          item.parentNode.querySelectorAll('.submenu.open').forEach(function(s) { if (s !== sub) s.classList.remove('open'); });
+          if (!isOpen) { e.preventDefault(); sub.classList.add('open'); }
+        }
+      });
+    }
+  });
+})();
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+
+

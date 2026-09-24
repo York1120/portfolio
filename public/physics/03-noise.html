@@ -1,0 +1,802 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="噪声检测仪互动实验，模拟环境噪声分贝监测与波形可视化，认识噪声强弱与生活场景。">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>噪声检测仪 | York 周老师物理</title>
+  <meta property="og:title" content="噪声检测仪 | York 周老师物理">
+  <meta property="og:description" content="噪声检测仪互动实验，模拟环境噪声分贝监测与波形可视化，认识噪声强弱与生活场景。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: var(--bg); }
+
+    .exp-page { padding-top: 96px; padding-bottom: 40px; }
+
+    .lab-hero { margin-bottom: 24px; }
+
+    .lab-hero h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      color: var(--brand);
+    }
+
+    .lab-hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .lab-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .lab-main {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .lab-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .lab-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .lab-card h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      color: var(--brand);
+    }
+
+    .lab-card h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: var(--ink);
+    }
+
+    .lab-card p {
+      margin: 8px 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .lab-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .formula {
+      padding: 14px;
+      background: var(--surface-soft);
+      border-radius: 12px;
+      text-align: center;
+      font-size: 18px;
+      margin: 8px 0;
+    }
+
+    .variable-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 8px 0;
+    }
+
+    .variable-table th,
+    .variable-table td {
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      text-align: left;
+    }
+
+    .variable-table th {
+      background: var(--surface-soft);
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .variable-table td { color: var(--ink); }
+
+    .metric-row { display: flex; gap: 16px; }
+
+    .metric {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      background: var(--surface-soft);
+      border-radius: 12px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 20px;
+      color: var(--brand);
+    }
+
+    .metric span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .related-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .related-list a {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: var(--brand-2);
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .related-list a:hover { background: var(--surface-soft); }
+
+    .steps {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    .notice {
+      background: #fffbf0;
+      border-color: #f0dca0;
+    }
+
+    /* ===== 噪声检测仪专属样式 ===== */
+    .noise-status {
+      text-align: center;
+      margin: 8px 0 16px;
+      font-size: 14px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .db-display {
+      text-align: center;
+      margin: 16px 0;
+    }
+
+    .db-value {
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--brand);
+    }
+
+    .db-unit {
+      font-size: 18px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .meter {
+      position: relative;
+      width: 100%;
+      height: 32px;
+      border-radius: 16px;
+      background: linear-gradient(to right, #43a047, #fdd835, #e53935);
+      overflow: hidden;
+      margin: 12px 0 4px;
+    }
+
+    .meter-level {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: rgba(255, 255, 255, 0.35);
+      transition: width 0.1s;
+    }
+
+    .meter-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .warning-text {
+      text-align: center;
+      min-height: 24px;
+      margin: 8px 0 16px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .warning-text.active { color: #d32f2f; }
+
+    .noise-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .noise-btn {
+      padding: 12px 28px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .noise-btn:active { transform: scale(0.97); }
+
+    .noise-btn.start {
+      background: linear-gradient(135deg, var(--brand-2), var(--tech));
+      color: #fff;
+    }
+
+    .noise-btn.start:hover { opacity: 0.88; }
+
+    .noise-btn.stop {
+      background: linear-gradient(135deg, #e53935, #ef5350);
+      color: #fff;
+    }
+
+    .noise-btn.stop:hover { opacity: 0.88; }
+
+    .noise-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    #waveform {
+      width: 100%;
+      height: 200px;
+      background: #fbfdff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    .record-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .record-table th,
+    .record-table td {
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .record-table th {
+      background: var(--surface-soft);
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .record-table td { color: var(--ink); }
+
+    .record-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background: var(--surface-soft); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand-2), var(--tech));
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .btn-primary:hover { opacity: 0.88; }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #e53935, #ef5350);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .btn-danger:hover { opacity: 0.88; }
+
+    @media (max-width: 960px) {
+      .lab-layout { grid-template-columns: 1fr; }
+      .lab-sidebar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .lab-sidebar { grid-template-columns: 1fr; }
+      .exp-page { padding-top: 96px; }
+      #waveform { height: 150px; }
+    }
+
+    @media (max-width: 680px) {
+      .lab-hero h1 { font-size: 22px; }
+      .db-value { font-size: 36px; }
+    }
+
+    @media (max-width: 480px) {
+      .exp-page { padding-top: 80px; }
+      .lab-hero h1 { font-size: 20px; }
+      .lab-card { padding: 14px; }
+      #waveform { height: 120px; }
+      .noise-btn { padding: 10px 20px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============ 共享导航 ============ -->
+<div class="nav-shell">
+  <div class="container">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+        <span class="brand-mark">Phy</span>
+        <span>York 周老师物理<small>Professional Physics Lab</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+      <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#acoustics">声学</a>
+          <div class="submenu">
+            <a href="02-frequency.html">频率发声器</a>
+            <a href="03-noise.html">噪声检测仪</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#optics">光学</a>
+          <div class="submenu">
+            <a href="04-pinhole.html">小孔成像虚拟实验</a>
+            
+            <a href="06-rgb.html">光的三原色组合游戏</a>
+            <a href="07-lens.html">凸透镜成像虚拟实验</a>
+            <a href="10-refraction.html">光的反射与折射定律</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#thermal">热学</a>
+          <div class="submenu">
+            <a href="08-molecule.html">分子热运动微观示意图</a>
+            <a href="09-engine.html">四冲程汽油机示意图</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#mechanics">力学</a>
+          <div class="submenu">
+            <a href="01-length.html">长度读取训练平台</a>
+            <a href="12-buoyancy.html">木块浮力图像</a>
+            <a href="13-torricelli.html">托里拆利实验</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#electricity">电学</a>
+          <div class="submenu">
+            <a href="15-circuit.html">电路连接与欧姆定律</a>
+            <a href="16-resistors.html">电阻的串联与并联</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#quiz">知识测验</a>
+          <div class="submenu">
+            <a href="11-review.html">初中物理知识点复习</a>
+            <a href="14-quiz.html">《物理原来很有趣》测验</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- ============ 实验内容 ============ -->
+<main class="container exp-page">
+  <section class="lab-hero">
+    <h1>噪声检测仪</h1>
+    <p>模拟环境噪声分贝监测与波形可视化，认识噪声强弱与生活场景。</p>
+  </section>
+
+  <div class="lab-layout">
+    <div class="lab-main">
+      <!-- 互动实验区 -->
+      <section class="lab-card">
+        <h2>互动实验区</h2>
+        <p>点击下方按钮开始检测，系统将通过麦克风采集环境声音并实时显示分贝值与波形。</p>
+
+        <p class="noise-status" id="status">点击「开始检测」按钮启动</p>
+
+        <div class="db-display">
+          <span class="db-value" id="dbValue">--</span>
+          <span class="db-unit">dB</span>
+        </div>
+
+        <div class="meter">
+          <div class="meter-level" id="level"></div>
+        </div>
+        <div class="meter-labels">
+          <span>0</span><span>30</span><span>60</span><span>90</span><span>120</span>
+        </div>
+
+        <p class="warning-text" id="warning"></p>
+
+        <div class="noise-actions">
+          <button class="noise-btn start" id="startButton">开始检测</button>
+          <button class="noise-btn stop" id="stopButton" disabled>停止检测</button>
+        </div>
+
+        <canvas id="waveform"></canvas>
+      </section>
+
+      <div class="lab-bottom">
+        <!-- 实验步骤 -->
+        <section class="lab-card">
+          <h2>实验步骤</h2>
+          <ol class="steps">
+            <li>点击「开始检测」按钮，授权浏览器使用麦克风。</li>
+            <li>观察实时分贝数值和彩色指示条的位置变化。</li>
+            <li>在不同环境（安静、说话、播放音乐等）下测试噪声水平。</li>
+            <li>点击「停止检测」结束实验，查看数据记录。</li>
+          </ol>
+        </section>
+
+        <!-- 注意事项 -->
+        <section class="lab-card notice">
+          <h2>注意事项</h2>
+          <p>本实验需要浏览器麦克风权限，采集的数据仅在本地处理，不会上传至任何服务器。长时间暴露在 85 dB 以上的环境中可能对听力造成损伤，建议合理控制音量。</p>
+        </section>
+
+        <!-- 数据记录 -->
+        <section class="lab-card">
+          <h2>数据记录</h2>
+          <table class="record-table">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>分贝值</th>
+                <th>等级</th>
+                <th>时间</th>
+              </tr>
+            </thead>
+            <tbody id="recordBody">
+              <tr><td colspan="4">暂无记录。</td></tr>
+            </tbody>
+          </table>
+          <div class="record-actions">
+            <button class="btn btn-primary" id="exportRecords" type="button">导出文本</button>
+            <button class="btn" id="clearRecords" type="button">清空记录</button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- 侧边栏 -->
+    <aside class="lab-sidebar">
+      <section class="lab-card">
+        <h2>原理说明</h2>
+        <p>分贝（dB）是对数单位，用于衡量声音的强度。人耳能感知的最微弱声音约为 0 dB，每增加 10 dB 声音强度提升 10 倍。</p>
+        
+      </section>
+
+      <section class="lab-card">
+        <h2>实时数据</h2>
+        <div class="metric-row">
+          <div class="metric"><strong id="timer">00:00</strong><span>实验停留时长</span></div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <h2>参考值</h2>
+        <table class="variable-table">
+          <tbody>
+            <tr><td>树叶沙沙声</td><td>约 20 dB</td></tr>
+            <tr><td>正常交谈</td><td>约 60 dB</td></tr>
+            <tr><td>城市交通</td><td>约 80 dB</td></tr>
+            <tr><td>听力受损阈值</td><td>&ge; 85 dB</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="lab-card">
+        <h2>相关实验推荐</h2>
+        <div class="related-list">
+          <a href="02-frequency.html">→ 频率发声器</a>
+          <a href="04-pinhole.html">→ 小孔成像虚拟实验</a>
+          <a href="11-review.html">→ 初中物理知识点复习</a>
+        </div>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<!-- ============ 共享页脚 ============ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div>
+      <strong>York 周老师物理</strong>
+      <p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p>
+      <p>&copy; 2026 York Physics Lab. All Rights Reserved.</p>
+    </div>
+    <div>
+      <strong>联系方式</strong>
+      <p>周煜全老师</p>
+      <p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p>
+    </div>
+    <div>
+      <strong>特别鸣谢</strong>
+      <p>龙外物理科组</p>
+      <p>梁卓栋老师</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ 脚本 ============ -->
+<script>
+  var startButton = document.getElementById('startButton');
+  var stopButton = document.getElementById('stopButton');
+  var statusElement = document.getElementById('status');
+  var dbValueElement = document.getElementById('dbValue');
+  var levelElement = document.getElementById('level');
+  var warningElement = document.getElementById('warning');
+  var canvas = document.getElementById('waveform');
+  var ctx = canvas.getContext('2d');
+
+  
+  var elapsedSeconds = 0;
+  var records = [];
+
+
+  function formatTimer() {
+    elapsedSeconds += 1;
+    var minutes = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
+    var seconds = String(elapsedSeconds % 60).padStart(2, '0');
+    document.getElementById('timer').textContent = minutes + ':' + seconds;
+  }
+
+  function resizeCanvas() {
+    var w = canvas.clientWidth;
+    var h = canvas.clientHeight;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w;
+      canvas.height = h;
+    }
+  }
+
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  var audioContext;
+  var analyser;
+  var microphone;
+  var dataArray;
+  var animationId;
+  var isRunning = false;
+
+  function getLevelLabel(db) {
+    if (db < 30) return '安静';
+    if (db < 50) return '较低';
+    if (db < 70) return '中等';
+    if (db < 85) return '偏高';
+    return '嘈杂';
+  }
+
+  function logRecord(db) {
+    var now = new Date();
+    var time = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ':' + String(now.getSeconds()).padStart(2, '0');
+    records.push({ db: Math.round(db), level: getLevelLabel(db), time: time });
+    renderRecords();
+  }
+
+  var lastLogTime = 0;
+
+  startButton.addEventListener('click', function () {
+    statusElement.textContent = '正在初始化麦克风...';
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 2048;
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
+      microphone = audioContext.createMediaStreamSource(stream);
+      microphone.connect(analyser);
+      var bufferLength = analyser.frequencyBinCount;
+      dataArray = new Uint8Array(bufferLength);
+      startButton.disabled = true;
+      stopButton.disabled = false;
+      statusElement.textContent = '正在检测环境噪声...';
+      isRunning = true;
+      drawWaveform();
+      updateDecibelLevel();
+    }).catch(function (error) {
+      statusElement.textContent = '错误: ' + error.message;
+    });
+  });
+
+  stopButton.addEventListener('click', function () {
+    if (microphone && audioContext) {
+      microphone.disconnect();
+      if (audioContext.state !== 'closed') { audioContext.close(); }
+    }
+    cancelAnimationFrame(animationId);
+    startButton.disabled = false;
+    stopButton.disabled = true;
+    statusElement.textContent = '检测已停止';
+    isRunning = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    dbValueElement.textContent = '--';
+    levelElement.style.width = '0%';
+    warningElement.textContent = '';
+    warningElement.className = 'warning-text';
+  });
+
+  function drawWaveform() {
+    if (!isRunning) return;
+    resizeCanvas();
+    analyser.getByteTimeDomainData(dataArray);
+    ctx.fillStyle = '#fbfdff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#1766a6';
+    ctx.beginPath();
+    var sliceWidth = canvas.width / dataArray.length;
+    var x = 0;
+    for (var i = 0; i < dataArray.length; i++) {
+      var v = dataArray[i] / 128.0;
+      var y = v * canvas.height / 2;
+      if (i === 0) { ctx.moveTo(x, y); } else { ctx.lineTo(x, y); }
+      x += sliceWidth;
+    }
+    ctx.lineTo(canvas.width, canvas.height / 2);
+    ctx.stroke();
+    animationId = requestAnimationFrame(drawWaveform);
+  }
+
+  function updateDecibelLevel() {
+    if (!isRunning) return;
+    analyser.getByteFrequencyData(dataArray);
+    var sum = 0;
+    for (var i = 0; i < dataArray.length; i++) { sum += dataArray[i] * dataArray[i]; }
+    var rms = Math.sqrt(sum / dataArray.length);
+    var db = 20 * Math.log10(rms / 255 * 100);
+    var adjustedDb = Math.max(0, db + 30);
+    dbValueElement.textContent = Math.round(adjustedDb);
+    levelElement.style.width = Math.min(100, adjustedDb) + '%';
+    if (adjustedDb > 85) {
+      warningElement.textContent = '⚠ 警告：长时间暴露在此噪声水平下可能损害听力！';
+      warningElement.className = 'warning-text active';
+    } else {
+      warningElement.textContent = '';
+      warningElement.className = 'warning-text';
+    }
+    var now = Date.now();
+    if (now - lastLogTime > 2000) {
+      logRecord(adjustedDb);
+      lastLogTime = now;
+    }
+    setTimeout(updateDecibelLevel, 100);
+  }
+
+  function renderRecords() {
+    var body = document.getElementById('recordBody');
+    if (!records.length) {
+      body.innerHTML = '<tr><td colspan="4">暂无记录。</td></tr>';
+      return;
+    }
+    body.innerHTML = records.map(function (r, i) {
+      return '<tr><td>' + (i + 1) + '</td><td>' + r.db + ' dB</td><td>' + r.level + '</td><td>' + r.time + '</td></tr>';
+    }).join('');
+  }
+
+  function exportRecords() {
+    var content = records.length
+      ? records.map(function (r, i) { return (i + 1) + '. ' + r.time + ' | ' + r.db + ' dB | ' + r.level; }).join('\n')
+      : '暂无实验记录';
+    var blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = 'noise-records.txt';
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  setInterval(formatTimer, 1000);
+
+  document.getElementById('exportRecords').addEventListener('click', exportRecords);
+  document.getElementById('clearRecords').addEventListener('click', function () {
+    records.length = 0;
+    renderRecords();
+  });
+
+  // ----- 移动端汉堡菜单 -----
+  (function () {
+    var toggleBtn = document.getElementById('menuToggle');
+    var menu = document.getElementById('categoryMenu');
+    if (toggleBtn && menu) {
+      toggleBtn.addEventListener('click', function () {
+        var isOpen = menu.classList.toggle('nav-open');
+        toggleBtn.classList.toggle('is-active');
+        toggleBtn.setAttribute('aria-expanded', isOpen);
+      });
+      menu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          menu.classList.remove('nav-open');
+          toggleBtn.classList.remove('is-active');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+  })();
+
+  (function () {
+    var menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach(function (item) {
+      var topLink = item.querySelector('.menu-top');
+      var sub = item.querySelector('.submenu');
+      if (topLink && sub && sub.children.length <= 1) return;
+      if (topLink && sub) {
+        topLink.addEventListener('click', function (e) {
+          if ('ontouchstart' in window && window.innerWidth <= 680) {
+            var isOpen = sub.classList.contains('open');
+            item.parentNode.querySelectorAll('.submenu.open').forEach(function (s) {
+              if (s !== sub) s.classList.remove('open');
+            });
+            if (!isOpen) { e.preventDefault(); sub.classList.add('open'); }
+          }
+        });
+      }
+    });
+  })();
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,443 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="小孔成像虚拟实验，探索光的直线传播原理。">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>小孔成像虚拟实验 | York 周老师物理</title>
+  <meta property="og:title" content="小孔成像虚拟实验 | York 周老师物理">
+  <meta property="og:description" content="小孔成像虚拟实验，探索光的直线传播原理。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .exp-page { padding-top: 96px; padding-bottom: 40px; }
+    .lab-hero { margin-bottom: 24px; }
+    .lab-hero h1 { margin: 0 0 8px; font-size: 28px; color: var(--brand); }
+    .lab-hero p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .lab-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+    .lab-main { display: flex; flex-direction: column; gap: 18px; }
+    .lab-bottom { display: flex; flex-direction: column; gap: 18px; }
+    .lab-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-soft); }
+    .lab-card h2 { margin: 0 0 12px; font-size: 18px; color: var(--brand); }
+    .lab-card h3 { margin: 0 0 10px; font-size: 15px; color: var(--ink); }
+    .lab-card p { margin: 8px 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .lab-sidebar { display: flex; flex-direction: column; gap: 18px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .btn:hover { background: var(--surface-soft); }
+    .btn-primary { background: linear-gradient(135deg, var(--brand-2), var(--tech)); color: #fff; border-color: transparent; }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-danger { background: linear-gradient(135deg, #e53935, #ef5350); color: #fff; border-color: transparent; }
+    .btn-danger:hover { opacity: 0.88; }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .experiment-stage .btn-group .btn { transition: transform 0.18s ease; }
+    .experiment-stage .btn-group .btn:hover { transform: translateY(-2px); }
+    .experiment-stage .btn-group .btn-primary:hover { background: linear-gradient(135deg, var(--brand-2), var(--tech)); opacity: 1; }
+    .experiment-stage .btn-group .btn-danger:hover { background: linear-gradient(135deg, #e53935, #ef5350); opacity: 1; }
+    .record-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .record-table th, .record-table td { padding: 8px 10px; border: 1px solid var(--line); text-align: center; }
+    .record-table th { background: var(--surface-soft); color: var(--brand); font-weight: 700; }
+    .record-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .steps { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 1.9; }
+    .notice { background: #fffbf0; border-color: #f0dca0; }
+    .formula { padding: 14px; background: var(--surface-soft); border-radius: 12px; text-align: center; font-size: 18px; margin: 8px 0; }
+    .variable-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
+    .variable-table th, .variable-table td { padding: 6px 10px; border: 1px solid var(--line); text-align: left; }
+    .variable-table th { background: var(--surface-soft); color: var(--brand); font-weight: 700; }
+    .metric-row { display: flex; gap: 16px; }
+    .metric { flex: 1; text-align: center; padding: 12px; background: var(--surface-soft); border-radius: 12px; }
+    .metric strong { display: block; font-size: 20px; color: var(--brand); }
+    .metric span { font-size: 12px; color: var(--muted); }
+    .related-list { display: flex; flex-direction: column; gap: 6px; }
+    .related-list a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--brand-2); font-size: 14px; font-weight: 600; transition: background 0.2s; }
+    .related-list a:hover { background: var(--surface-soft); }
+
+    /* experiment-specific */
+    .canvas-wrap { display: flex; justify-content: center; background: #fbfdff; border: 1px solid var(--line); border-radius: 18px; padding: 16px; }
+    #experimentCanvas { border: 2px solid var(--brand-2); border-radius: 8px; background: #ecf0f1; cursor: pointer; max-width: 100%; height: auto; }
+    .ctrl-group { margin-bottom: 14px; }
+    .ctrl-group label { display: block; font-weight: 600; color: var(--ink); font-size: 14px; margin-bottom: 6px; }
+    .ctrl-group input[type="range"] { width: 100%; }
+    .ctrl-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .ctrl-value { color: var(--brand-2); font-weight: 700; }
+
+    @media (max-width: 960px) { .lab-layout { grid-template-columns: 1fr; } .lab-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } }
+    @media (max-width: 760px) { .ctrl-row { grid-template-columns: 1fr; } .lab-sidebar { grid-template-columns: 1fr; } }
+    @media (max-width: 680px) { .lab-hero h1 { font-size: 22px; } }
+    @media (max-width: 480px) { .exp-page { padding-top: 80px; } .lab-hero h1 { font-size: 20px; } .lab-card { padding: 14px; } .record-table { font-size: 12px; } .record-table th, .record-table td { padding: 6px; } }
+  </style>
+</head>
+<body>
+
+<!-- ============ 共享导航 ============ -->
+<div class="nav-shell">
+  <div class="container">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+        <span class="brand-mark">Phy</span>
+        <span>York 周老师物理<small>Professional Physics Lab</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+        <div class="menu-item"><a class="menu-top" href="index.html#acoustics">声学</a><div class="submenu"><a href="02-frequency.html">频率发声器</a><a href="03-noise.html">噪声检测仪</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#optics">光学</a><div class="submenu"><a href="04-pinhole.html">小孔成像虚拟实验</a><a href="06-rgb.html">光的三原色组合游戏</a><a href="07-lens.html">凸透镜成像虚拟实验</a><a href="10-refraction.html">光的反射与折射定律</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#thermal">热学</a><div class="submenu"><a href="08-molecule.html">分子热运动微观示意图</a><a href="09-engine.html">四冲程汽油机示意图</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#mechanics">力学</a><div class="submenu"><a href="01-length.html">长度读取训练平台</a><a href="12-buoyancy.html">木块浮力图像</a><a href="13-torricelli.html">托里拆利实验</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#electricity">电学</a><div class="submenu"><a href="15-circuit.html">电路连接与欧姆定律</a><a href="16-resistors.html">电阻的串联与并联</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#quiz">知识测验</a><div class="submenu"><a href="11-review.html">初中物理知识点复习</a><a href="14-quiz.html">《物理原来很有趣》测验</a></div></div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- ============ 实验内容 ============ -->
+<main class="container exp-page">
+  <section class="lab-hero">
+    <h1>小孔成像虚拟实验</h1>
+    <p>探索光的直线传播原理，拖动物体或光屏观察倒立实像的形成。</p>
+  </section>
+
+  <div class="lab-layout">
+    <div class="lab-main">
+      <!-- 互动实验区 -->
+      <section class="lab-card experiment-stage">
+        <h2>互动实验区</h2>
+        <p>使用滑块调节参数，也可在画布上直接拖拽物体或光屏。</p>
+        <div class="canvas-wrap">
+          <canvas id="experimentCanvas" width="800" height="400"></canvas>
+        </div>
+        <div class="ctrl-row">
+          <div class="ctrl-group">
+            <label>物体到小孔距离: <span class="ctrl-value" id="objectDistanceValue">200</span> px</label>
+            <input type="range" id="objectDistance" min="50" max="350" value="200" step="1">
+          </div>
+          <div class="ctrl-group">
+            <label>光屏到小孔距离: <span class="ctrl-value" id="screenDistanceValue">200</span> px</label>
+            <input type="range" id="screenDistance" min="50" max="350" value="200" step="1">
+          </div>
+          <div class="ctrl-group">
+            <label>物体高度: <span class="ctrl-value" id="objectHeightValue">100</span> px</label>
+            <input type="range" id="objectHeight" min="20" max="150" value="100" step="1">
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" id="recordButton">记录数据</button>
+          <button class="btn btn-danger" id="resetButton">重置实验</button>
+        </div>
+      </section>
+
+      <div class="lab-bottom">
+        <section class="lab-card">
+          <h2>实验步骤</h2>
+          <ol class="steps">
+            <li>观察物体发出的光线通过小孔后在光屏上成像。</li>
+            <li>使用滑块调整物体距离、光屏距离或物体高度。</li>
+            <li>直接在画布上拖拽物体或光屏，观察像的变化。</li>
+            <li>比较像与物体的方向、大小关系，总结规律。</li>
+          </ol>
+        </section>
+
+        <section class="lab-card notice">
+          <h2>注意事项</h2>
+          <p>小孔成像证明了光的直线传播。小孔越小，像越清晰但亮度越低；小孔越大，像越模糊但亮度越高。像的大小与物距成反比、与像距成正比。</p>
+        </section>
+
+        <section class="lab-card">
+          <h2>数据记录</h2>
+          <table class="record-table">
+            <thead><tr><th>序号</th><th>物距(px)</th><th>像距(px)</th><th>物高(px)</th><th>像高(px)</th><th>放大率</th></tr></thead>
+            <tbody id="recordBody"><tr><td colspan="6">暂无记录，点击"记录数据"生成。</td></tr></tbody>
+          </table>
+          <div class="record-actions">
+            <button class="btn btn-primary" id="exportRecords">导出文本</button>
+            <button class="btn" id="clearRecords">清空记录</button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <aside class="lab-sidebar">
+      <section class="lab-card">
+        <h2>原理说明</h2>
+        <p>光在均匀介质中沿直线传播。物体发出的光线通过小孔后，在光屏上形成<strong>倒立的实像</strong>。</p>
+        <div class="formula">像高 / 物高 = 像距 / 物距</div>
+        <table class="variable-table">
+          <thead><tr><th>符号</th><th>名称</th></tr></thead>
+          <tbody>
+            <tr><td>物距</td><td>物体到小孔的距离</td></tr>
+            <tr><td>像距</td><td>光屏到小孔的距离</td></tr>
+            <tr><td>物高</td><td>物体的高度</td></tr>
+            <tr><td>像高</td><td>所成像的高度</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="lab-card">
+        <h2>实时数据</h2>
+        <div class="metric-row">
+          <div class="metric"><strong id="timer">00:00</strong><span>实验停留时长</span></div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <h2>参考值面板</h2>
+        <table class="variable-table">
+          <tbody>
+            <tr><td>像的性质</td><td>倒立实像</td></tr>
+            <tr><td>像的虚实</td><td>实像（可在光屏上呈现）</td></tr>
+            <tr><td>成像条件</td><td>光沿直线传播</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="lab-card">
+        <h2>相关实验推荐</h2>
+        <div class="related-list">
+          
+          <a href="07-lens.html">→ 凸透镜成像虚拟实验</a>
+          <a href="06-rgb.html">→ 光的三原色组合游戏</a>
+        </div>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<!-- ============ 共享页脚 ============ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>York 周老师物理</strong><p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p><p>© 2026 York Physics Lab. All Rights Reserved.</p></div>
+    <div><strong>联系方式</strong><p>周煜全老师</p><p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p></div>
+    <div><strong>特别鸣谢</strong><p>龙外物理科组</p><p>梁卓栋老师</p></div>
+  </div>
+</footer>
+
+<script>
+// ===== 实验核心 =====
+const canvas = document.getElementById('experimentCanvas');
+const ctx = canvas.getContext('2d');
+let objectDistance = 200, screenDistance = 200, objectHeight = 100;
+const holeWidth = 10, canvasWidth = 800, canvasHeight = 400;
+const holeX = canvasWidth / 2;
+let isDragging = false, dragTarget = null, dragOffsetX = 0;
+
+// ===== 计时器 & 操作计数 =====
+let elapsedSeconds = 0;
+const records = [];
+function formatTimer() {
+  elapsedSeconds++;
+  const m = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
+  const s = String(elapsedSeconds % 60).padStart(2, '0');
+  document.getElementById('timer').textContent = m + ':' + s;
+}
+setInterval(formatTimer, 1000);
+
+function renderRecords() {
+  const body = document.getElementById('recordBody');
+  if (!records.length) { body.innerHTML = '<tr><td colspan="6">暂无记录，点击"记录数据"生成。</td></tr>'; return; }
+  body.innerHTML = records.map(function(r, i) {
+    return '<tr><td>' + (i+1) + '</td><td>' + r.objDist + '</td><td>' + r.imgDist + '</td><td>' + r.objH + '</td><td>' + r.imgH.toFixed(1) + '</td><td>' + r.mag.toFixed(2) + '</td></tr>';
+  }).join('');
+}
+
+function recordData() {
+  const imgH = (objectHeight * screenDistance) / objectDistance;
+  records.push({ objDist: objectDistance, imgDist: screenDistance, objH: objectHeight, imgH: imgH, mag: imgH / objectHeight });
+  renderRecords();
+}
+
+// ===== 物理仿真 =====
+function drawGrid() {
+  ctx.strokeStyle = '#ddd'; ctx.lineWidth = 0.5;
+  for (let y = 0; y <= canvasHeight; y += 20) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvasWidth, y); ctx.stroke(); }
+  for (let x = 0; x <= canvasWidth; x += 20) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvasHeight); ctx.stroke(); }
+}
+
+function drawArrow(x, y, dir, color) {
+  const sz = 30; ctx.fillStyle = color; ctx.beginPath();
+  if (dir === 'up') { ctx.moveTo(x, y); ctx.lineTo(x - sz/2, y + sz); ctx.lineTo(x + sz/2, y + sz); }
+  else { ctx.moveTo(x, y); ctx.lineTo(x - sz/2, y - sz); ctx.lineTo(x + sz/2, y - sz); }
+  ctx.closePath(); ctx.fill();
+}
+
+function drawArrowOnRay(x, y, dx, dy, color) {
+  const angle = Math.atan2(dy, dx), sz = 15;
+  ctx.fillStyle = color; ctx.beginPath();
+  ctx.moveTo(x, y);
+  ctx.lineTo(x - sz*Math.cos(angle) + sz/2*Math.sin(angle), y - sz*Math.sin(angle) - sz/2*Math.cos(angle));
+  ctx.lineTo(x - sz*Math.cos(angle) - sz/2*Math.sin(angle), y - sz*Math.sin(angle) + sz/2*Math.cos(angle));
+  ctx.closePath(); ctx.fill();
+}
+
+function drawObject(x, cy, h) {
+  const topY = cy - h/2, botY = cy + h/2;
+  ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 13.5;
+  ctx.beginPath(); ctx.moveTo(x, topY + 15); ctx.lineTo(x, botY); ctx.stroke();
+  drawArrow(x, topY, 'up', '#e74c3c');
+  ctx.fillStyle = '#333'; ctx.font = '21px Arial'; ctx.fillText('物体', x - 22.5, topY - 30);
+}
+
+function drawHole(x, cy) {
+  const hh = 120, topY = cy - hh/2, botY = cy + hh/2;
+  ctx.strokeStyle = '#3498db'; ctx.lineWidth = 3; ctx.strokeRect(x - holeWidth/2, topY, holeWidth, hh);
+  ctx.fillStyle = '#3498db'; ctx.beginPath(); ctx.arc(x, cy, 4.5, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#333'; ctx.font = '21px Arial'; ctx.fillText('小孔', x - 22.5, topY - 30);
+}
+
+function drawScreen(x, cy) {
+  const sh = 300, topY = cy - sh/2, botY = cy + sh/2;
+  ctx.strokeStyle = '#87CEFA'; ctx.lineWidth = 12;
+  ctx.beginPath(); ctx.moveTo(x, topY); ctx.lineTo(x, botY); ctx.stroke();
+  ctx.strokeStyle = '#87CEFA'; ctx.strokeRect(x - 6, topY, 12, sh);
+  ctx.fillStyle = '#333'; ctx.font = '21px Arial'; ctx.fillText('光屏', x - 22.5, topY - 30);
+}
+
+function drawImage(objectX, cy, objH, hX, sX) {
+  const imgH = (objH * screenDistance) / objectDistance;
+  const imgTopY = cy + imgH / 2, imgBotY = cy - imgH / 2;
+  ctx.strokeStyle = '#9b59b6'; ctx.lineWidth = 13.5;
+  ctx.beginPath(); ctx.moveTo(sX, imgTopY - 15); ctx.lineTo(sX, imgBotY); ctx.stroke();
+  drawArrow(sX, imgTopY, 'down', '#9b59b6');
+  ctx.fillStyle = '#333'; ctx.font = '21px Arial'; ctx.fillText('倒立的像', sX - 37.5, imgTopY + 30);
+  return imgH;
+}
+
+function drawLightRays(objectX, cy, objH, hX, sX) {
+  const objTopY = cy - objH/2, objBotY = cy + objH/2;
+  const imgH = (objH * screenDistance) / objectDistance;
+  const imgTopY = cy + imgH/2, imgBotY = cy - imgH/2;
+  const tRayHoleY = objTopY + (hX - objectX) * (cy - objTopY) / objectDistance;
+  const tRayScreenY = imgBotY;
+  const bRayHoleY = objBotY - (hX - objectX) * (objBotY - cy) / objectDistance;
+  const bRayScreenY = imgTopY;
+
+  ctx.strokeStyle = '#f39c12'; ctx.lineWidth = 2.25;
+  ctx.beginPath(); ctx.moveTo(objectX, objTopY); ctx.lineTo(hX, tRayHoleY); ctx.lineTo(sX, tRayScreenY); ctx.stroke();
+  drawArrowOnRay((objectX + hX)/2, (objTopY + tRayHoleY)/2, hX - objectX, tRayHoleY - objTopY, '#f39c12');
+  drawArrowOnRay((hX + sX)/2, (tRayHoleY + tRayScreenY)/2, sX - hX, tRayScreenY - tRayHoleY, '#f39c12');
+
+  ctx.strokeStyle = '#e67e22';
+  ctx.beginPath(); ctx.moveTo(objectX, objBotY); ctx.lineTo(hX, bRayHoleY); ctx.lineTo(sX, bRayScreenY); ctx.stroke();
+  drawArrowOnRay((objectX + hX)/2, (objBotY + bRayHoleY)/2, hX - objectX, bRayHoleY - objBotY, '#e67e22');
+  drawArrowOnRay((hX + sX)/2, (bRayHoleY + bRayScreenY)/2, sX - hX, bRayScreenY - bRayHoleY, '#e67e22');
+
+  ctx.fillStyle = '#f39c12'; ctx.beginPath(); ctx.arc(hX, cy, 4.5, 0, Math.PI * 2); ctx.fill();
+}
+
+function drawExperiment() {
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+  const objX = holeX - objectDistance, sX = holeX + screenDistance, cy = canvasHeight / 2;
+  drawGrid();
+  drawObject(objX, cy, objectHeight);
+  drawHole(holeX, cy);
+  drawScreen(sX, cy);
+  const imgH = drawImage(objX, cy, objectHeight, holeX, sX);
+  drawLightRays(objX, cy, objectHeight, holeX, sX);
+
+  document.getElementById('objectDistanceValue').textContent = objectDistance;
+  document.getElementById('screenDistanceValue').textContent = screenDistance;
+  document.getElementById('objectHeightValue').textContent = objectHeight;
+}
+
+// ===== 控件事件 =====
+function initExperiment() {
+  document.getElementById('objectDistance').addEventListener('input', function(e) { objectDistance = parseInt(e.target.value); drawExperiment(); });
+  document.getElementById('screenDistance').addEventListener('input', function(e) { screenDistance = parseInt(e.target.value); drawExperiment(); });
+  document.getElementById('objectHeight').addEventListener('input', function(e) { objectHeight = parseInt(e.target.value); drawExperiment(); });
+  document.getElementById('resetButton').addEventListener('click', function() {
+    objectDistance = 200; screenDistance = 200; objectHeight = 100;
+    document.getElementById('objectDistance').value = 200; document.getElementById('screenDistance').value = 200; document.getElementById('objectHeight').value = 100;
+    drawExperiment();
+  });
+
+  // 鼠标拖拽
+  canvas.addEventListener('mousedown', function(e) {
+    const rect = canvas.getBoundingClientRect(), mx = e.clientX - rect.left;
+    const objX = holeX - objectDistance, sX = holeX + screenDistance;
+    if (mx >= objX - 20 && mx <= objX + 20) { isDragging = true; dragTarget = 'object'; dragOffsetX = mx - objX; }
+    if (mx >= sX - 20 && mx <= sX + 20) { isDragging = true; dragTarget = 'screen'; dragOffsetX = mx - sX; }
+  });
+  canvas.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    const rect = canvas.getBoundingClientRect(), mx = e.clientX - rect.left;
+    if (dragTarget === 'object') { let nd = holeX - (mx - dragOffsetX); if (nd >= 50 && nd <= 350) { objectDistance = nd; document.getElementById('objectDistance').value = nd; } }
+    else if (dragTarget === 'screen') { let nd = (mx - dragOffsetX) - holeX; if (nd >= 50 && nd <= 350) { screenDistance = nd; document.getElementById('screenDistance').value = nd; } }
+    drawExperiment();
+  });
+  canvas.addEventListener('mouseup', function() { isDragging = false; dragTarget = null; });
+  canvas.addEventListener('mouseleave', function() { isDragging = false; dragTarget = null; });
+
+  // 触摸拖拽
+  canvas.addEventListener('touchstart', function(e) {
+    e.preventDefault(); const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect(), tx = touch.clientX - rect.left;
+    const objX = holeX - objectDistance, sX = holeX + screenDistance;
+    if (tx >= objX - 30 && tx <= objX + 30) { isDragging = true; dragTarget = 'object'; dragOffsetX = tx - objX; }
+    if (tx >= sX - 30 && tx <= sX + 30) { isDragging = true; dragTarget = 'screen'; dragOffsetX = tx - sX; }
+  }, { passive: false });
+  canvas.addEventListener('touchmove', function(e) {
+    e.preventDefault(); if (!isDragging) return;
+    const touch = e.touches[0], rect = canvas.getBoundingClientRect(), tx = touch.clientX - rect.left;
+    if (dragTarget === 'object') { let nd = holeX - (tx - dragOffsetX); if (nd >= 50 && nd <= 350) { objectDistance = nd; document.getElementById('objectDistance').value = nd; } }
+    else if (dragTarget === 'screen') { let nd = (tx - dragOffsetX) - holeX; if (nd >= 50 && nd <= 350) { screenDistance = nd; document.getElementById('screenDistance').value = nd; } }
+    drawExperiment();
+  }, { passive: false });
+  canvas.addEventListener('touchend', function(e) { e.preventDefault(); isDragging = false; dragTarget = null; });
+  canvas.addEventListener('touchcancel', function() { isDragging = false; dragTarget = null; });
+
+  drawExperiment();
+}
+
+// ===== 记录导出 =====
+document.getElementById('exportRecords').addEventListener('click', function() {
+  if (!records.length) return alert('暂无实验记录');
+  const content = records.map(function(r, i) { return (i+1) + '. 物距:' + r.objDist + ' 像距:' + r.imgDist + ' 物高:' + r.objH + ' 像高:' + r.imgH.toFixed(1) + ' 放大率:' + r.mag.toFixed(2); }).join('\n');
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a'); link.href = url; link.download = 'pinhole-records.txt'; link.click();
+  URL.revokeObjectURL(url);
+});
+document.getElementById('clearRecords').addEventListener('click', function() { records.length = 0; renderRecords(); });
+document.getElementById('recordButton').addEventListener('click', recordData);
+
+window.addEventListener('load', initExperiment);
+
+// ===== 汉堡菜单 =====
+(function() {
+  var toggleBtn = document.getElementById('menuToggle'), menu = document.getElementById('categoryMenu');
+  if (toggleBtn && menu) {
+    toggleBtn.addEventListener('click', function() { var io = menu.classList.toggle('nav-open'); toggleBtn.classList.toggle('is-active'); toggleBtn.setAttribute('aria-expanded', io); });
+    menu.querySelectorAll('a').forEach(function(link) { link.addEventListener('click', function() { menu.classList.remove('nav-open'); toggleBtn.classList.remove('is-active'); toggleBtn.setAttribute('aria-expanded', 'false'); }); });
+  }
+})();
+(function() {
+  document.querySelectorAll('.menu-item').forEach(function(item) {
+    var topLink = item.querySelector('.menu-top'), sub = item.querySelector('.submenu');
+    if (topLink && sub && sub.children.length <= 1) return;
+    if (topLink && sub) {
+      topLink.addEventListener('click', function(e) {
+        if ('ontouchstart' in window && window.innerWidth <= 680) {
+          var io = sub.classList.contains('open');
+          item.parentNode.querySelectorAll('.submenu.open').forEach(function(s) { if (s !== sub) s.classList.remove('open'); });
+          if (!io) { e.preventDefault(); sub.classList.add('open'); }
+        }
+      });
+    }
+  });
+})();
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+
+

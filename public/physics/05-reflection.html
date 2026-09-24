@@ -1,0 +1,420 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="光的反射与折射模拟器 — 拖拽入射光线，动态显示反射光线与折射光线。">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>光的反射与折射模拟器 | York 周老师物理</title>
+  <meta property="og:title" content="光的反射与折射模拟器 | York 周老师物理">
+  <meta property="og:description" content="光的反射与折射模拟器 — 拖拽入射光线，动态显示反射光线与折射光线。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .exp-page { padding-top: 96px; padding-bottom: 40px; }
+    .lab-hero { margin-bottom: 24px; }
+    .lab-hero h1 { margin: 0 0 8px; font-size: 28px; color: var(--brand); }
+    .lab-hero p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .lab-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+    .lab-main { display: flex; flex-direction: column; gap: 18px; }
+    .lab-bottom { display: flex; flex-direction: column; gap: 18px; }
+    .lab-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-soft); }
+    .lab-card h2 { margin: 0 0 12px; font-size: 18px; color: var(--brand); }
+    .lab-card h3 { margin: 0 0 10px; font-size: 15px; color: var(--ink); }
+    .lab-card p { margin: 8px 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .lab-sidebar { display: flex; flex-direction: column; gap: 18px; }
+    .steps { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 1.9; }
+    .notice { background: #fffbf0; border-color: #f0dca0; }
+    .metric-row { display: flex; gap: 16px; }
+    .metric { flex: 1; text-align: center; padding: 12px; background: var(--surface-soft); border-radius: 12px; }
+    .metric strong { display: block; font-size: 20px; color: var(--brand); }
+    .metric span { font-size: 12px; color: var(--muted); }
+    .related-list a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--brand-2); font-size: 14px; font-weight: 600; text-decoration: none; }
+    .related-list a:hover { background: var(--surface-soft); }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; color: #fff; transition: opacity .2s, transform .2s; }
+    .btn:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--brand-2), var(--tech)); }
+    .btn-danger { background: linear-gradient(135deg, #e53935, #ef5350); }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .record-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .record-table th { background: var(--surface-soft); padding: 8px 6px; text-align: center; font-weight: 600; color: var(--ink); border: 1px solid var(--line); }
+    .record-table td { padding: 6px; text-align: center; border: 1px solid var(--line); color: var(--muted); }
+    .record-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .formula { padding: 14px; background: var(--surface-soft); border-radius: 12px; text-align: center; font-size: 18px; margin: 8px 0; }
+    .variable-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
+    .variable-table th { background: var(--brand); color: #fff; padding: 6px; text-align: center; font-size: 12px; }
+    .variable-table td { padding: 5px; text-align: center; border: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+    .btn-secondary { background: var(--line); color: var(--ink); }
+    .btn-secondary:hover { background: #c8d6e5; }
+    #simulation-container { position: relative; width: 100%; max-width: 800px; height: 500px; background: #fff; border: 1px solid var(--line); border-radius: 12px; margin: 0 auto; overflow: hidden; }
+    .water-surface { position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: #1864ab; z-index: 1; }
+    .normal-line { position: absolute; top: 0; left: 50%; width: 1px; height: 100%; border-left: 2px dashed #666; z-index: 1; }
+    .point-o { position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; background: #e74c3c; border-radius: 50%; transform: translate(-5px, -5px); z-index: 2; border: 2px solid #fff; }
+    .ray-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    .draggable-point { position: absolute; width: 18px; height: 18px; background: #e74c3c; border-radius: 50%; cursor: move; transform: translate(-9px, -9px); z-index: 10; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    .controls-panel { display: flex; flex-wrap: wrap; gap: 16px; padding: 16px; background: var(--surface-soft); border-radius: 12px; margin-top: 12px; }
+    .ctrl-group { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px; }
+    .ctrl-group label { font-size: 14px; font-weight: 600; color: var(--ink); white-space: nowrap; min-width: 80px; }
+    .ctrl-group input[type="range"] { flex: 1; }
+    .ctrl-group .val { min-width: 48px; text-align: center; font-weight: 600; color: var(--brand); font-size: 14px; }
+    .legend { display: flex; gap: 16px; flex-wrap: wrap; padding: 8px 0; font-size: 13px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 20px; height: 4px; border-radius: 2px; }
+    @media (max-width: 960px) { .lab-layout { grid-template-columns: 1fr; } .lab-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } }
+    @media (max-width: 760px) { .lab-sidebar { grid-template-columns: 1fr; } #simulation-container { height: 380px; } }
+    @media (max-width: 680px) { .lab-hero h1 { font-size: 22px; } .controls-panel { flex-direction: column; } .ctrl-group { min-width: auto; } }
+    @media (max-width: 480px) { .exp-page { padding-top: 80px; } .lab-hero h1 { font-size: 20px; } .lab-card { padding: 14px; } #simulation-container { height: 300px; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-shell">
+  <div class="container">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+        <span class="brand-mark">Phy</span>
+        <span>York 周老师物理<small>Professional Physics Lab</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+        <div class="menu-item"><a class="menu-top" href="index.html#acoustics">声学</a><div class="submenu"><a href="02-frequency.html">频率发声器</a><a href="03-noise.html">噪声检测仪</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#optics">光学</a><div class="submenu"><a href="04-pinhole.html">小孔成像虚拟实验</a><a href="05-reflection.html">光的反射与折射模拟器</a><a href="06-rgb.html">光的三原色组合游戏</a><a href="07-lens.html">凸透镜成像虚拟实验</a><a href="10-refraction.html">光的反射与折射定律</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#thermal">热学</a><div class="submenu"><a href="08-molecule.html">分子热运动微观示意图</a><a href="09-engine.html">四冲程汽油机示意图</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#mechanics">力学</a><div class="submenu"><a href="01-length.html">长度读取训练平台</a><a href="12-buoyancy.html">木块浮力图像</a><a href="13-torricelli.html">托里拆利实验</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#electricity">电学</a><div class="submenu"><a href="15-circuit.html">电路连接与欧姆定律</a><a href="16-resistors.html">电阻的串联与并联</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#quiz">知识测验</a><div class="submenu"><a href="11-review.html">初中物理知识点复习</a><a href="14-quiz.html">《物理原来很有趣》测验</a></div></div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="container exp-page">
+  <div class="lab-hero">
+    <h1>光的反射与折射模拟器</h1>
+    <p>拖拽入射光线或调节滑块，观察反射与折射光线的变化规律。</p>
+  </div>
+
+  <div class="lab-layout">
+    <!-- LEFT -->
+    <div class="lab-main">
+      <div class="lab-card">
+        <h2>实验操作区</h2>
+        <div id="simulation-container">
+          <div class="water-surface"></div>
+          <div class="normal-line"></div>
+          <div class="point-o"></div>
+          <svg class="ray-svg" id="incidentRaySvg"></svg>
+          <svg class="ray-svg" id="reflectedRaySvg"></svg>
+          <svg class="ray-svg" id="refractedRaySvg"></svg>
+          <div class="draggable-point" id="dragHandle"></div>
+        </div>
+        <div class="legend">
+          <span class="legend-item"><span class="legend-dot" style="background:#e74c3c;"></span> 入射光线</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#3498db;"></span> 反射光线</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#2ecc71;"></span> 折射光线</span>
+        </div>
+        <div class="controls-panel">
+          <div class="ctrl-group">
+            <label>入射角:</label>
+            <input type="range" id="angleSlider" min="0" max="89" value="45" step="1">
+            <span class="val" id="angleDisplay">45°</span>
+          </div>
+          <div class="ctrl-group">
+            <label>折射率(n):</label>
+            <input type="range" id="indexSlider" min="1" max="3" value="1.33" step="0.01">
+            <span class="val" id="indexDisplay">1.33</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-bottom">
+        <div class="lab-card">
+          <h2>实验步骤</h2>
+          <ol class="steps">
+            <li>拖动红色圆点改变入射光线方向，或使用下方滑块调节入射角。</li>
+            <li>调节折射率滑块，观察不同介质对折射光线的影响。</li>
+            <li>蓝色光线为反射光线，绿色光线为折射光线。</li>
+            <li>记录不同角度下的入射角、反射角与折射角数据。</li>
+          </ol>
+        </div>
+
+        <div class="lab-card notice">
+          <h2>注意事项</h2>
+          <p>当光线从光密介质射入光疏介质，且入射角大于临界角时，会发生全反射现象（无折射光线）。</p>
+        </div>
+
+        <div class="lab-card">
+          <h2>数据记录</h2>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="recordData()">记录数据</button>
+          </div>
+          <div style="overflow-x:auto;margin-top:12px;">
+            <table class="record-table" id="recordTable">
+              <thead><tr><th>#</th><th>入射角</th><th>反射角</th><th>折射角</th><th>折射率</th></tr></thead>
+              <tbody id="recordBody"></tbody>
+            </table>
+          </div>
+          <div class="record-actions">
+            <button class="btn btn-secondary" onclick="exportRecords()">导出 CSV</button>
+            <button class="btn btn-danger" onclick="clearRecords()">清空数据</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="lab-sidebar">
+      <div class="lab-card">
+        <h2>原理说明</h2>
+        <p>反射定律：反射光线、入射光线和法线在同一平面内，反射光线和入射光线分别位于法线两侧，反射角等于入射角。</p>
+        <p>折射定律：光从空气斜射入水中时，折射光线向法线方向偏折，折射角小于入射角。折射率 n 是描述介质对光折射能力的物理量。</p>
+        <div class="formula">n₁·sinθ₁ = n₂·sinθ₂</div>
+      </div>
+
+      <div class="lab-card">
+        <h2>实时数据</h2>
+        <div class="metric-row">
+          <div class="metric"><strong id="timer">0s</strong><span>实验用时</span></div>
+          <div class="metric"><strong id="ops">0</strong><span>操作次数</span></div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h2>参考数值</h2>
+        <table class="variable-table">
+          <tr><th>介质</th><th>折射率</th></tr>
+          <tr><td>空气</td><td>1.00</td></tr>
+          <tr><td>水</td><td>1.33</td></tr>
+          <tr><td>玻璃</td><td>1.50</td></tr>
+          <tr><td>钻石</td><td>2.42</td></tr>
+        </table>
+      </div>
+
+      <div class="lab-card">
+        <h2>相关实验</h2>
+        <div class="related-list">
+          <a href="04-pinhole.html">→ 小孔成像虚拟实验</a>
+          <a href="10-refraction.html">→ 光的反射与折射定律</a>
+          <a href="07-lens.html">→ 凸透镜成像虚拟实验</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>York 周老师物理</strong><p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p><p>© 2026 York Physics Lab. All Rights Reserved.</p></div>
+    <div><strong>联系方式</strong><p>周煜全老师</p><p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p></div>
+    <div><strong>特别鸣谢</strong><p>龙外物理科组</p><p>梁卓栋老师</p></div>
+  </div>
+</footer>
+
+<script>
+// ===== Timer + Ops =====
+let elapsedSeconds = 0, operations = 0;
+function countOp() { operations++; document.getElementById('ops').textContent = operations; }
+setInterval(function() { elapsedSeconds++; var m = Math.floor(elapsedSeconds/60), s = elapsedSeconds%60; document.getElementById('timer').textContent = m + 'm' + s + 's'; }, 1000);
+
+// ===== Records =====
+let records = [];
+function recordData() {
+  var angle = parseFloat(document.getElementById('angleSlider').value);
+  var n = parseFloat(document.getElementById('indexSlider').value);
+  var refracted = calculateRefractionAngle(angle, n);
+  records.push({ incident: angle, reflected: angle, refracted: refracted !== null ? refracted.toFixed(1) : '全反射', index: n.toFixed(2) });
+  renderRecords(); countOp();
+}
+function renderRecords() {
+  var tbody = document.getElementById('recordBody');
+  tbody.innerHTML = records.map(function(r,i){ return '<tr><td>'+(i+1)+'</td><td>'+r.incident+'°</td><td>'+r.reflected+'°</td><td>'+(typeof r.refracted === 'string' ? r.refracted : r.refracted+'°')+'</td><td>'+r.index+'</td></tr>'; }).join('');
+}
+function exportRecords() {
+  if (!records.length) return;
+  var csv = '序号,入射角,反射角,折射角,折射率\n' + records.map(function(r,i){ return (i+1)+','+r.incident+','+r.reflected+','+r.refracted+','+r.index; }).join('\n');
+  var blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '反射折射数据.csv'; a.click();
+}
+function clearRecords() { records = []; renderRecords(); }
+
+// ===== Experiment =====
+var container = document.getElementById('simulation-container');
+var incidentSvg = document.getElementById('incidentRaySvg');
+var reflectedSvg = document.getElementById('reflectedRaySvg');
+var refractedSvg = document.getElementById('refractedRaySvg');
+var dragHandle = document.getElementById('dragHandle');
+var angleSlider = document.getElementById('angleSlider');
+var angleDisplay = document.getElementById('angleDisplay');
+var indexSlider = document.getElementById('indexSlider');
+var indexDisplay = document.getElementById('indexDisplay');
+
+var cw = container.offsetWidth, ch = container.offsetHeight;
+var cx = cw / 2, cy = ch / 2;
+var incidentAngle = 45, refractiveIndex = 1.33, isDragging = false, isRightSide = false;
+
+function initArrowMarkers(svg, id, fill) {
+  var defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  var marker = document.createElementNS('http://www.w3.org/2000/svg','marker');
+  marker.setAttribute('id',id); marker.setAttribute('markerWidth','10'); marker.setAttribute('markerHeight','7');
+  marker.setAttribute('refX','10'); marker.setAttribute('refY','3.5'); marker.setAttribute('orient','auto');
+  var path = document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('d','M0,0 L10,3.5 L0,7');
+  path.setAttribute('fill', fill);
+  marker.appendChild(path); defs.appendChild(marker);
+  svg.innerHTML = ''; svg.appendChild(defs);
+}
+function calculateRefractionAngle(deg, n) {
+  var rad = deg * Math.PI / 180;
+  var sinR = Math.sin(rad) / n;
+  return Math.abs(sinR) > 1 ? null : Math.asin(sinR) * 180 / Math.PI;
+}
+function updateRays() {
+  cw = container.offsetWidth; ch = container.offsetHeight;
+  cx = cw / 2; cy = ch / 2;
+  initArrowMarkers(incidentSvg, 'arr-i', '#e74c3c');
+  initArrowMarkers(reflectedSvg, 'arr-r', '#3498db');
+  initArrowMarkers(refractedSvg, 'arr-g', '#2ecc71');
+
+  var rad = incidentAngle * Math.PI / 180;
+  var len = Math.min(cw, ch) * 0.4;
+
+  var ex = isRightSide ? cx + len * Math.sin(rad) : cx - len * Math.sin(rad);
+  var ey = cy - len * Math.cos(rad);
+  // incident (arrow at midpoint)
+  var pl1 = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+  pl1.setAttribute('points',ex+','+ey+' '+(ex+cx)/2+','+(ey+cy)/2+' '+cx+','+cy);
+  pl1.setAttribute('fill','none');
+  pl1.setAttribute('stroke','#e74c3c'); pl1.setAttribute('stroke-width','2.5');
+  pl1.setAttribute('marker-mid','url(#arr-i)');
+  incidentSvg.appendChild(pl1);
+
+  // reflected (arrow at midpoint)
+  var rx = isRightSide ? cx - len * Math.sin(rad) : cx + len * Math.sin(rad);
+  var ry = cy - len * Math.cos(rad);
+  var pl2 = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+  pl2.setAttribute('points',cx+','+cy+' '+(cx+rx)/2+','+(cy+ry)/2+' '+rx+','+ry);
+  pl2.setAttribute('fill','none');
+  pl2.setAttribute('stroke','#3498db'); pl2.setAttribute('stroke-width','2.5');
+  pl2.setAttribute('marker-mid','url(#arr-r)');
+  reflectedSvg.appendChild(pl2);
+
+  // refracted (arrow at midpoint)
+  var refr = calculateRefractionAngle(incidentAngle, refractiveIndex);
+  if (refr !== null) {
+    var rrad = refr * Math.PI / 180;
+    var gx = isRightSide ? cx - len * Math.sin(rrad) : cx + len * Math.sin(rrad);
+    var gy = cy + len * Math.cos(rrad);
+    var pl3 = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+    pl3.setAttribute('points',cx+','+cy+' '+(cx+gx)/2+','+(cy+gy)/2+' '+gx+','+gy);
+    pl3.setAttribute('fill','none');
+    pl3.setAttribute('stroke','#2ecc71'); pl3.setAttribute('stroke-width','2.5');
+    pl3.setAttribute('marker-mid','url(#arr-g)');
+    refractedSvg.appendChild(pl3);
+  }
+
+  dragHandle.style.left = ex + 'px';
+  dragHandle.style.top = ey + 'px';
+  angleDisplay.textContent = incidentAngle + '°';
+}
+function calcAngleFromPoint(x, y) {
+  var dx = cx - x, dy = cy - y;
+  var a = Math.atan2(dx, dy) * 180 / Math.PI;
+  isRightSide = dx < 0;
+  return Math.max(0, Math.min(89, Math.abs(a)));
+}
+
+// Sliders
+angleSlider.addEventListener('input', function() {
+  incidentAngle = parseInt(this.value); updateRays(); countOp();
+});
+indexSlider.addEventListener('input', function() {
+  refractiveIndex = parseFloat(this.value);
+  indexDisplay.textContent = refractiveIndex.toFixed(2);
+  updateRays(); countOp();
+});
+
+// Drag
+dragHandle.addEventListener('mousedown', function(e) { isDragging = true; e.preventDefault(); });
+document.addEventListener('mousemove', function(e) {
+  if (!isDragging) return;
+  var rect = container.getBoundingClientRect();
+  var x = Math.max(0, Math.min(cw, e.clientX - rect.left));
+  var y = Math.max(0, Math.min(ch, e.clientY - rect.top));
+  incidentAngle = calcAngleFromPoint(x, y);
+  angleSlider.value = incidentAngle;
+  updateRays();
+});
+document.addEventListener('mouseup', function() { isDragging = false; });
+
+// Touch drag
+dragHandle.addEventListener('touchstart', function(e) { isDragging = true; e.preventDefault(); });
+document.addEventListener('touchmove', function(e) {
+  if (!isDragging) return;
+  var rect = container.getBoundingClientRect();
+  var t = e.touches[0];
+  var x = Math.max(0, Math.min(cw, t.clientX - rect.left));
+  var y = Math.max(0, Math.min(ch, t.clientY - rect.top));
+  incidentAngle = calcAngleFromPoint(x, y);
+  angleSlider.value = incidentAngle;
+  updateRays();
+});
+document.addEventListener('touchend', function() { isDragging = false; });
+
+updateRays();
+
+// ===== Hamburger Menu =====
+(function(){
+  var btn = document.getElementById('menuToggle'), menu = document.getElementById('categoryMenu');
+  if (btn && menu) {
+    btn.addEventListener('click', function() {
+      var open = menu.classList.toggle('nav-open');
+      btn.classList.toggle('is-active');
+      btn.setAttribute('aria-expanded', open);
+    });
+    menu.querySelectorAll('a').forEach(function(l) {
+      l.addEventListener('click', function() { menu.classList.remove('nav-open'); btn.classList.remove('is-active'); btn.setAttribute('aria-expanded','false'); });
+    });
+  }
+})();
+(function(){
+  var items = document.querySelectorAll('.menu-item');
+  items.forEach(function(item) {
+    var top = item.querySelector('.menu-top'), sub = item.querySelector('.submenu');
+    if (top && sub && sub.children.length > 1) {
+      top.addEventListener('click', function(e) {
+        if ('ontouchstart' in window && window.innerWidth <= 680) {
+          var isOpen = sub.classList.contains('open');
+          item.parentNode.querySelectorAll('.submenu.open').forEach(function(s) { if (s !== sub) s.classList.remove('open'); });
+          if (!isOpen) { e.preventDefault(); sub.classList.add('open'); }
+        }
+      });
+    }
+  });
+})();
+
+// Recalc on resize
+window.addEventListener('resize', function() {
+  cw = container.offsetWidth; ch = container.offsetHeight;
+  cx = cw / 2; cy = ch / 2;
+  updateRays();
+});
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+
+

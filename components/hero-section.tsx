@@ -33,15 +33,13 @@ export function HeroSection() {
 
             {/* 按钮 */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="https://yorkphysics.eu.cc/"
-                target="_blank"
-                rel="noopener noreferrer"
+              <a
+                href="/physics/"
                 className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-8 py-3.5 rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200"
               >
                 <FlaskConical className="w-5 h-5" />
                 进入物理实验室
-              </Link>
+              </a>
               <Link
                 href="/about"
                 className="inline-flex items-center justify-center gap-2 bg-white text-gray-700 px-8 py-3.5 rounded-xl font-semibold border-2 border-gray-200 hover:border-blue-300 hover:text-blue-600 transition-colors"

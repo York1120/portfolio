@@ -1,10 +1,10 @@
-﻿import { ArrowLeft, FlaskConical, ExternalLink } from "lucide-react"
+﻿import { ArrowLeft, FlaskConical, ArrowRight } from "lucide-react"
 import Link from "next/link"
 
 export default function OpticsPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <Link href="/physics" className="inline-flex items-center gap-1 text-gray-500 hover:text-blue-600 transition-colors mb-8 text-sm">
+      <Link href="/physics/course" className="inline-flex items-center gap-1 text-gray-500 hover:text-blue-600 transition-colors mb-8 text-sm">
         <ArrowLeft className="w-4 h-4" />
         返回物理教学
       </Link>
@@ -105,10 +105,10 @@ export default function OpticsPage() {
           <h3 className="font-bold text-gray-900 mb-2">互动实验</h3>
           <p className="text-gray-600 text-sm mb-3">通过互动实验直观理解光学概念。</p>
           <div className="flex flex-wrap gap-2">
-            <a href="https://yorkphysics.eu.cc/04-pinhole.html" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">小孔成像 <ExternalLink className="w-3 h-3" /></a>
-            <a href="https://yorkphysics.eu.cc/06-rgb.html" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">三原色组合 <ExternalLink className="w-3 h-3" /></a>
-            <a href="https://yorkphysics.eu.cc/07-lens.html" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">凸透镜成像 <ExternalLink className="w-3 h-3" /></a>
-            <a href="https://yorkphysics.eu.cc/10-refraction.html" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">反射与折射 <ExternalLink className="w-3 h-3" /></a>
+            <a href="/physics/04-pinhole.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">小孔成像 <ArrowRight className="w-3 h-3" /></a>
+            <a href="/physics/06-rgb.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">三原色组合 <ArrowRight className="w-3 h-3" /></a>
+            <a href="/physics/07-lens.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">凸透镜成像 <ArrowRight className="w-3 h-3" /></a>
+            <a href="/physics/10-refraction.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">反射与折射 <ArrowRight className="w-3 h-3" /></a>
           </div>
         </div>
       </div>

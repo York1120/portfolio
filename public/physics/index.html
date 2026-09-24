@@ -1,0 +1,466 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="York 周老师物理是一套面向初中物理课堂的互动实验教学平台，覆盖声学、光学、热学、力学、电学与知识测验。">
+  <meta name="keywords" content="初中物理,互动实验,物理教学,虚拟实验,York周老师物理">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>York 周老师物理 | 专业物理互动教学平台</title>
+  <meta property="og:title" content="York 周老师物理 | 专业物理互动教学平台">
+  <meta property="og:description" content="York 周老师物理是一套面向初中物理课堂的互动实验教学平台，覆盖声学、光学、热学、力学、电学与知识测验。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body id="top">
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+
+  <!-- Fixed Navigation -->
+  <div class="nav-shell">
+    <div class="container">
+      <nav class="nav" aria-label="主导航">
+        <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+          <span class="brand-mark">Phy</span>
+          <span>York 周老师物理<small>Professional Physics Lab</small></span>
+        </a>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+          <div class="menu-item">
+            <a class="menu-top" href="#acoustics">声学</a>
+            <div class="submenu">
+              <a href="#exp-frequency">频率发声器</a>
+              <a href="#exp-noise">噪声检测仪</a>
+            </div>
+          </div>
+          <div class="menu-item">
+            <a class="menu-top" href="#optics">光学</a>
+            <div class="submenu">
+              <a href="#exp-pinhole">小孔成像虚拟实验</a>
+              <a href="#exp-rgb">光的三原色组合游戏</a>
+              <a href="#exp-lens">凸透镜成像虚拟实验</a>
+              <a href="#exp-refraction">光的反射与折射定律</a>
+            </div>
+          </div>
+          <div class="menu-item">
+            <a class="menu-top" href="#thermal">热学</a>
+            <div class="submenu">
+              <a href="#exp-molecule">分子热运动微观示意图</a>
+              <a href="#exp-engine">四冲程汽油机示意图</a>
+            </div>
+          </div>
+          <div class="menu-item">
+            <a class="menu-top" href="#mechanics">力学</a>
+            <div class="submenu">
+              <a href="#exp-length">长度读取训练平台</a>
+              <a href="#exp-buoyancy">木块浮力图像</a>
+              <a href="#exp-torricelli">托里拆利实验</a>
+            </div>
+          </div>
+          <div class="menu-item">
+            <a class="menu-top" href="#electricity">电学</a>
+            <div class="submenu">
+              <a href="#exp-circuit">电路连接与欧姆定律</a>
+              <a href="#exp-resistors">电阻的串联与并联</a>
+            </div>
+          </div>
+          <div class="menu-item">
+            <a class="menu-top" href="#quiz">知识测验</a>
+            <div class="submenu">
+              <a href="#exp-review">初中物理知识点复习</a>
+              <a href="#exp-quiz">《物理原来很有趣》测验</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="container">
+    <section class="hero">
+      <div>
+        <span class="eyebrow">初中物理互动教学平台</span>
+        <h1>让抽象的物理规律<br>在屏幕上清晰呈现</h1>
+        <p class="hero-text">围绕教材的互动实验，覆盖声学、光学、热学、力学、电学与知识测验。</p>
+        <p class="hero-text">现在，跟随周老师一起玩转物理吧~</p>
+      </div>
+      <aside class="hero-panel" aria-label="实验搜索与筛选">
+        <form class="search-box" id="filterForm">
+          <input id="searchInput" type="search" placeholder="搜索实验名称或知识点，如：透镜、浮力、声速">
+          <div class="filter-row">
+            <select id="topicFilter" aria-label="按分类筛选">
+              <option value="">全部分类</option>
+              <option value="声学">声学</option>
+              <option value="光学">光学</option>
+              <option value="热学">热学</option>
+              <option value="力学">力学</option>
+              <option value="电学">电学</option>
+              <option value="知识测验">知识测验</option>
+            </select>
+            <select id="levelFilter" aria-label="按难度筛选">
+              <option value="">全部难度</option>
+              <option value="基础">基础</option>
+              <option value="进阶">进阶</option>
+              <option value="挑战">挑战</option>
+            </select>
+          </div>
+        </form>
+      </aside>
+    </section>
+  </div>
+</header>
+
+<!-- ============ MAIN CONTENT ============ -->
+<main class="container">
+  <div id="experiments"></div>
+
+  <!-- 声学 -->
+  <section class="section" id="acoustics" data-section="声学">
+    <div class="section-heading">
+      <h2>声学</h2>
+      <p>从频率、振幅到噪声监测，建立声音的物理图像。</p>
+    </div>
+    <div class="experiment-grid">
+      <a class="experiment-card" id="exp-frequency" href="02-frequency.html"
+         data-title="频率发声器 声学 频率 波形" data-topic="声学" data-level="基础">
+        <span class="difficulty">⭐ 基础</span>
+        <h3>频率发声器</h3>
+        <p>调节频率与振幅，观察波形变化，理解音调、响度与振动参数的关系。</p>
+        <div class="tags">
+          <span class="tag">频率</span>
+          <span class="tag">波形</span>
+        </div>
+      </a>
+      <a class="experiment-card" id="exp-noise" href="03-noise.html"
+         data-title="噪声检测仪 声学 噪声 分贝" data-topic="声学" data-level="进阶">
+        <span class="difficulty">⭐⭐ 进阶</span>
+        <h3>噪声检测仪</h3>
+        <p>模拟环境噪声分贝监测与波形可视化，认识噪声强弱与生活场景。</p>
+        <div class="tags">
+          <span class="tag">噪声</span>
+          <span class="tag">分贝</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 光学 -->
+  <section class="section" id="optics" data-section="光学">
+    <div class="section-heading">
+      <h2>光学</h2>
+      <p>围绕直线传播、反射、折射、色光与透镜成像逐步推进。</p>
+    </div>
+    <div class="experiment-grid">
+      <a class="experiment-card" id="exp-pinhole" href="04-pinhole.html"
+         data-title="小孔成像虚拟实验 光学 光的传播 小孔成像" data-topic="光学" data-level="基础">
+        <span class="difficulty">⭐ 基础</span>
+        <h3>小孔成像虚拟实验</h3>
+        <p>拖动物体与光屏，观察倒立实像，理解光沿直线传播的成像结果。</p>
+        <div class="tags">
+          <span class="tag">光的传播</span>
+          <span class="tag">小孔成像</span>
+        </div>
+      </a>
+      <a class="experiment-card" id="exp-rgb" href="06-rgb.html"
+         data-title="光的三原色组合游戏 光学 色光混合 视觉" data-topic="光学" data-level="基础">
+        <span class="difficulty">⭐ 基础</span>
+        <h3>光的三原色组合游戏</h3>
+        <p>调节 RGB 三色光强度，观察色光叠加和视觉混合效果。</p>
+        <div class="tags">
+          <span class="tag">色光混合</span>
+          <span class="tag">视觉</span>
+        </div>
+      </a>
+      <a class="experiment-card" id="exp-lens" href="07-lens.html"
+         data-title="凸透镜成像虚拟实验 光学 透镜成像 光路作图" data-topic="光学" data-level="挑战">
+        <span class="difficulty">⭐⭐⭐ 挑战</span>
+        <h3>凸透镜成像虚拟实验</h3>
+        <p>拖动物体、透镜与光屏，实时显示光路、像距与成像性质变化。</p>
+        <div class="tags">
+          <span class="tag">透镜成像</span>
+          <span class="tag">光路作图</span>
+        </div>
+      </a>
+      <a class="experiment-card" id="exp-refraction" href="10-refraction.html"
+         data-title="光的反射与折射定律 光学 斯涅尔定律 折射率" data-topic="光学" data-level="挑战">
+        <span class="difficulty">⭐⭐⭐ 挑战</span>
+        <h3>光的反射与折射定律</h3>
+        <p>验证反射定律和折射规律，支持水、玻璃、钻石等介质切换。</p>
+        <div class="tags">
+          <span class="tag">斯涅尔定律</span>
+          <span class="tag">折射率</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 热学 -->
+  <section class="section" id="thermal" data-section="热学">
+    <div class="section-heading">
+      <h2>热学</h2>
+      <p>把微观热运动和热机工作过程转化为可观察模型。</p>
+    </div>
+    <div class="experiment-grid">
+      <a class="experiment-card" id="exp-molecule" href="08-molecule.html"
+         data-title="分子热运动微观示意图 热学 分子热运动 物态模型" data-topic="热学" data-level="基础">
+        <span class="difficulty">⭐ 基础</span>
+        <h3>分子热运动微观示意图</h3>
+        <p>展示固、液、气三态分子运动差异，通过温度滑块观察运动快慢。</p>
+        <div class="tags">
+          <span class="tag">分子热运动</span>
+          <span class="tag">物态模型</span>
+        </div>
+      </a>
+      <a class="experiment-card" id="exp-engine" href="09-engine.html"
+         data-title="四冲程汽油机示意图 热学 热机 内能转化" data-topic="热学" data-level="进阶">
+        <span class="difficulty">⭐⭐ 进阶</span>
+        <h3>四冲程汽油机示意图</h3>
+        <p>动画演示进气、压缩、做功、排气四个冲程，支持速度调节。</p>
+        <div class="tags">
+          <span class="tag">热机</span>
+          <span class="tag">内能转化</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 力学 -->
+  <section class="section" id="mechanics" data-section="力学">
+    <div class="section-heading">
+      <h2>力学</h2>
+      <p>从长度测量到浮力图像和大气压测定，连接实验现象与定量表达。</p>
+    </div>
+    <div class="experiment-grid">
+      <a class="experiment-card" id="exp-length" href="01-length.html"
+         data-title="长度读取训练平台 力学 长度测量 机械运动" data-topic="力学" data-level="基础">
+        <span class="difficulty">⭐ 基础</span>
+        <h3>长度读取训练平台</h3>
+        <p>练习刻度尺读数、估读与厘米/毫米单位换算，支持随机题目训练。</p>
+        <div class="tags">
+          <span class="tag">长度测量</span>
+          <span class="tag">机械运动</span>
+        </div>
+      </a>
+      <a class="experiment-card" id="exp-buoyancy" href="12-buoyancy.html"
+         data-title="木块浮力图像 力学 浮力 图像分析" data-topic="力学" data-level="进阶">
+        <span class="difficulty">⭐⭐ 进阶</span>
+        <h3>木块浮力图像</h3>
+        <p>调节水深观察浮力四阶段变化曲线，连接现象、受力和图像表达。</p>
+        <div class="tags">
+          <span class="tag">浮力</span>
+          <span class="tag">图像分析</span>
+        </div>
+      </a>
+      <a class="experiment-card" id="exp-torricelli" href="13-torricelli.html"
+         data-title="托里拆利实验 力学 大气压 液体压强" data-topic="力学" data-level="挑战">
+        <span class="difficulty">⭐⭐⭐ 挑战</span>
+        <h3>托里拆利实验</h3>
+        <p>切换液体、调节倾角与海拔，理解液柱高度和大气压测量关系。</p>
+        <div class="tags">
+          <span class="tag">大气压</span>
+          <span class="tag">液体压强</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 电学 -->
+  <section class="section" id="electricity" data-section="电学">
+    <div class="section-heading">
+      <h2>电学</h2>
+      <p>从简单电路到电磁与电动机，理解电学基本规律。</p>
+    </div>
+    <div class="experiment-grid">
+      <a class="experiment-card" id="exp-circuit" href="15-circuit.html"
+         data-title="电路连接与欧姆定律 电学 欧姆定律 电路" data-topic="电学" data-level="基础">
+        <span class="difficulty">⭐ 基础</span>
+        <h3>电路连接与欧姆定律</h3>
+        <p>调节电压和电阻，观察电流变化，验证 I = U / R，理解欧姆定律的基本关系。</p>
+        <div class="tags">
+          <span class="tag">欧姆定律</span>
+          <span class="tag">电路</span>
+        </div>
+      </a>
+      <a class="experiment-card" id="exp-resistors" href="16-resistors.html"
+         data-title="电阻的串联与并联 电学 电阻 串并联" data-topic="电学" data-level="基础">
+        <span class="difficulty">⭐ 基础</span>
+        <h3>电阻的串联与并联</h3>
+        <p>切换串联/并联模式，改变电阻阻值，观察总电阻的变化规律。</p>
+        <div class="tags">
+          <span class="tag">电阻</span>
+          <span class="tag">串并联</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 知识测验 -->
+  <section class="section" id="quiz" data-section="知识测验">
+    <div class="section-heading">
+      <h2>知识测验</h2>
+      <p>通过复习题与趣味测验，巩固概念、公式和科学素养。</p>
+    </div>
+    <div class="experiment-grid">
+      <a class="experiment-card" id="exp-review" href="11-review.html"
+         data-title="初中物理知识点复习 知识测验 知识复习 课堂练习" data-topic="知识测验" data-level="基础">
+        <span class="difficulty">⭐ 基础</span>
+        <h3>初中物理知识点复习</h3>
+        <p>覆盖机械运动、声现象与物态变化等知识点，提供题目练习与进度统计。</p>
+        <div class="tags">
+          <span class="tag">知识复习</span>
+          <span class="tag">课堂练习</span>
+        </div>
+      </a>
+      <a class="experiment-card" id="exp-quiz" href="14-quiz.html"
+         data-title="《物理原来很有趣》测验 知识测验 科学素养 趣味测验" data-topic="知识测验" data-level="基础">
+        <span class="difficulty">⭐ 基础</span>
+        <h3>《物理原来很有趣》测验</h3>
+        <p>随机 5 题科学素养测验，连接物理学家、经典实验与定律知识。</p>
+        <div class="tags">
+          <span class="tag">科学素养</span>
+          <span class="tag">趣味测验</span>
+        </div>
+      </a>
+    </div>
+  </section>
+</main>
+
+<!-- ============ QUICK NAV ============ -->
+<div class="quick-nav" aria-label="快速导航">
+  <a href="#experiments" title="全部实验">Lab</a>
+  <button type="button" id="backTop" title="回到顶部">↑</button>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div>
+      <strong>York 周老师物理</strong>
+      <p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p>
+      <p>© 2026 York Physics Lab. All Rights Reserved.</p>
+    </div>
+    <div>
+      <strong>联系方式</strong>
+      <p>周煜全老师</p>
+      <p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p>
+    </div>
+    <div>
+      <strong>特别鸣谢</strong>
+      <p>龙外物理科组</p>
+      <p>梁卓栋老师</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ SCRIPTS ============ -->
+<script>
+  // ----- 搜索/筛选 -----
+  (function () {
+    const searchInput = document.getElementById('searchInput');
+    const topicFilter = document.getElementById('topicFilter');
+    const levelFilter = document.getElementById('levelFilter');
+    const cards = Array.from(document.querySelectorAll('.experiment-card'));
+
+    function applyFilters() {
+      const keyword = searchInput.value.trim().toLowerCase();
+      const topic = topicFilter.value;
+      const level = levelFilter.value;
+
+      cards.forEach(function (card) {
+        const matchKeyword = !keyword || card.dataset.title.toLowerCase().includes(keyword);
+        const matchTopic = !topic || card.dataset.topic === topic;
+        const matchLevel = !level || card.dataset.level === level;
+        card.style.display = (matchKeyword && matchTopic && matchLevel) ? 'flex' : 'none';
+      });
+
+      document.querySelectorAll('.section[data-section]').forEach(function (section) {
+        const visibleCards = Array.from(section.querySelectorAll('.experiment-card'))
+          .some(function (card) { return card.style.display !== 'none'; });
+        const emptyOnly = section.querySelector('.empty-card') && !section.querySelector('.experiment-card');
+        section.style.display = (visibleCards || (emptyOnly && (!topic || topic === section.dataset.section) && !keyword && !level)) ? 'block' : 'none';
+      });
+    }
+
+    [searchInput, topicFilter, levelFilter].forEach(function (control) {
+      control.addEventListener('input', applyFilters);
+      control.addEventListener('change', applyFilters);
+    });
+  })();
+
+  // ----- 回到顶部 -----
+  document.getElementById('backTop').addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ----- 移动端汉堡菜单 -----
+  (function () {
+    var toggleBtn = document.getElementById('menuToggle');
+    var menu = document.getElementById('categoryMenu');
+
+    if (toggleBtn && menu) {
+      toggleBtn.addEventListener('click', function () {
+        var isOpen = menu.classList.toggle('nav-open');
+        toggleBtn.classList.toggle('is-active');
+        toggleBtn.setAttribute('aria-expanded', isOpen);
+      });
+
+      // 点击菜单链接后自动关闭菜单
+      menu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          menu.classList.remove('nav-open');
+          toggleBtn.classList.remove('is-active');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+  })();
+
+  // ----- 移动端子菜单点击展开 -----
+  (function () {
+    var menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach(function (item) {
+      var topLink = item.querySelector('.menu-top');
+      var sub = item.querySelector('.submenu');
+      if (topLink && sub && sub.children.length <= 1) return; // 单链接不拦截点击
+
+      if (topLink && sub) {
+        topLink.addEventListener('click', function (e) {
+          // 仅在触屏设备上拦截主菜单点击来展开子菜单
+          if ('ontouchstart' in window && window.innerWidth <= 680) {
+            var isOpen = sub.classList.contains('open');
+            // 先关闭同级其他子菜单
+            item.parentNode.querySelectorAll('.submenu.open').forEach(function (s) {
+              if (s !== sub) s.classList.remove('open');
+            });
+            if (!isOpen) {
+              e.preventDefault();
+              sub.classList.add('open');
+            }
+            // 如果子菜单已经打开，允许默认跳转
+          }
+        });
+      }
+    });
+  })();
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+

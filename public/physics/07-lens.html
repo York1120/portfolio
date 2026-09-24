@@ -1,0 +1,536 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="凸透镜成像虚拟实验 — 拖动物体、透镜与光屏，实时显示光路与成像性质。">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>凸透镜成像虚拟实验 | York 周老师物理</title>
+  <meta property="og:title" content="凸透镜成像虚拟实验 | York 周老师物理">
+  <meta property="og:description" content="凸透镜成像虚拟实验 — 拖动物体、透镜与光屏，实时显示光路与成像性质。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .exp-page { padding-top: 96px; padding-bottom: 40px; }
+    .lab-hero { margin-bottom: 24px; }
+    .lab-hero h1 { margin: 0 0 8px; font-size: 28px; color: var(--brand); }
+    .lab-hero p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .lab-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+    .lab-main { display: flex; flex-direction: column; gap: 18px; }
+    .lab-bottom { display: flex; flex-direction: column; gap: 18px; }
+    .lab-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-soft); }
+    .lab-card h2 { margin: 0 0 12px; font-size: 18px; color: var(--brand); }
+    .lab-card h3 { margin: 0 0 10px; font-size: 15px; color: var(--ink); }
+    .lab-card p { margin: 8px 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .lab-sidebar { display: flex; flex-direction: column; gap: 18px; }
+    .steps { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 1.9; }
+    .notice { background: #fffbf0; border-color: #f0dca0; }
+    .metric-row { display: flex; gap: 16px; }
+    .metric { flex: 1; text-align: center; padding: 12px; background: var(--surface-soft); border-radius: 12px; }
+    .metric strong { display: block; font-size: 20px; color: var(--brand); }
+    .metric span { font-size: 12px; color: var(--muted); }
+    .related-list a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--brand-2); font-size: 14px; font-weight: 600; text-decoration: none; }
+    .related-list a:hover { background: var(--surface-soft); }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; color: #fff; transition: opacity .2s, transform .2s; }
+    .btn:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--brand-2), var(--tech)); }
+    .btn-danger { background: linear-gradient(135deg, #e53935, #ef5350); }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .record-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .record-table th { background: var(--surface-soft); padding: 8px 6px; text-align: center; font-weight: 600; color: var(--ink); border: 1px solid var(--line); }
+    .record-table td { padding: 6px; text-align: center; border: 1px solid var(--line); color: var(--muted); }
+    .record-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .btn-secondary { background: var(--line); color: var(--ink); }
+    .btn-secondary:hover { background: #c8d6e5; }
+    .experiment-actions { margin-top: 16px; }
+    .experiment-actions .btn:hover { opacity: 1; transform: translateY(-2px); }
+    .experiment-actions .btn-primary:hover { background: linear-gradient(135deg, var(--brand-2), var(--tech)); }
+    .experiment-actions .btn-secondary:hover { background: var(--line); color: var(--ink); }
+
+    .canvas-wrap { width: 100%; overflow-x: auto; }
+    .canvas-wrap canvas { display: block; margin: 0 auto; width: 100%; height: auto; max-width: 1000px; }
+    .info-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px; background: var(--surface-soft); border-radius: 10px; margin-top: 8px; font-size: 14px; }
+    .info-item { padding: 6px 12px; background: #fff; border-radius: 6px; white-space: nowrap; }
+    .info-item strong { color: var(--brand); }
+    .info-relation { width: 100%; padding: 10px 14px; background: linear-gradient(135deg, var(--brand-2), var(--tech)); color: #fff; border-radius: 8px; font-weight: 600; font-size: 14px; text-align: center; box-sizing: border-box; }
+    .formula { padding: 14px; background: var(--surface-soft); border-radius: 12px; text-align: center; font-size: 18px; margin: 8px 0; }
+    .legend { display: flex; gap: 16px; flex-wrap: wrap; padding: 8px 0; font-size: 13px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 20px; height: 4px; border-radius: 2px; }
+    .ctrl-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+    .ctrl-row label { font-size: 14px; font-weight: 600; color: var(--ink); white-space: nowrap; }
+    .ctrl-row input[type="range"] { flex: 1; min-width: 120px; }
+    .ctrl-row .val { min-width: 60px; text-align: center; font-weight: 600; color: var(--brand); font-size: 14px; }
+    @media (max-width: 960px) { .lab-layout { grid-template-columns: 1fr; } .lab-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } }
+    @media (max-width: 760px) { .lab-sidebar { grid-template-columns: 1fr; } }
+    @media (max-width: 680px) { .lab-hero h1 { font-size: 22px; } }
+    @media (max-width: 480px) { .exp-page { padding-top: 80px; } .lab-hero h1 { font-size: 20px; } .lab-card { padding: 14px; } .info-item { white-space: normal; font-size: 13px; padding: 4px 10px; } .ctrl-row input[type="range"] { min-width: 80px; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-shell">
+  <div class="container">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+        <span class="brand-mark">Phy</span>
+        <span>York 周老师物理<small>Professional Physics Lab</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+        <div class="menu-item"><a class="menu-top" href="index.html#acoustics">声学</a><div class="submenu"><a href="02-frequency.html">频率发声器</a><a href="03-noise.html">噪声检测仪</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#optics">光学</a><div class="submenu"><a href="04-pinhole.html">小孔成像虚拟实验</a><a href="06-rgb.html">光的三原色组合游戏</a><a href="07-lens.html">凸透镜成像虚拟实验</a><a href="10-refraction.html">光的反射与折射定律</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#thermal">热学</a><div class="submenu"><a href="08-molecule.html">分子热运动微观示意图</a><a href="09-engine.html">四冲程汽油机示意图</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#mechanics">力学</a><div class="submenu"><a href="01-length.html">长度读取训练平台</a><a href="12-buoyancy.html">木块浮力图像</a><a href="13-torricelli.html">托里拆利实验</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#electricity">电学</a><div class="submenu"><a href="15-circuit.html">电路连接与欧姆定律</a><a href="16-resistors.html">电阻的串联与并联</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#quiz">知识测验</a><div class="submenu"><a href="11-review.html">初中物理知识点复习</a><a href="14-quiz.html">《物理原来很有趣》测验</a></div></div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="container exp-page">
+  <div class="lab-hero">
+    <h1>凸透镜成像虚拟实验</h1>
+    <p>拖动物体、透镜与光屏，实时显示光路、像距与成像性质变化。</p>
+  </div>
+
+  <div class="lab-layout">
+    <div class="lab-main">
+      <div class="lab-card">
+        <h2>实验操作区</h2>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:8px;">拖拽蜡烛、透镜或光屏（或在触摸屏上直接拖动），观察成像变化。</p>
+        <div class="canvas-wrap">
+          <canvas id="lensCanvas" width="1000" height="500"></canvas>
+        </div>
+        <div class="legend">
+          <span class="legend-item"><span class="legend-dot" style="background:#e74c3c;"></span> 物体（蜡烛）</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#333;"></span> 凸透镜</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#999;"></span> 光屏</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#e53935;"></span> 平行光线</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#1b8f3a;"></span> 中心光线</span>
+        </div>
+        <div class="ctrl-row">
+          <label>焦距(f):</label>
+          <input type="range" id="focalSlider" min="50" max="150" value="100">
+          <span class="val" id="focalDisplay">10 cm</span>
+        </div>
+        <div class="info-row" id="infoRow">
+          <div class="info-item"><strong>物距(u):</strong> <span id="uVal">-</span></div>
+          <div class="info-item"><strong>像距(v):</strong> <span id="vVal">-</span></div>
+          <div class="info-item"><strong>焦距(f):</strong> <span id="fVal">-</span></div>
+          <div class="info-item"><strong>放大率:</strong> <span id="magVal">-</span></div>
+          <div class="info-relation" id="relationDisplay">关系: 调节参数查看成像关系</div>
+        </div>
+        <div class="btn-group experiment-actions">
+          <button class="btn btn-primary" id="resetLensBtn">重置实验</button>
+          <button class="btn btn-secondary" onclick="recordLensData()">记录数据</button>
+        </div>
+      </div>
+
+      <div class="lab-bottom">
+        <div class="lab-card">
+          <h2>实验步骤</h2>
+          <ol class="steps">
+            <li>用鼠标或手指拖拽蜡烛（红色物体）改变物距 u。</li>
+            <li>拖拽凸透镜或光屏，观察像的位置和大小变化。</li>
+            <li>调节焦距滑块，探索焦距对成像的影响。</li>
+            <li>观察物距变化时，成像规律（倒立/正立、放大/缩小、实像/虚像）。</li>
+          </ol>
+        </div>
+        <div class="lab-card notice">
+          <h2>成像规律速记</h2>
+          <p>u &gt; 2f → 倒立缩小实像 &nbsp;|&nbsp; u = 2f → 倒立等大实像 &nbsp;|&nbsp; f &lt; u &lt; 2f → 倒立放大实像 &nbsp;|&nbsp; u = f → 不成像 &nbsp;|&nbsp; u &lt; f → 正立放大虚像</p>
+        </div>
+        <div class="lab-card">
+          <h2>数据记录</h2>
+          <div style="overflow-x:auto;">
+            <table class="record-table" id="recordTable">
+              <thead><tr><th>#</th><th>物距 u</th><th>像距 v</th><th>焦距 f</th><th>放大率</th><th>成像性质</th></tr></thead>
+              <tbody id="recordBody"></tbody>
+            </table>
+          </div>
+          <div class="record-actions">
+            <button class="btn btn-secondary" onclick="exportRecords()">导出 CSV</button>
+            <button class="btn btn-danger" onclick="clearRecords()">清空数据</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab-sidebar">
+      <div class="lab-card">
+        <h2>原理说明</h2>
+        <p>凸透镜成像遵循公式：</p>
+        <div class="formula">1/u + 1/v = 1/f</div>
+        <p>其中 u 为物距，v 为像距，f 为焦距。当 u &gt; f 时成实像（倒立），当 u &lt; f 时成虚像（正立放大）。</p>
+      </div>
+      <div class="lab-card">
+        <h2>实时数据</h2>
+        <div class="metric-row">
+          <div class="metric"><strong id="timer">0s</strong><span>实验用时</span></div>
+        </div>
+      </div>
+      <div class="lab-card">
+        <h2>相关实验</h2>
+        <div class="related-list">
+          <a href="04-pinhole.html">→ 小孔成像虚拟实验</a>
+          
+          <a href="10-refraction.html">→ 光的反射与折射定律</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>York 周老师物理</strong><p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p><p>© 2026 York Physics Lab. All Rights Reserved.</p></div>
+    <div><strong>联系方式</strong><p>周煜全老师</p><p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p></div>
+    <div><strong>特别鸣谢</strong><p>龙外物理科组</p><p>梁卓栋老师</p></div>
+  </div>
+</footer>
+
+<script>
+// ===== Timer + Ops =====
+let elapsedSeconds = 0;
+setInterval(function() { elapsedSeconds++; var m = Math.floor(elapsedSeconds/60), s = elapsedSeconds%60; document.getElementById('timer').textContent = m + 'm' + s + 's'; }, 1000);
+
+// ===== Records =====
+let records = [];
+function recordLensData() {
+  var u = Math.abs(lensX - candleX) / 10;
+  var vVal = (focalLength * (lensX - candleX)) / ((lensX - candleX) - focalLength) / 10;
+  var f = focalLength / 10;
+  var mag = Math.abs(vVal / u);
+  var nature = getImageNature(u, f);
+  records.push({ u: u.toFixed(1), v: Math.abs(vVal).toFixed(1), f: f.toFixed(1), mag: mag.toFixed(2), nature: nature });
+  renderRecords()
+}
+function getImageNature(u, f) {
+  if (u > 2 * f) return '倒立缩小实像';
+  if (Math.abs(u - 2 * f) < 0.1) return '倒立等大实像';
+  if (u > f) return '倒立放大实像';
+  if (Math.abs(u - f) < 0.1) return '不成像';
+  return '正立放大虚像';
+}
+function renderRecords() {
+  var tbody = document.getElementById('recordBody');
+  tbody.innerHTML = records.map(function(r,i){ return '<tr><td>'+(i+1)+'</td><td>'+r.u+'cm</td><td>'+r.v+'cm</td><td>'+r.f+'cm</td><td>'+r.mag+'</td><td>'+r.nature+'</td></tr>'; }).join('');
+}
+function exportRecords() {
+  if (!records.length) return;
+  var csv = '序号,物距u,像距v,焦距f,放大率,成像性质\n' + records.map(function(r,i){ return (i+1)+','+r.u+','+r.v+','+r.f+','+r.mag+','+r.nature; }).join('\n');
+  var blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '凸透镜成像数据.csv'; a.click();
+}
+function clearRecords() { records = []; renderRecords(); }
+
+// ===== Experiment =====
+var canvas = document.getElementById('lensCanvas');
+var ctx = canvas.getContext('2d');
+var W = canvas.width, H = canvas.height;
+
+var focalLength = 100, candleX = 280, candleY = 300, lensX = 500, lensY = 300, screenX = 720;
+var candleHeight = 80, candleWidth = 25, flameHeight = 20;
+var isDragging = false, isDraggingScreen = false, isDraggingLens = false, dragOffsetX = 0;
+
+function drawArrowBetween(x1, y1, x2, y2, pos, size) {
+  size = size || 15; pos = pos || 0.5;
+  var ang = Math.atan2(y2 - y1, x2 - x1);
+  var mx = x1 + (x2 - x1) * pos, my = y1 + (y2 - y1) * pos;
+  ctx.save();
+  ctx.lineWidth = 4;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  ctx.moveTo(mx, my);
+  ctx.lineTo(mx - size * Math.cos(ang - Math.PI/6), my - size * Math.sin(ang - Math.PI/6));
+  ctx.moveTo(mx, my);
+  ctx.lineTo(mx - size * Math.cos(ang + Math.PI/6), my - size * Math.sin(ang + Math.PI/6));
+  ctx.stroke();
+  ctx.restore();
+}
+function drawKeyPoint(x, y, label) {
+  ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fillStyle = '#000'; ctx.fill();
+  ctx.font = '20px Arial'; ctx.textAlign = 'center'; ctx.fillText(label, x, y + 26);
+}
+function drawLens(x, y) {
+  var t = Math.max(4, 15 - (focalLength - 50) / 10);
+  ctx.beginPath(); ctx.ellipse(x, y, t, 130, 0, 0, Math.PI * 2);
+  ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.stroke();
+  ctx.fillStyle = 'rgba(200,220,240,0.3)'; ctx.fill();
+}
+function drawCandle(x, y) {
+  ctx.fillStyle = '#ff9900'; ctx.fillRect(x - candleWidth/2, y - candleHeight, candleWidth, candleHeight);
+  ctx.fillStyle = '#333'; ctx.fillRect(x - candleWidth/2 - 2, y, candleWidth + 4, 8);
+  ctx.beginPath(); ctx.moveTo(x, y - candleHeight - flameHeight - 8);
+  ctx.lineTo(x - 6, y - candleHeight); ctx.lineTo(x + 6, y - candleHeight); ctx.closePath();
+  var grad = ctx.createRadialGradient(x, y - candleHeight - 4, 2, x, y - candleHeight - 4, 14);
+  grad.addColorStop(0, '#ffdd00'); grad.addColorStop(0.5, '#ff8800'); grad.addColorStop(1, '#ff4400');
+  ctx.fillStyle = grad; ctx.fill();
+}
+function drawScreen(x) {
+  ctx.fillStyle = '#ccc'; ctx.fillRect(x, 300 - 90, 10, 180);
+  ctx.strokeStyle = '#999'; ctx.lineWidth = 1; ctx.strokeRect(x, 300 - 90, 10, 180);
+  ctx.font = '12px Arial'; ctx.textAlign = 'center'; ctx.fillStyle = '#666';
+  ctx.fillText('光屏', x + 5, 300 - 95);
+}
+function strokeRay(color, width, drawPath, dashed) {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.shadowColor = 'rgba(255,255,255,0.95)';
+  ctx.shadowBlur = 3;
+  if (dashed) ctx.setLineDash([8, 6]);
+  ctx.beginPath();
+  drawPath();
+  ctx.stroke();
+  ctx.restore();
+}
+function pointOnRayToX(x1, y1, x2, y2, targetX) {
+  var t = (targetX - x1) / (x2 - x1);
+  return { x: targetX, y: y1 + (y2 - y1) * t };
+}
+function drawScene() {
+  ctx.clearRect(0, 0, W, H);
+  // axis
+  ctx.beginPath(); ctx.moveTo(50, 300); ctx.lineTo(950, 300); ctx.strokeStyle = '#333'; ctx.lineWidth = 2; ctx.stroke();
+  var cx = lensX, cy = lensY;
+  drawKeyPoint(cx - 2 * focalLength, cy, '2F'); drawKeyPoint(cx - focalLength, cy, 'F');
+  drawKeyPoint(cx, cy, 'O'); drawKeyPoint(cx + focalLength, cy, 'F\''); drawKeyPoint(cx + 2 * focalLength, cy, '2F\'');
+  drawLens(cx, cy); drawCandle(candleX, candleY); drawScreen(screenX);
+  drawImageAndRays();
+}
+function drawImageAndRays() {
+  var cx = lensX, cy = lensY, u_val = cx - candleX;
+  if (Math.abs(u_val) < 1) return;
+  var flameTopY = candleY - candleHeight - flameHeight - 8;
+  var rayWidth = 4;
+  var rightEdge = 940;
+
+  if (Math.abs(u_val - focalLength) < 0.5) {
+    var parallelSlope = (cy - flameTopY) / focalLength;
+    var redEnd = { x: rightEdge, y: flameTopY + parallelSlope * (rightEdge - cx) };
+    var greenEnd = { x: rightEdge, y: cy + parallelSlope * (rightEdge - cx) };
+    strokeRay('#e53935', rayWidth, function() {
+      ctx.moveTo(candleX, flameTopY);
+      ctx.lineTo(cx, flameTopY);
+      ctx.lineTo(redEnd.x, redEnd.y);
+    });
+    drawArrowBetween(candleX, flameTopY, cx, flameTopY, 0.45);
+    drawArrowBetween(cx, flameTopY, redEnd.x, redEnd.y, 0.35);
+
+    strokeRay('#1b8f3a', rayWidth, function() {
+      ctx.moveTo(candleX, flameTopY);
+      ctx.lineTo(cx, cy);
+      ctx.lineTo(greenEnd.x, greenEnd.y);
+    });
+    drawArrowBetween(candleX, flameTopY, cx, cy, 0.45);
+    drawArrowBetween(cx, cy, greenEnd.x, greenEnd.y, 0.35);
+
+    document.getElementById('uVal').textContent = (Math.abs(u_val) / 10).toFixed(1) + ' cm';
+    document.getElementById('vVal').textContent = '∞';
+    document.getElementById('fVal').textContent = (focalLength / 10).toFixed(1) + ' cm';
+    document.getElementById('magVal').textContent = '∞';
+    document.getElementById('relationDisplay').textContent = '关系: u = f — 不成像（出射光线平行）';
+    return;
+  }
+
+  var v = (focalLength * u_val) / (u_val - focalLength);
+  var isReal = u_val > focalLength;
+  var mag = Math.abs(v / u_val);
+  var imageX = cx + v;
+  var imageTipY = isReal ? 300 + (candleHeight + flameHeight + 8) * mag : 300 - (candleHeight + flameHeight + 8) * mag;
+
+  // Rays: parallel ray (red)
+  if (isReal) {
+    strokeRay('#e53935', rayWidth, function() {
+      ctx.moveTo(candleX, flameTopY);
+      ctx.lineTo(cx, flameTopY);
+      ctx.lineTo(cx + focalLength, cy);
+      ctx.lineTo(imageX, imageTipY);
+    });
+    drawArrowBetween(candleX, flameTopY, cx, flameTopY, 0.33);
+    drawArrowBetween(cx, flameTopY, cx + focalLength, cy, 0.33);
+    drawArrowBetween(cx + focalLength, cy, imageX, imageTipY, 0.33);
+  } else {
+    var redOut = pointOnRayToX(cx, flameTopY, cx + focalLength, cy, rightEdge);
+    strokeRay('#e53935', rayWidth, function() {
+      ctx.moveTo(candleX, flameTopY);
+      ctx.lineTo(cx, flameTopY);
+      ctx.lineTo(redOut.x, redOut.y);
+    });
+    drawArrowBetween(candleX, flameTopY, cx, flameTopY, 0.45);
+    drawArrowBetween(cx, flameTopY, redOut.x, redOut.y, 0.38);
+    strokeRay('#e53935', rayWidth - 1, function() {
+      ctx.moveTo(cx, flameTopY);
+      ctx.lineTo(imageX, imageTipY);
+    }, true);
+  }
+
+  // Ray through center (green)
+  if (isReal) {
+    strokeRay('#1b8f3a', rayWidth, function() {
+      ctx.moveTo(candleX, flameTopY);
+      ctx.lineTo(cx, cy);
+      ctx.lineTo(imageX, imageTipY);
+    });
+    drawArrowBetween(candleX, flameTopY, cx, cy, 0.33);
+    drawArrowBetween(cx, cy, imageX, imageTipY, 0.33);
+  } else {
+    var greenOut = pointOnRayToX(cx, cy, candleX, flameTopY, rightEdge);
+    strokeRay('#1b8f3a', rayWidth, function() {
+      ctx.moveTo(candleX, flameTopY);
+      ctx.lineTo(cx, cy);
+      ctx.lineTo(greenOut.x, greenOut.y);
+    });
+    drawArrowBetween(candleX, flameTopY, cx, cy, 0.45);
+    drawArrowBetween(cx, cy, greenOut.x, greenOut.y, 0.34);
+    strokeRay('#1b8f3a', rayWidth - 1, function() {
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx, cy);
+      ctx.lineTo(imageX, imageTipY);
+    }, true);
+  }
+
+  // Draw image
+  var iw = candleWidth * mag, ih = candleHeight * mag, fh = (flameHeight + 8) * mag;
+  if (isReal) {
+    ctx.fillStyle = 'rgba(0,0,255,0.5)'; ctx.fillRect(imageX - iw/2, 300, iw, ih);
+    ctx.beginPath(); ctx.moveTo(imageX, 300 + ih + fh);
+    ctx.lineTo(imageX - 5 * mag, 300 + ih); ctx.lineTo(imageX + 5 * mag, 300 + ih); ctx.closePath();
+    ctx.fillStyle = 'rgba(255,0,0,0.5)'; ctx.fill();
+  } else {
+    ctx.strokeStyle = 'rgba(0,0,255,0.5)'; ctx.setLineDash([5,4]);
+    ctx.strokeRect(imageX - iw/2, 300 - ih, iw, ih);
+    ctx.beginPath(); ctx.moveTo(imageX, 300 - ih - fh);
+    ctx.lineTo(imageX - 5 * mag, 300 - ih); ctx.lineTo(imageX + 5 * mag, 300 - ih); ctx.closePath();
+    ctx.stroke(); ctx.setLineDash([]);
+  }
+
+  // Update info
+  var u_cm = Math.abs(u_val) / 10, f_cm = focalLength / 10, v_cm = Math.abs(v) / 10;
+  document.getElementById('uVal').textContent = u_cm.toFixed(1) + ' cm';
+  document.getElementById('vVal').textContent = v_cm.toFixed(1) + ' cm';
+  document.getElementById('fVal').textContent = f_cm.toFixed(1) + ' cm';
+  document.getElementById('magVal').textContent = mag.toFixed(2);
+
+  var rel = document.getElementById('relationDisplay');
+  if (u_cm > 2 * f_cm) rel.textContent = '关系: u > 2f — 倒立、缩小的实像 (f < v < 2f)';
+  else if (Math.abs(u_cm - 2 * f_cm) < 0.1) rel.textContent = '关系: u = 2f — 倒立、等大的实像 (v = 2f)';
+  else if (u_cm > f_cm) rel.textContent = '关系: f < u < 2f — 倒立、放大的实像 (v > 2f)';
+  else if (Math.abs(u_cm - f_cm) < 0.1) rel.textContent = '关系: u = f — 不成像（平行光）';
+  else rel.textContent = '关系: u < f — 正立、放大的虚像';
+}
+
+// Mouse events
+canvas.addEventListener('mousedown', function(e) {
+  var rect = canvas.getBoundingClientRect();
+  var mx = (e.clientX - rect.left) * (W / rect.width);
+  var my = (e.clientY - rect.top) * (H / rect.height);
+  if (mx >= candleX - candleWidth && mx <= candleX + candleWidth && my >= candleY - candleHeight - flameHeight - 8 && my <= candleY + 8) {
+    isDragging = true; dragOffsetX = mx - candleX;
+  } else if (mx >= screenX && mx <= screenX + 10 && my >= 210 && my <= 390) {
+    isDraggingScreen = true; dragOffsetX = mx - screenX;
+  } else if (mx >= lensX - 25 && mx <= lensX + 25 && my >= 170 && my <= 430) {
+    isDraggingLens = true; dragOffsetX = mx - lensX;
+  }
+});
+canvas.addEventListener('mousemove', function(e) {
+  var rect = canvas.getBoundingClientRect();
+  var mx = (e.clientX - rect.left) * (W / rect.width);
+  if (isDragging) { candleX = Math.round(Math.min(lensX - 10, Math.max(60, mx - dragOffsetX)) / 10) * 10; drawScene() }
+  else if (isDraggingScreen) { screenX = Math.round(Math.min(950, Math.max(lensX + 10, mx - dragOffsetX)) / 10) * 10; drawScene() }
+  else if (isDraggingLens) { lensX = Math.round(Math.min(screenX - 10, Math.max(candleX + 10, mx - dragOffsetX)) / 10) * 10; drawScene() }
+});
+canvas.addEventListener('mouseup', function() { isDragging = false; isDraggingScreen = false; isDraggingLens = false; });
+canvas.addEventListener('mouseleave', function() { isDragging = false; isDraggingScreen = false; isDraggingLens = false; });
+
+// Touch events
+canvas.addEventListener('touchstart', function(e) {
+  e.preventDefault(); var rect = canvas.getBoundingClientRect();
+  var t = e.touches[0], mx = (t.clientX - rect.left) * (W / rect.width), my = (t.clientY - rect.top) * (H / rect.height);
+  if (mx >= candleX - candleWidth && mx <= candleX + candleWidth && my >= candleY - candleHeight - flameHeight - 8 && my <= candleY + 8) {
+    isDragging = true; dragOffsetX = mx - candleX;
+  } else if (mx >= screenX && mx <= screenX + 10 && my >= 210 && my <= 390) {
+    isDraggingScreen = true; dragOffsetX = mx - screenX;
+  } else if (mx >= lensX - 25 && mx <= lensX + 25 && my >= 170 && my <= 430) {
+    isDraggingLens = true; dragOffsetX = mx - lensX;
+  }
+});
+canvas.addEventListener('touchmove', function(e) {
+  e.preventDefault(); var rect = canvas.getBoundingClientRect();
+  var t = e.touches[0], mx = (t.clientX - rect.left) * (W / rect.width);
+  if (isDragging) { candleX = Math.round(Math.min(lensX - 10, Math.max(60, mx - dragOffsetX)) / 10) * 10; drawScene() }
+  else if (isDraggingScreen) { screenX = Math.round(Math.min(950, Math.max(lensX + 10, mx - dragOffsetX)) / 10) * 10; drawScene() }
+  else if (isDraggingLens) { lensX = Math.round(Math.min(screenX - 10, Math.max(candleX + 10, mx - dragOffsetX)) / 10) * 10; drawScene() }
+});
+canvas.addEventListener('touchend', function() { isDragging = false; isDraggingScreen = false; isDraggingLens = false; });
+canvas.addEventListener('touchcancel', function() { isDragging = false; isDraggingScreen = false; isDraggingLens = false; });
+
+document.getElementById('resetLensBtn').addEventListener('click', function() {
+  candleX = 280; screenX = 720; lensX = 500; lensY = 300; focalLength = 100;
+  document.getElementById('focalSlider').value = 100; document.getElementById('focalDisplay').textContent = '10 cm';
+  drawScene()
+});
+document.getElementById('focalSlider').addEventListener('input', function() {
+  focalLength = parseInt(this.value);
+  document.getElementById('focalDisplay').textContent = (focalLength/10) + ' cm';
+  drawScene()
+});
+
+drawScene();
+window.addEventListener('resize', drawScene);
+
+// ===== Hamburger Menu =====
+(function(){
+  var btn = document.getElementById('menuToggle'), menu = document.getElementById('categoryMenu');
+  if (btn && menu) {
+    btn.addEventListener('click', function() {
+      var open = menu.classList.toggle('nav-open');
+      btn.classList.toggle('is-active');
+      btn.setAttribute('aria-expanded', open);
+    });
+    menu.querySelectorAll('a').forEach(function(l) {
+      l.addEventListener('click', function() { menu.classList.remove('nav-open'); btn.classList.remove('is-active'); btn.setAttribute('aria-expanded','false'); });
+    });
+  }
+})();
+(function(){
+  var items = document.querySelectorAll('.menu-item');
+  items.forEach(function(item) {
+    var top = item.querySelector('.menu-top'), sub = item.querySelector('.submenu');
+    if (top && sub && sub.children.length > 1) {
+      top.addEventListener('click', function(e) {
+        if ('ontouchstart' in window && window.innerWidth <= 680) {
+          var isOpen = sub.classList.contains('open');
+          item.parentNode.querySelectorAll('.submenu.open').forEach(function(s) { if (s !== sub) s.classList.remove('open'); });
+          if (!isOpen) { e.preventDefault(); sub.classList.add('open'); }
+        }
+      });
+    }
+  });
+})();
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+
+

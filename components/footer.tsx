@@ -23,7 +23,7 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4 text-sm uppercase tracking-wider text-gray-300">快速导航</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/physics" className="text-gray-400 hover:text-white transition-colors">物理教学</Link></li>
+              <li><a href="/physics/" className="text-gray-400 hover:text-white transition-colors">物理教学</a></li>
               <li><Link href="/it-education" className="text-gray-400 hover:text-white transition-colors">信息技术</Link></li>
               <li><Link href="/tools" className="text-gray-400 hover:text-white transition-colors">在线工具</Link></li>
             </ul>

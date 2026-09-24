@@ -11,6 +11,9 @@ out/
 .env*.local
 .DS_Store
 
+# TypeScript incremental build cache
+tsconfig.tsbuildinfo
+
 # Lock files - pnpm only
 package-lock.json
 yarn.lock

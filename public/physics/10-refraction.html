@@ -1,0 +1,914 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- 基础图标 -->
+  <!-- 兼容微信/手机端的高清图标 -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="光的反射与折射定律示意图 — 可视化观察入射角与反射角、折射角的关系，验证斯涅尔定律。">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>光的反射与折射定律示意图 | York 周老师物理</title>
+  <meta property="og:title" content="光的反射与折射定律示意图 | York 周老师物理">
+  <meta property="og:description" content="光的反射与折射定律示意图 — 可视化观察入射角与反射角、折射角的关系，验证斯涅尔定律。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ==================== Lab Layout (template) ==================== */
+    .exp-page { padding-top: 96px; padding-bottom: 40px; }
+    .lab-hero { margin-bottom: 24px; }
+    .lab-hero h1 { margin: 0 0 8px; font-size: 28px; color: var(--brand); }
+    .lab-hero p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .lab-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+    .lab-main { display: flex; flex-direction: column; gap: 18px; }
+    .lab-bottom { display: flex; flex-direction: column; gap: 18px; }
+    .lab-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-soft); }
+    .lab-card h2 { margin: 0 0 12px; font-size: 18px; color: var(--brand); }
+    .lab-card h3 { margin: 0 0 10px; font-size: 15px; color: var(--ink); }
+    .lab-card p { margin: 8px 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .lab-sidebar { display: flex; flex-direction: column; gap: 18px; }
+    .steps { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 1.9; }
+    .notice { background: #fffbf0; border-color: #f0dca0; }
+    .metric-row { display: flex; gap: 16px; }
+    .metric { flex: 1; text-align: center; padding: 12px; background: var(--surface-soft); border-radius: 12px; }
+    .metric strong { display: block; font-size: 20px; color: var(--brand); }
+    .metric span { font-size: 12px; color: var(--muted); }
+    .related-list a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--brand-2); font-size: 14px; font-weight: 600; text-decoration: none; }
+    .related-list a:hover { background: var(--surface-soft); }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; color: #fff; transition: opacity .2s, transform .2s; }
+    .btn:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--brand-2), var(--tech)); }
+    .btn-danger { background: linear-gradient(135deg, #e53935, #ef5350); }
+    .btn-secondary { background: var(--line); color: var(--ink); }
+    .btn-secondary:hover { background: #c8d6e5; }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .record-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .record-table th { background: var(--surface-soft); padding: 8px 6px; text-align: center; font-weight: 600; color: var(--ink); border: 1px solid var(--line); }
+    .record-table td { padding: 6px; text-align: center; border: 1px solid var(--line); color: var(--muted); }
+    .record-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+    /* ==================== Simulation Area ==================== */
+    .simulation-area {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      background: linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #a5d8ff 50%, #74c0fc 100%);
+      border: 3px solid #339af0;
+      border-radius: 15px;
+      overflow: hidden;
+      margin: 12px 0 0;
+    }
+
+    /* 水面线 */
+    .water-surface {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #1864ab;
+      z-index: 1;
+    }
+
+    .water-surface::before {
+      content: '水面';
+      position: absolute;
+      left: 10px;
+      top: -25px;
+      background: #1864ab;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    /* 法线 */
+    .normal-line {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 2px;
+      height: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 10px,
+        #666 10px,
+        #666 20px
+      );
+      z-index: 1;
+    }
+
+    .normal-line::before {
+      content: '法线';
+      position: absolute;
+      top: 10px;
+      left: 5px;
+      background: #666;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    /* .normal-line::after {
+      content: 'O';
+      position: absolute;
+      top: 49%;
+      left: -8px;
+      width: 16px;
+      height: 16px;
+      background: #ff6b6b;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+      z-index: 2;
+    } */
+
+    /* 垂直符号 - L形线条 */
+    .perpendicular-symbol {
+      position: absolute;
+      top: 46%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      z-index: 3;
+      transform: translateY(-1px);
+    }
+
+    .perpendicular-symbol::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 2px;
+      background: #4dabf7;
+    }
+
+    .perpendicular-symbol::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 20px;
+      width: 2px;
+      height: 20px;
+      background: #4dabf7;
+    }
+
+    /* 光线样式 */
+    .light-ray { position: absolute; transform-origin: 50% 50%; z-index: 2; }
+
+    .incident-ray { stroke: #ff6b6b; stroke-width: 3; marker-mid: url(#arrowhead-red); }
+    .reflected-ray { stroke: #ff922b; stroke-width: 3; marker-mid: url(#arrowhead-orange); }
+    .refracted-ray { stroke: #51cf66; stroke-width: 3; marker-mid: url(#arrowhead-green); }
+
+    /* 角度弧线样式 */
+    .angle-arc { fill: none; stroke-width: 2; stroke-dasharray: 5, 3; stroke-linecap: round; }
+    .incident-arc { stroke: #ff6b6b; }
+    .reflected-arc { stroke: #ff922b; }
+    .refracted-arc { stroke: #51cf66; }
+
+    /* 角度标注 */
+    .angle-label {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      border: 1px solid #ddd;
+      z-index: 3;
+    }
+
+    .incident-angle { color: #ff6b6b; }
+    .reflected-angle { color: #ff922b; }
+    .refracted-angle { color: #51cf66; }
+
+    /* 控制面板 */
+    .control-panel {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 15px;
+      margin-top: 16px;
+      border: 2px solid #e9ecef;
+    }
+
+    .control-group { margin: 15px 0; }
+    .control-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #495057; }
+
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      height: 6px;
+      background: #dee2e6;
+      border-radius: 3px;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #339af0;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: #339af0;
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+    }
+
+    .value-display {
+      min-width: 60px;
+      text-align: center;
+      background: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      border: 1px solid #dee2e6;
+      font-weight: bold;
+    }
+
+    .medium-selector {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .medium-option {
+      flex: 1;
+      padding: 10px;
+      background: white;
+      border: 2px solid #dee2e6;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .medium-option.active {
+      background: #339af0;
+      color: white;
+      border-color: #1971c2;
+    }
+
+    .medium-option:hover { border-color: #339af0; }
+
+    /* 拖动控制点 */
+    .drag-handle {
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      background: transparent;
+      border-radius: 50%;
+      cursor: move;
+      z-index: 10;
+      border: none;
+      box-shadow: none;
+    }
+
+    /* ==================== Law cards ==================== */
+    .law-item {
+      margin: 10px 0;
+      padding: 12px;
+      background: white;
+      border-radius: 8px;
+      border-left: 3px solid #74c0fc;
+    }
+    .law-title { font-weight: bold; color: #1971c2; margin-bottom: 5px; }
+    .law-item div { font-size: 14px; line-height: 1.8; color: var(--muted); }
+
+    /* ==================== Responsive ==================== */
+    @media (max-width: 960px) {
+      .lab-layout { grid-template-columns: 1fr; }
+      .lab-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    }
+    @media (max-width: 760px) {
+      .lab-sidebar { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 680px) {
+      .lab-hero h1 { font-size: 22px; }
+      .simulation-area { height: 380px; }
+      .medium-selector { flex-direction: column; }
+    }
+    @media (max-width: 480px) {
+      .exp-page { padding-top: 80px; }
+      .lab-hero h1 { font-size: 20px; }
+      .lab-card { padding: 14px; }
+      .simulation-area { height: 300px; }
+      .control-panel { padding: 14px; }
+      .slider-container { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-shell">
+  <div class="container">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+        <span class="brand-mark">Phy</span>
+        <span>York 周老师物理<small>Professional Physics Lab</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+        <div class="menu-item"><a class="menu-top" href="index.html#acoustics">声学</a><div class="submenu"><a href="02-frequency.html">频率发声器</a><a href="03-noise.html">噪声检测仪</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#optics">光学</a><div class="submenu"><a href="04-pinhole.html">小孔成像虚拟实验</a><a href="06-rgb.html">光的三原色组合游戏</a><a href="07-lens.html">凸透镜成像虚拟实验</a><a href="10-refraction.html">光的反射与折射定律</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#thermal">热学</a><div class="submenu"><a href="08-molecule.html">分子热运动微观示意图</a><a href="09-engine.html">四冲程汽油机示意图</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#mechanics">力学</a><div class="submenu"><a href="01-length.html">长度读取训练平台</a><a href="12-buoyancy.html">木块浮力图像</a><a href="13-torricelli.html">托里拆利实验</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#electricity">电学</a><div class="submenu"><a href="15-circuit.html">电路连接与欧姆定律</a><a href="16-resistors.html">电阻的串联与并联</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#quiz">知识测验</a><div class="submenu"><a href="11-review.html">初中物理知识点复习</a><a href="14-quiz.html">《物理原来很有趣》测验</a></div></div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- ==================== MAIN ==================== -->
+<main class="container exp-page">
+  <div class="lab-hero">
+    <h1>光的反射与折射定律示意图</h1>
+    <p>拖动红色控制点或滑动滑块改变入射角，观察反射光线与折射光线的变化，验证反射定律与斯涅尔折射定律。</p>
+  </div>
+
+  <div class="lab-layout">
+    <!-- ========== Left: Main Area ========== -->
+    <div class="lab-main">
+      <!-- Experiment card: Simulation + Controls -->
+      <div class="lab-card">
+        <h2>模拟实验区</h2>
+        <div class="simulation-area" id="simulationArea">
+          <!-- 水面 -->
+          <div class="water-surface"></div>
+
+          <!-- 法线 -->
+          <div class="normal-line">
+            <div class="perpendicular-symbol"></div>
+          </div>
+
+          <!-- SVG for light rays -->
+          <svg width="100%" height="100%" id="lightRays">
+            <defs>
+              <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#ff6b6b"/>
+              </marker>
+              <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#ff922b"/>
+              </marker>
+              <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#51cf66"/>
+              </marker>
+            </defs>
+          </svg>
+
+          <!-- 角度标注 -->
+          <div class="angle-label incident-angle" id="incidentAngleLabel">∠i = 45°</div>
+          <div class="angle-label reflected-angle" id="reflectedAngleLabel">∠r = 45°</div>
+          <div class="angle-label refracted-angle" id="refractedAngleLabel">∠r' = 32°</div>
+
+          <!-- 拖动控制点 -->
+          <div class="drag-handle" id="dragHandle"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="control-panel">
+          <div class="control-group">
+            <label>入射角调节：</label>
+            <div class="slider-container">
+              <input type="range" id="angleSlider" min="10" max="80" value="45" step="1">
+              <div class="value-display" id="angleValue">45°</div>
+            </div>
+          </div>
+          <div class="control-group">
+            <label>介质折射率：</label>
+            <div class="medium-selector">
+              <div class="medium-option active" data-n="1.33">水 (n=1.33)</div>
+              <div class="medium-option" data-n="1.5">玻璃 (n=1.5)</div>
+              <div class="medium-option" data-n="2.42">钻石 (n=2.42)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== Lab Bottom ========== -->
+      <div class="lab-bottom">
+        <!-- Steps -->
+        <div class="lab-card">
+          <h2>实验步骤</h2>
+          <ol class="steps">
+            <li>使用滑块改变入射角（10° ~ 80°）。</li>
+            <li>观察反射光线（橙色）与入射光线的对称关系，验证反射角等于入射角。</li>
+            <li>观察折射光线（绿色）的偏折方向，验证光从空气射入介质时折射角小于入射角。</li>
+            <li>切换不同介质（水 / 玻璃 / 钻石），观察折射率增大时折射角的变化趋势。</li>
+            <li>使用「记录数据」按钮保存不同角度的实验数据，导出 CSV 进行分析。</li>
+          </ol>
+        </div>
+
+        <!-- Physics laws (notice) -->
+        <div class="lab-card notice">
+          <h2>物理定律</h2>
+          <div class="law-item">
+            <div class="law-title">反射定律</div>
+            <div>（1）反射光线、入射光线和法线在同一平面内</div>
+            <div>（2）反射光线和入射光线分别位于法线两侧</div>
+            <div>（3）反射角等于入射角（∠r = ∠i）</div>
+          </div>
+          <div class="law-item">
+            <div class="law-title">折射定律（斯涅尔定律）</div>
+            <div>（1）折射光线、入射光线和法线在同一平面内</div>
+            <div>（2）折射光线和入射光线分别位于法线两侧</div>
+            <div>（3）n&#8321; · sin ∠i = n&#8322; · sin ∠r' （空气 n&#8321;≈1）</div>
+          </div>
+        </div>
+
+        <!-- Records -->
+        <div class="lab-card">
+          <h2>数据记录</h2>
+          <div style="overflow-x:auto;">
+            <table class="record-table" id="recordTable">
+              <thead><tr><th>#</th><th>入射角(°)</th><th>反射角(°)</th><th>折射角(°)</th><th>介质</th></tr></thead>
+              <tbody id="recordBody"></tbody>
+            </table>
+          </div>
+          <div class="record-actions">
+            <button class="btn btn-primary" onclick="recordData()">记录数据</button>
+            <button class="btn btn-secondary" onclick="exportRecords()">导出 CSV</button>
+            <button class="btn btn-danger" onclick="clearRecords()">清空数据</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== Right: Sidebar ========== -->
+    <div class="lab-sidebar">
+      <div class="lab-card">
+        <h2>原理说明</h2>
+        <p>光从一种介质斜射到另一种介质表面时，一部分光返回原介质（反射），另一部分光进入第二种介质（折射）。</p>
+        <p>反射角恒等于入射角。折射角的大小由斯涅尔定律决定：n&#8321; · sin θ&#8321; = n&#8322; · sin θ&#8322;。介质的折射率越大，光在其中传播速度越慢，折射角越小。</p>
+      </div>
+      <div class="lab-card">
+        <h2>实时数据</h2>
+        <div class="metric-row">
+          <div class="metric"><strong id="timer">0s</strong><span>实验用时</span></div>
+        </div>
+      </div>
+      <div class="lab-card">
+        <h2>相关实验</h2>
+        <div class="related-list">
+          <a href="04-pinhole.html">→ 小孔成像虚拟实验</a>
+          
+          <a href="06-rgb.html">→ 光的三原色组合游戏</a>
+          <a href="07-lens.html">→ 凸透镜成像虚拟实验</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>York 周老师物理</strong><p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p><p>&copy; 2026 York Physics Lab. All Rights Reserved.</p></div>
+    <div><strong>联系方式</strong><p>周煜全老师</p><p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p></div>
+    <div><strong>特别鸣谢</strong><p>龙外物理科组</p><p>梁卓栋老师</p></div>
+  </div>
+</footer>
+
+<!-- ==================== JAVASCRIPT ==================== -->
+<script>
+// ===== Timer + Ops =====
+var elapsedSeconds = 0;
+setInterval(function() { elapsedSeconds++; var m = Math.floor(elapsedSeconds/60), s = elapsedSeconds%60; document.getElementById('timer').textContent = m + 'm' + s + 's'; }, 1000);
+
+// ===== Records =====
+var records = [];
+function recordData() {
+  var iAngle = Math.round(Math.abs(incidentAngle));
+  var rAngle = Math.round(Math.abs(incidentAngle));
+  var angleRad = Math.abs(incidentAngle) * Math.PI / 180;
+  var sinRefr = (AIR_REFRACTIVE_INDEX / currentRefractiveIndex) * Math.sin(angleRad);
+  var refrAngle = Math.round(Math.asin(sinRefr) * 180 / Math.PI);
+  var mediumName = '水';
+  if (currentRefractiveIndex === 1.5) mediumName = '玻璃';
+  else if (currentRefractiveIndex === 2.42) mediumName = '钻石';
+  records.push({ incident: iAngle, reflect: rAngle, refract: refrAngle, medium: mediumName });
+  renderRecords();
+}
+function renderRecords() {
+  var tbody = document.getElementById('recordBody');
+  tbody.innerHTML = records.map(function(r, i){
+    return '<tr><td>' + (i+1) + '</td><td>' + r.incident + '</td><td>' + r.reflect + '</td><td>' + r.refract + '</td><td>' + r.medium + '</td></tr>';
+  }).join('');
+}
+function exportRecords() {
+  if (!records.length) return;
+  var csv = '﻿序号,入射角(°),反射角(°),折射角(°),介质\n' + records.map(function(r,i){ return (i+1)+','+r.incident+','+r.reflect+','+r.refract+','+r.medium; }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '光的反射与折射数据.csv'; a.click();
+}
+function clearRecords() { records = []; renderRecords(); }
+
+// ===== Refraction Simulation (preserved from original) =====
+// 物理常数
+const AIR_REFRACTIVE_INDEX = 1.0; // 空气折射率
+let currentRefractiveIndex = 1.33; // 当前介质折射率（水）
+
+// 获取DOM元素
+const simulationArea = document.getElementById('simulationArea');
+const lightRays = document.getElementById('lightRays');
+const dragHandle = document.getElementById('dragHandle');
+const angleSlider = document.getElementById('angleSlider');
+const angleValue = document.getElementById('angleValue');
+const incidentAngleLabel = document.getElementById('incidentAngleLabel');
+const reflectedAngleLabel = document.getElementById('reflectedAngleLabel');
+const refractedAngleLabel = document.getElementById('refractedAngleLabel');
+
+// 模拟区域尺寸
+const areaWidth = simulationArea.offsetWidth;
+const areaHeight = simulationArea.offsetHeight;
+const centerX = areaWidth / 2;
+const centerY = areaHeight / 2;
+
+// 初始入射角（度）
+let incidentAngle = 45;
+
+// 初始化拖动控制点位置
+function initDragHandle() {
+  const handleDistance = 150; // 控制点距离O点的距离
+  const angleRad = Math.abs(incidentAngle) * Math.PI / 180;
+
+  // 根据入射角的正负决定控制点位置
+  let handleX, handleY;
+  if (incidentAngle >= 0) {
+    // 从左上方入射
+    handleX = centerX - handleDistance * Math.sin(angleRad);
+    handleY = centerY - handleDistance * Math.cos(angleRad);
+  } else {
+    // 从右上方入射
+    handleX = centerX + handleDistance * Math.sin(angleRad);
+    handleY = centerY - handleDistance * Math.cos(angleRad);
+  }
+
+  dragHandle.style.left = handleX - 18 + 'px';
+  dragHandle.style.top = handleY - 18 + 'px';
+}
+
+// 计算光线路径
+function calculateLightPaths() {
+  const angleRad = Math.abs(incidentAngle) * Math.PI / 180;
+  const angleSign = Math.sign(incidentAngle);
+
+  // 入射光线（从控制点到O点）
+  const incidentLength = 200;
+  const incidentStartX = centerX - angleSign * incidentLength * Math.sin(angleRad);
+  const incidentStartY = centerY - incidentLength * Math.cos(angleRad);
+
+  // 反射光线（根据反射定律：入射角 = 反射角）
+  const reflectedLength = 200;
+  const reflectedEndX = centerX + angleSign * reflectedLength * Math.sin(angleRad);
+  const reflectedEndY = centerY - reflectedLength * Math.cos(angleRad);
+
+  // 折射光线（根据斯涅尔定律）
+  const sinRefracted = (AIR_REFRACTIVE_INDEX / currentRefractiveIndex) * Math.sin(angleRad);
+  const refractedAngleRad = Math.asin(sinRefracted);
+  const refractedLength = 200;
+  const refractedEndX = centerX + angleSign * refractedLength * Math.sin(refractedAngleRad);
+  const refractedEndY = centerY + refractedLength * Math.cos(refractedAngleRad);
+
+  // 更新角度标注（不显示实际度数）
+  incidentAngleLabel.textContent = "∠i";
+  reflectedAngleLabel.textContent = "∠r";
+  refractedAngleLabel.textContent = "∠r'";
+
+  // 定位角度标注（与弧线对齐）
+  const arcRadius = 40;
+  const labelOffset = 20;
+
+  // 入射角标注位置（弧线中点）
+  const incidentLabelAngle = -Math.PI / 2 - angleSign * angleRad / 2;
+  incidentAngleLabel.style.left = (centerX + arcRadius * Math.cos(incidentLabelAngle) - labelOffset) + 'px';
+  incidentAngleLabel.style.top = (centerY + arcRadius * Math.sin(incidentLabelAngle) - labelOffset) + 'px';
+
+  // 反射角标注位置（弧线中点）
+  const reflectedLabelAngle = -Math.PI / 2 + angleSign * angleRad / 2;
+  reflectedAngleLabel.style.left = (centerX + arcRadius * Math.cos(reflectedLabelAngle) + labelOffset) + 'px';
+  reflectedAngleLabel.style.top = (centerY + arcRadius * Math.sin(reflectedLabelAngle) - labelOffset) + 'px';
+
+  // 折射角标注位置（弧线中点）
+  const refractedLabelAngle = Math.PI / 2 + angleSign * refractedAngleRad / 2;
+  refractedAngleLabel.style.left = (centerX + arcRadius * Math.cos(refractedLabelAngle) + labelOffset) + 'px';
+  refractedAngleLabel.style.top = (centerY + arcRadius * Math.sin(refractedLabelAngle) + labelOffset) + 'px';
+
+  return {
+    incident: { startX: incidentStartX, startY: incidentStartY, endX: centerX, endY: centerY },
+    reflected: { startX: centerX, startY: centerY, endX: reflectedEndX, endY: reflectedEndY },
+    refracted: { startX: centerX, startY: centerY, endX: refractedEndX, endY: refractedEndY }
+  };
+}
+
+// 绘制光线和角度弧线
+function drawLightRays() {
+  const paths = calculateLightPaths();
+  const angleRad = incidentAngle * Math.PI / 180;
+  const refractedAngleRad = Math.asin((AIR_REFRACTIVE_INDEX / currentRefractiveIndex) * Math.sin(angleRad));
+
+  // 清空之前的绘制
+  lightRays.innerHTML = `
+    <defs>
+      <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#ff6b6b"/>
+      </marker>
+      <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#ff922b"/>
+      </marker>
+      <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#51cf66"/>
+      </marker>
+    </defs>
+  `;
+
+  // 绘制入射光线（折线，箭头在中段）
+  const incidentMidX = (paths.incident.startX + paths.incident.endX) / 2;
+  const incidentMidY = (paths.incident.startY + paths.incident.endY) / 2;
+  const incidentPolyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+  incidentPolyline.setAttribute("points", `${paths.incident.startX},${paths.incident.startY} ${incidentMidX},${incidentMidY} ${paths.incident.endX},${paths.incident.endY}`);
+  incidentPolyline.setAttribute("class", "light-ray incident-ray");
+  incidentPolyline.setAttribute("fill", "none");
+  lightRays.appendChild(incidentPolyline);
+
+  // 绘制反射光线（折线，箭头在中段）
+  const reflectedMidX = (paths.reflected.startX + paths.reflected.endX) / 2;
+  const reflectedMidY = (paths.reflected.startY + paths.reflected.endY) / 2;
+  const reflectedPolyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+  reflectedPolyline.setAttribute("points", `${paths.reflected.startX},${paths.reflected.startY} ${reflectedMidX},${reflectedMidY} ${paths.reflected.endX},${paths.reflected.endY}`);
+  reflectedPolyline.setAttribute("class", "light-ray reflected-ray");
+  reflectedPolyline.setAttribute("fill", "none");
+  lightRays.appendChild(reflectedPolyline);
+
+  // 绘制折射光线（折线，箭头在中段）
+  const refractedMidX = (paths.refracted.startX + paths.refracted.endX) / 2;
+  const refractedMidY = (paths.refracted.startY + paths.refracted.endY) / 2;
+  const refractedPolyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+  refractedPolyline.setAttribute("points", `${paths.refracted.startX},${paths.refracted.startY} ${refractedMidX},${refractedMidY} ${paths.refracted.endX},${paths.refracted.endY}`);
+  refractedPolyline.setAttribute("class", "light-ray refracted-ray");
+  refractedPolyline.setAttribute("fill", "none");
+  lightRays.appendChild(refractedPolyline);
+
+  // 绘制角度弧线
+  const arcRadius = 40; // 弧线半径
+
+  // 入射角弧线（从法线到入射光线，圆心在交点处）
+  const incidentArc = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  const angleSign = Math.sign(incidentAngle);
+  incidentArc.setAttribute("d", describeIncidentArc(centerX, centerY, arcRadius, Math.abs(angleRad), angleSign));
+  incidentArc.setAttribute("class", "angle-arc incident-arc");
+  lightRays.appendChild(incidentArc);
+
+  // 反射角弧线（从法线到反射光线，圆心在交点处）
+  const reflectedArc = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  reflectedArc.setAttribute("d", describeReflectedArc(centerX, centerY, arcRadius, Math.abs(angleRad), angleSign));
+  reflectedArc.setAttribute("class", "angle-arc reflected-arc");
+  lightRays.appendChild(reflectedArc);
+
+  // 折射角弧线（从法线到折射光线，位于折射光线和法线之间，圆心在交点处）
+  const refractedArc = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  refractedArc.setAttribute("d", describeRefractedArc(centerX, centerY, arcRadius, refractedAngleRad, angleSign));
+  refractedArc.setAttribute("class", "angle-arc refracted-arc");
+  lightRays.appendChild(refractedArc);
+}
+
+// 描述入射角弧线的辅助函数（根据光线方向正确显示弧线形状）
+function describeIncidentArc(x, y, radius, angleRad, angleSign) {
+  const startAngle = -Math.PI / 2; // 法线方向（向上）
+  const endAngle = startAngle - angleSign * angleRad; // 延伸到入射光线
+  const startX = x + radius * Math.cos(startAngle);
+  const startY = y + radius * Math.sin(startAngle);
+  const endX = x + radius * Math.cos(endAngle);
+  const endY = y + radius * Math.sin(endAngle);
+
+  // 根据角度方向确定弧线方向（向内凹或向外凸）
+  const sweepFlag = angleSign >= 0 ? "0" : "1"; // 正角度向外凸，负角度向内凹
+  const largeArcFlag = Math.abs(endAngle - startAngle) <= Math.PI ? "0" : "1";
+
+  return `M ${startX} ${startY} A ${radius} ${radius} 0 ${largeArcFlag} ${sweepFlag} ${endX} ${endY}`;
+}
+
+// 描述反射角弧线的辅助函数（根据光线方向正确显示弧线形状）
+function describeReflectedArc(x, y, radius, angleRad, angleSign) {
+  const startAngle = -Math.PI / 2; // 法线方向（向上）
+  const endAngle = startAngle + angleSign * angleRad; // 延伸到反射光线
+  const startX = x + radius * Math.cos(startAngle);
+  const startY = y + radius * Math.sin(startAngle);
+  const endX = x + radius * Math.cos(endAngle);
+  const endY = y + radius * Math.sin(endAngle);
+
+  // 根据角度方向确定弧线方向（向内凹或向外凸）
+  const sweepFlag = angleSign >= 0 ? "1" : "0"; // 正角度向内凹，负角度向外凸
+  const largeArcFlag = Math.abs(endAngle - startAngle) <= Math.PI ? "0" : "1";
+
+  return `M ${startX} ${startY} A ${radius} ${radius} 0 ${largeArcFlag} ${sweepFlag} ${endX} ${endY}`;
+}
+
+// 描述折射角弧线的辅助函数（根据光线方向正确显示弧线形状）
+function describeRefractedArc(x, y, radius, refractedAngleRad, angleSign) {
+  const startAngle = Math.PI / 2;
+  const endAngle = startAngle - angleSign * Math.abs(refractedAngleRad);
+  const startX = x + radius * Math.cos(startAngle);
+  const startY = y + radius * Math.sin(startAngle);
+  const endX = x + radius * Math.cos(endAngle);
+  const endY = y + radius * Math.sin(endAngle);
+  const largeArcFlag = Math.abs(endAngle - startAngle) <= Math.PI ? "0" : "1";
+  const sweepFlag = angleSign >= 0 ? "0" : "1";
+
+  return `M ${startX} ${startY} A ${radius} ${radius} 0 ${largeArcFlag} ${sweepFlag} ${endX} ${endY}`;
+}
+
+// 拖动事件处理
+let isDragging = false;
+
+dragHandle.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  e.preventDefault();
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!isDragging) return;
+
+  const rect = simulationArea.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+
+  // 限制在合理范围内
+  const handleX = Math.max(50, Math.min(areaWidth - 50, mouseX));
+  const handleY = Math.max(50, Math.min(areaHeight - 50, mouseY));
+
+  // 计算入射角（支持从右上方入射）
+  const dx = centerX - handleX;
+  const dy = centerY - handleY;
+  incidentAngle = Math.atan2(dx, dy) * 180 / Math.PI;
+
+  // 支持从右上方入射（负角度）和0度入射
+  // 限制入射角在合理范围内（-80°到80°，包括0°）
+  incidentAngle = Math.max(-80, Math.min(80, incidentAngle));
+
+  // 更新滑块和显示
+  angleSlider.value = Math.round(Math.abs(incidentAngle));
+  angleValue.textContent = Math.round(Math.abs(incidentAngle)) + '°';
+
+  // 更新控制点位置
+  dragHandle.style.left = handleX - 18 + 'px';
+  dragHandle.style.top = handleY - 18 + 'px';
+
+  // 重绘光线
+  drawLightRays();
+});
+
+document.addEventListener('mouseup', () => {
+  isDragging = false;
+});
+
+// 滑块事件处理
+angleSlider.addEventListener('input', () => {
+  // 滑块只控制角度大小，方向由拖动位置决定
+  const angleVal = parseInt(angleSlider.value);
+
+  // 保持当前角度的正负号，只更新角度大小
+  if (incidentAngle >= 0) {
+    incidentAngle = angleVal;
+  } else {
+    incidentAngle = -angleVal;
+  }
+
+  document.getElementById('angleValue').textContent = angleVal + '°';
+
+  // 更新控制点位置
+  initDragHandle();
+
+  // 重绘光线
+  drawLightRays();
+});
+
+// 介质选择事件
+document.querySelectorAll('.medium-option').forEach(option => {
+  option.addEventListener('click', () => {
+    // 移除所有active类
+    document.querySelectorAll('.medium-option').forEach(opt => {
+      opt.classList.remove('active');
+    });
+
+    // 添加active类到当前选项
+    option.classList.add('active');
+
+    // 更新折射率
+    currentRefractiveIndex = parseFloat(option.dataset.n);
+
+    // 更新界面标签文字
+    updateMediumLabel();
+
+    // 重绘光线
+    drawLightRays();
+  });
+});
+
+// 更新介质标签文字
+function updateMediumLabel() {
+  const waterSurface = document.querySelector('.water-surface');
+  let labelText = '水面'; // 默认文字
+
+  // 根据当前折射率确定介质类型
+  if (currentRefractiveIndex === 1.5) {
+    labelText = '玻璃';
+  } else if (currentRefractiveIndex === 2.42) {
+    labelText = '钻石';
+  }
+
+  // 更新伪元素内容
+  const style = document.createElement('style');
+  style.textContent = `.water-surface::before { content: '${labelText}'; }`;
+
+  // 移除旧的样式
+  const oldStyle = document.getElementById('medium-label-style');
+  if (oldStyle) {
+    oldStyle.remove();
+  }
+
+  style.id = 'medium-label-style';
+  document.head.appendChild(style);
+}
+
+// 窗口大小变化时重新计算
+window.addEventListener('resize', () => {
+  // 在实际应用中可能需要重新计算尺寸
+  // 这里简化处理，直接重绘
+  drawLightRays();
+});
+
+// 初始化
+initDragHandle();
+updateMediumLabel(); // 初始化介质标签
+drawLightRays();
+
+// ===== Hamburger Menu =====
+(function(){
+  var btn = document.getElementById('menuToggle'), menu = document.getElementById('categoryMenu');
+  if (btn && menu) {
+    btn.addEventListener('click', function() {
+      var open = menu.classList.toggle('nav-open');
+      btn.classList.toggle('is-active');
+      btn.setAttribute('aria-expanded', open);
+    });
+    menu.querySelectorAll('a').forEach(function(l) {
+      l.addEventListener('click', function() { menu.classList.remove('nav-open'); btn.classList.remove('is-active'); btn.setAttribute('aria-expanded','false'); });
+    });
+  }
+})();
+(function(){
+  var items = document.querySelectorAll('.menu-item');
+  items.forEach(function(item) {
+    var top = item.querySelector('.menu-top'), sub = item.querySelector('.submenu');
+    if (top && sub && sub.children.length > 1) {
+      top.addEventListener('click', function(e) {
+        if ('ontouchstart' in window && window.innerWidth <= 680) {
+          var isOpen = sub.classList.contains('open');
+          item.parentNode.querySelectorAll('.submenu.open').forEach(function(s) { if (s !== sub) s.classList.remove('open'); });
+          if (!isOpen) { e.preventDefault(); sub.classList.add('open'); }
+        }
+      });
+    }
+  });
+})();
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+
+

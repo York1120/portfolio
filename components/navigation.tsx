@@ -1,27 +1,38 @@
 ﻿"use client"
 
-import { useState } from "react"
+import { useState, type ReactNode } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ChevronDown, Menu, X } from "lucide-react"
 
+interface NavChild {
+  label: string
+  href: string
+  /** 使用原生 <a>，强制整页跳转 */
+  plain?: boolean
+}
+
 interface NavItem {
   label: string
   href?: string
-  children?: { label: string; href: string }[]
+  /** 使用原生 <a>，强制整页跳转（/physics/ 是独立的静态实验室站点，不归 React 路由管辖） */
+  plain?: boolean
+  children?: NavChild[]
 }
 
 const navItems: NavItem[] = [
   { label: "首页", href: "/" },
   {
     label: "物理教学",
-    href: "/physics",
+    href: "/physics/",
+    plain: true,
     children: [
-      { label: "声学", href: "/physics/acoustics" },
-      { label: "光学", href: "/physics/optics" },
-      { label: "热学", href: "/physics/thermodynamics" },
-      { label: "力学", href: "/physics/mechanics" },
-      { label: "电学", href: "/physics/electricity" },
+      { label: "声学", href: "/physics/#acoustics", plain: true },
+      { label: "光学", href: "/physics/#optics", plain: true },
+      { label: "热学", href: "/physics/#thermal", plain: true },
+      { label: "力学", href: "/physics/#mechanics", plain: true },
+      { label: "电学", href: "/physics/#electricity", plain: true },
+      { label: "课程讲义", href: "/physics/course" },
     ],
   },
   {
@@ -54,6 +65,37 @@ const navItems: NavItem[] = [
 
 function cn(...classes: (string | boolean | undefined | null)[]) {
   return classes.filter(Boolean).join(" ")
+}
+
+/**
+ * plain=true 时输出原生 <a>，触发整页跳转。
+ * /physics/ 是独立打包的静态站点（自带 style.css / 脚本），必须整页加载。
+ */
+function NavLink({
+  href,
+  plain,
+  className,
+  onClick,
+  children,
+}: {
+  href: string
+  plain?: boolean
+  className?: string
+  onClick?: () => void
+  children: ReactNode
+}) {
+  if (plain) {
+    return (
+      <a href={href} className={className} onClick={onClick}>
+        {children}
+      </a>
+    )
+  }
+  return (
+    <Link href={href} className={className} onClick={onClick}>
+      {children}
+    </Link>
+  )
 }
 
 export function Navigation() {
@@ -93,8 +135,9 @@ export function Navigation() {
                 onMouseLeave={() => setOpenDropdown(null)}
               >
                 {item.children ? (
-                  <Link
+                  <NavLink
                     href={item.href!}
+                    plain={item.plain}
                     onClick={() => setOpenDropdown(null)}
                     className={cn(
                       "flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
@@ -103,7 +146,7 @@ export function Navigation() {
                   >
                     {item.label}
                     <ChevronDown className="w-3.5 h-3.5" />
-                  </Link>
+                  </NavLink>
                 ) : (
                   <Link
                     href={item.href!}
@@ -120,16 +163,17 @@ export function Navigation() {
                   <div className="absolute top-full left-0 pt-1 z-50">
                     <div className="w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 animate-fade-in-down">
                       {item.children.map((child) => (
-                        <Link
+                        <NavLink
                           key={child.label}
                           href={child.href}
+                          plain={child.plain}
                           className={cn(
                             "block px-4 py-2 text-sm transition-colors",
                             isActive(child.href) ? "text-blue-600 bg-blue-50 font-medium" : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                           )}
                         >
                           {child.label}
-                        </Link>
+                        </NavLink>
                       ))}
                     </div>
                   </div>
@@ -155,8 +199,9 @@ export function Navigation() {
                 {item.children ? (
                   <>
                     <div className="flex items-center">
-                      <Link
+                      <NavLink
                         href={item.href!}
+                        plain={item.plain}
                         className={cn(
                           "flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                           isParentActive(item) ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:bg-gray-50"
@@ -164,7 +209,7 @@ export function Navigation() {
                         onClick={() => setMobileOpen(false)}
                       >
                         {item.label}
-                      </Link>
+                      </NavLink>
                       <button
                         aria-label={`展开 ${item.label}`}
                         className="p-2 rounded-lg text-gray-700 hover:bg-gray-50"
@@ -176,9 +221,10 @@ export function Navigation() {
                     {openDropdown === item.label && (
                       <div className="ml-4 mt-1 space-y-1 pb-2">
                         {item.children.map((child) => (
-                          <Link
+                          <NavLink
                             key={child.label}
                             href={child.href}
+                            plain={child.plain}
                             className={cn(
                               "block px-3 py-2 rounded-lg text-sm transition-colors",
                               isActive(child.href) ? "text-blue-600 bg-blue-50 font-medium" : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"
@@ -186,7 +232,7 @@ export function Navigation() {
                             onClick={() => setMobileOpen(false)}
                           >
                             {child.label}
-                          </Link>
+                          </NavLink>
                         ))}
                       </div>
                     )}

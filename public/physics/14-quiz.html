@@ -1,0 +1,408 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="《物理原来很有趣》知识测验 — 来自李淼的30堂物理课，每次随机5题，涵盖力学、热学、量子物理等知识。">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>《物理原来很有趣》测验 | York 周老师物理</title>
+  <meta property="og:title" content="《物理原来很有趣》测验 | York 周老师物理">
+  <meta property="og:description" content="《物理原来很有趣》知识测验 — 来自李淼的30堂物理课，每次随机5题，涵盖力学、热学、量子物理等知识。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .exp-page { padding-top: 96px; padding-bottom: 40px; }
+    .lab-hero { margin-bottom: 24px; }
+    .lab-hero h1 { margin: 0 0 8px; font-size: 28px; color: var(--brand); }
+    .lab-hero p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .lab-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+    .lab-main { display: flex; flex-direction: column; gap: 18px; }
+    .lab-sidebar { display: flex; flex-direction: column; gap: 18px; }
+    .lab-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-soft); }
+    .lab-card h2 { margin: 0 0 12px; font-size: 18px; color: var(--brand); }
+    .lab-card p { margin: 8px 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .related-list a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--brand-2); font-size: 14px; font-weight: 600; text-decoration: none; }
+    .related-list a:hover { background: var(--surface-soft); }
+
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-soft); }
+    .card h1 { margin: 0 0 14px; font-size: 24px; }
+
+    .welcome { text-align: center; padding: 50px 30px; }
+    .welcome h1 { color: var(--brand); font-size: 26px; }
+    .welcome p { color: var(--muted); font-size: 16px; line-height: 1.8; margin: 12px 0; }
+
+    .progress-text { text-align: center; color: var(--muted); font-size: 14px; display: none; }
+    .progress-container { width: 100%; height: 12px; background: var(--line); border-radius: 6px; margin: 12px 0; display: none; overflow: hidden; }
+    .progress-bar { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--brand-2), var(--tech)); width: 0%; transition: width .3s; }
+
+    .question { margin: 0; padding: 24px; border: 1px solid var(--line); border-radius: var(--radius); display: none; background: var(--surface); box-shadow: var(--shadow-soft); }
+    .question h3 { margin: 0 0 6px; color: var(--brand-2); font-size: 18px; }
+    .question p { color: var(--muted); font-size: 15px; margin: 6px 0 16px; }
+
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; color: #fff; transition: opacity .2s, transform .2s; }
+    .btn:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--brand-2), var(--tech)); }
+    .btn-secondary { background: var(--line); color: var(--ink); }
+    .btn-secondary:hover { background: #c8d6e5; }
+    .btn-option { background: var(--surface-soft); color: var(--ink); border: 1px solid var(--line); margin: 4px; }
+    .btn-option:hover { background: var(--tech); color: #fff; border-color: var(--tech); }
+    .btn-option:disabled { opacity: .5; cursor: default; transform: none; }
+
+    .result { margin-top: 14px; padding: 14px; border-radius: 8px; display: none; font-size: 14px; font-weight: 600; }
+    .result.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; display: block; }
+    .result.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; display: block; }
+
+    .end-page, .wrong-book { display: none; }
+    .end-page { text-align: center; padding: 50px 30px; }
+    .end-page h1 { color: var(--brand); margin-bottom: 16px; }
+    .wrong-book { padding: 30px; }
+    .wrong-book h1 { color: var(--brand); text-align: center; margin-bottom: 20px; }
+
+    .wrong-item { text-align: left; padding: 16px; margin: 10px 0; background: var(--surface-soft); border-radius: 10px; border-left: 4px solid #c62828; }
+    .wrong-item h4 { margin: 0 0 4px; color: var(--brand-2); font-size: 15px; }
+    .wrong-item p { margin: 4px 0; color: var(--muted); font-size: 14px; }
+    .wrong-item .correct-ans { color: #2e7d32; font-weight: 700; }
+
+    .metric-row { display: flex; gap: 16px; }
+    .metric { flex: 1; text-align: center; padding: 12px; background: var(--surface-soft); border-radius: 12px; }
+    .metric strong { display: block; font-size: 20px; color: var(--brand); }
+    .metric span { font-size: 12px; color: var(--muted); }
+
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 16px; }
+
+    @media (max-width: 960px) { .lab-layout { grid-template-columns: 1fr; } .lab-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } }
+    @media (max-width: 760px) { .lab-sidebar { grid-template-columns: 1fr; } }
+    @media (max-width: 680px) { .lab-hero h1 { font-size: 22px; } .welcome h1, .end-page h1 { font-size: 22px; } }
+    @media (max-width: 480px) { .exp-page { padding-top: 80px; } .lab-hero h1 { font-size: 20px; } .lab-card, .card, .question { padding: 14px; } .welcome, .end-page { padding: 30px 16px; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-shell">
+  <div class="container">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+        <span class="brand-mark">Phy</span>
+        <span>York 周老师物理<small>Professional Physics Lab</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+        <div class="menu-item"><a class="menu-top" href="index.html#acoustics">声学</a><div class="submenu"><a href="02-frequency.html">频率发声器</a><a href="03-noise.html">噪声检测仪</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#optics">光学</a><div class="submenu"><a href="04-pinhole.html">小孔成像虚拟实验</a><a href="06-rgb.html">光的三原色组合游戏</a><a href="07-lens.html">凸透镜成像虚拟实验</a><a href="10-refraction.html">光的反射与折射定律</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#thermal">热学</a><div class="submenu"><a href="08-molecule.html">分子热运动微观示意图</a><a href="09-engine.html">四冲程汽油机示意图</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#mechanics">力学</a><div class="submenu"><a href="01-length.html">长度读取训练平台</a><a href="12-buoyancy.html">木块浮力图像</a><a href="13-torricelli.html">托里拆利实验</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#electricity">电学</a><div class="submenu"><a href="15-circuit.html">电路连接与欧姆定律</a><a href="16-resistors.html">电阻的串联与并联</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#quiz">知识测验</a><div class="submenu"><a href="11-review.html">初中物理知识点复习</a><a href="14-quiz.html">《物理原来很有趣》测验</a></div></div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="container exp-page">
+  <div class="lab-hero">
+    <h1>《物理原来很有趣》知识测验</h1>
+    <p>来自李淼的30堂物理课，每次随机抽取5题，涵盖力学、热学、电磁学、量子物理等知识。</p>
+  </div>
+
+  <div class="lab-layout">
+    <div class="lab-main">
+
+      <!-- 欢迎界面 -->
+      <div class="card welcome" id="welcomePage">
+        <h1>欢迎你，亲爱的八年级的同学</h1>
+        <p>本次是针对《物理原来很有趣》李淼的30堂物理课一书的测试</p>
+        <p>参加测试有利于你期末物理拿下 A+</p>
+        <button class="btn btn-primary" onclick="startTest()">现在我们开始测试吧</button>
+      </div>
+
+      <!-- 进度条 -->
+      <div class="progress-text" id="progressText">已完成 0 / 5 题</div>
+      <div class="progress-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <!-- 题目展示区域 -->
+      <div id="questionArea"></div>
+
+      <!-- 结束页 -->
+      <div class="card end-page" id="endPage">
+        <h1 id="endTitle"></h1>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="restartTest()">重新测试</button>
+          <button class="btn btn-secondary" onclick="showWrongBook()">查看错题本</button>
+        </div>
+      </div>
+
+      <!-- 错题本 -->
+      <div class="card wrong-book" id="wrongBook">
+        <h1>我的错题本</h1>
+        <div id="wrongList"></div>
+        <div style="text-align:center;margin-top:16px;">
+          <button class="btn btn-primary" onclick="hideWrongBook()">返回结果</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="lab-sidebar">
+      <div class="lab-card">
+        <h2>测验说明</h2>
+        <p>每次随机从30道题中抽取5道，包含选择题和判断题。答完显示成绩，错题自动收入错题本。</p>
+      </div>
+      <div class="lab-card">
+        <h2>实时数据</h2>
+        <div class="metric-row">
+          <div class="metric"><strong id="timer">0s</strong><span>实验用时</span></div>
+        </div>
+      </div>
+      <div class="lab-card">
+        <h2>相关实验</h2>
+        <div class="related-list">
+          <a href="11-review.html">→ 初中物理知识点复习</a>
+          <a href="01-length.html">→ 长度读取训练平台</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>York 周老师物理</strong><p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p><p>© 2026 York Physics Lab. All Rights Reserved.</p></div>
+    <div><strong>联系方式</strong><p>周煜全老师</p><p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p></div>
+    <div><strong>特别鸣谢</strong><p>龙外物理科组</p><p>梁卓栋老师</p></div>
+  </div>
+</footer>
+
+<script>
+// ===== Timer + Ops =====
+let elapsedSeconds = 0;
+setInterval(function() { elapsedSeconds++; var m = Math.floor(elapsedSeconds/60), s = elapsedSeconds%60; document.getElementById('timer').textContent = m + 'm' + s + 's'; }, 1000);
+
+// ===== 30题完整题库（20选择+10判断） =====
+const questionBank = [
+  { type: "choice", id: 1, title: "水中的力量", desc: "对应的是？", options: {A: "阿基米德定律", B: "开普勒行星运动三大定律", C: "万有引力定律"}, answer: "A", point: "阿基米德定律" },
+  { type: "choice", id: 2, title: "行星的旋转轨迹", desc: "对应的是？", options: {A: "伽利略动力学", B: "开普勒行星运动三大定律", C: "牛顿三大定律"}, answer: "B", point: "开普勒行星运动三大定律" },
+  { type: "choice", id: 3, title: "埋葬哲学家的真理", desc: "对应的是？", options: {A: "万有引力定律", B: "能量守恒定律", C: "热力学第二定律"}, answer: "A", point: "万有引力定律" },
+  { type: "choice", id: 4, title: "鬼魂是否存在", desc: "对应的是？", options: {A: "能量守恒定律", B: "热力学第二定律", C: "库仑定律"}, answer: "A", point: "能量守恒定律" },
+  { type: "choice", id: 5, title: "同性相吸，异性相斥", desc: "对应的是？", options: {A: "库仑定律", B: "法拉第定律", C: "麦克斯韦电磁理论"}, answer: "A", point: "库仑定律" },
+  { type: "choice", id: 6, title: "感应电流的方向", desc: "对应的是？", options: {A: "法拉第定律", B: "库仑定律", C: "等效原理"}, answer: "A", point: "法拉第定律" },
+  { type: "choice", id: 7, title: "量子的猜测", desc: "对应的是？", options: {A: "普朗克量子假设", B: "光电效应", C: "玻尔的原子模型"}, answer: "A", point: "普朗克量子假设" },
+  { type: "choice", id: 8, title: "爱因斯坦的创举", desc: "对应的是？", options: {A: "普朗克量子假设", B: "光电效应", C: "玻尔的原子模型"}, answer: "B", point: "光电效应" },
+  { type: "choice", id: 9, title: "世界是矛盾的", desc: "对应的是？", options: {A: "薛定谔波动力学", B: "波粒二象性", C: "海森堡的量子力学"}, answer: "B", point: "波粒二象性" },
+  { type: "choice", id: 10, title: "海森堡的量子力学", desc: "对应的是？", options: {A: "玻尔的原子模型", B: "波粒二象性", C: "海森堡的量子力学"}, answer: "C", point: "海森堡的量子力学" },
+  { type: "choice", id: 11, title: "又死又活", desc: "对应的是？", options: {A: "EPR悖论", B: "薛定谔的猫", C: "泡利不相容原理"}, answer: "B", point: "薛定谔的猫" },
+  { type: "choice", id: 12, title: "泡利不相容原理", desc: "对应的是？", options: {A: "量子纠缠", B: "费米子与玻色子", C: "泡利不相容原理"}, answer: "C", point: "泡利不相容原理" },
+  { type: "choice", id: 13, title: "孤芳自赏的费米子和爱凑热闹的玻色子", desc: "对应的是？", options: {A: "量子通信", B: "费米子和玻色子", C: "量子计算机"}, answer: "B", point: "费米子和玻色子" },
+  { type: "choice", id: 14, title: "改变世界的量子计算机", desc: "对应的是？", options: {A: "量子通信", B: "费米子和玻色子", C: "量子计算机"}, answer: "C", point: "量子计算机" },
+  { type: "choice", id: 15, title: "宇宙中的新传播介质", desc: "对应的是？", options: {A: "相对论", B: "以太假说", C: "质能关系"}, answer: "B", point: "以太假说" },
+  { type: "choice", id: 16, title: "改变世界的质能关系", desc: "对应的是？", options: {A: "等效原理", B: "引力场", C: "质能关系"}, answer: "C", point: "质能关系" },
+  { type: "choice", id: 17, title: "万物皆可弯", desc: "对应的是？", options: {A: "等效原理", B: "引力场", C: "质能关系"}, answer: "B", point: "引力场" },
+  { type: "choice", id: 18, title: "微观粒子的波粒特性", desc: "对应的是？", options: {A: "普朗克量子假设", B: "波粒二象性", C: "薛定谔波动力学"}, answer: "B", point: "波粒二象性" },
+  { type: "choice", id: 19, title: "引力与加速度的等效", desc: "对应的是？", options: {A: "等效原理", B: "相对论", C: "伽利略变换式"}, answer: "A", point: "等效原理" },
+  { type: "choice", id: 20, title: "量子世界的通信特性", desc: "对应的是？", options: {A: "量子纠缠", B: "量子计算机", C: "泡利不相容原理"}, answer: "A", point: "量子纠缠" },
+  { type: "judge", id: 21, title: "感知加速度", desc: "对应的是伽利略动力学", answer: "对", point: "伽利略动力学" },
+  { type: "judge", id: 22, title: "巨人肩膀上的胜利", desc: "对应的是万有引力定律", answer: "错", point: "牛顿三大定律" },
+  { type: "judge", id: 23, title: "从有限到无限", desc: "对应的是热力学第二定律", answer: "对", point: "热力学第二定律" },
+  { type: "judge", id: 24, title: "囊括宇宙所有的电磁现象", desc: "对应的是麦克斯韦电磁理论", answer: "对", point: "麦克斯韦电磁理论" },
+  { type: "judge", id: 25, title: "量子的诞生", desc: "对应的是玻尔的原子模型", answer: "对", point: "玻尔的原子模型" },
+  { type: "judge", id: 26, title: "量子世界里的物理运动", desc: "对应的是薛定谔波动力学", answer: "对", point: "薛定谔波动力学" },
+  { type: "judge", id: 27, title: "靠实验确立起来的哥本哈根诠释", desc: "对应的是哥本哈根诠释", answer: "对", point: "哥本哈根诠释" },
+  { type: "judge", id: 28, title: "一场思想实验", desc: "对应的是EPR悖论", answer: "对", point: "EPR悖论" },
+  { type: "judge", id: 29, title: "时间与空间的绝对独立", desc: "对应的是伽利略变换式", answer: "对", point: "伽利略变换式" },
+  { type: "judge", id: 30, title: "时间膨胀，长度可收缩", desc: "对应的是相对论", answer: "对", point: "相对论" }
+];
+
+let selectedQuestions = [];
+let currentQIndex = 0;
+let correctCount = 0;
+const testCount = 5;
+let wrongQuestions = [];
+
+function getRandomQuestions() {
+  const candidateQuestions = [...questionBank];
+  const shuffled = candidateQuestions.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, testCount);
+}
+
+function renderCurrentQuestion() {
+  const qArea = document.getElementById("questionArea");
+  qArea.innerHTML = "";
+  if (currentQIndex >= testCount) return;
+
+  const q = selectedQuestions[currentQIndex];
+  const qDiv = document.createElement("div");
+  qDiv.className = "question";
+  qDiv.style.display = "block";
+  qDiv.innerHTML = `<h3>${currentQIndex + 1}. 标题：${q.title}</h3><p>${q.desc}</p>`;
+
+  if(q.type === "choice") {
+    for(let key in q.options) {
+      qDiv.innerHTML += `<button class="btn btn-option" onclick="checkAnswer('${key}', this)">${key}. ${q.options[key]}</button>`;
+    }
+  } else if(q.type === "judge") {
+    qDiv.innerHTML += `<button class="btn btn-option" onclick="checkAnswer('对', this)">对</button><button class="btn btn-option" onclick="checkAnswer('错', this)">错</button>`;
+  }
+  qDiv.innerHTML += `<div class="result" id="result${currentQIndex}"></div>`;
+  qArea.appendChild(qDiv);
+}
+
+function updateProgress() {
+  const progressBar = document.getElementById("progressBar");
+  const progressText = document.getElementById("progressText");
+  const progress = (currentQIndex / testCount) * 100;
+  progressBar.style.width = `${progress}%`;
+  progressText.textContent = `已完成 ${currentQIndex} / ${testCount} 题`;
+}
+
+function startTest() {
+  document.getElementById("welcomePage").style.display = "none";
+  document.getElementById("progressContainer").style.display = "block";
+  document.getElementById("progressText").style.display = "block";
+
+  selectedQuestions = getRandomQuestions();
+  currentQIndex = 0;
+  correctCount = 0;
+  updateProgress();
+  renderCurrentQuestion();
+}
+
+function checkAnswer(selectedAns, btn) {
+  const q = selectedQuestions[currentQIndex];
+  const resultDiv = document.getElementById(`result${currentQIndex}`);
+
+  if(selectedAns === q.answer) {
+    resultDiv.className = "result correct";
+    resultDiv.innerHTML = `✅ 回答正确！本题正确对应是：${q.point}`;
+    correctCount++;
+  } else {
+    resultDiv.className = "result incorrect";
+    resultDiv.innerHTML = `❌ 回答错误！本题正确对应是：${q.point}`;
+    const isExist = wrongQuestions.some(item => item.id === q.id);
+    if (!isExist) {
+      wrongQuestions.push(q);
+    }
+  }
+  resultDiv.style.display = "block";
+  const btns = btn.parentElement.querySelectorAll(".btn");
+  btns.forEach(b => b.disabled = true);
+
+  setTimeout(() => {
+    currentQIndex++;
+    updateProgress();
+    if (currentQIndex < testCount) {
+      renderCurrentQuestion();
+    } else {
+      setTimeout(showEndPage, 500);
+    }
+  }, 1000);
+}
+
+function showEndPage() {
+  document.getElementById("questionArea").style.display = "none";
+  document.getElementById("progressContainer").style.display = "none";
+  document.getElementById("progressText").style.display = "none";
+  const endPage = document.getElementById("endPage");
+  const endTitle = document.getElementById("endTitle");
+  if(correctCount === testCount) {
+    endTitle.textContent = "太牛啦！期末物理A+稳稳向你招手~";
+  } else {
+    endTitle.textContent = "没关系！再来一次，下次肯定全对！";
+  }
+  endPage.style.display = "block";
+}
+
+function restartTest() {
+  document.getElementById("endPage").style.display = "none";
+  document.getElementById("questionArea").style.display = "block";
+  selectedQuestions = getRandomQuestions();
+  currentQIndex = 0;
+  correctCount = 0;
+  updateProgress();
+  renderCurrentQuestion();
+}
+
+function showWrongBook() {
+  document.getElementById("endPage").style.display = "none";
+  const wrongBook = document.getElementById("wrongBook");
+  const wrongList = document.getElementById("wrongList");
+
+  if (wrongQuestions.length === 0) {
+    wrongList.innerHTML = "<p>暂无错题，继续加油！</p>";
+  } else {
+    let html = "";
+    wrongQuestions.forEach(q => {
+      let optionStr = "";
+      if (q.type === "choice") {
+        for(let key in q.options) {
+          optionStr += `${key}. ${q.options[key]}&nbsp;&nbsp;`;
+        }
+      }
+      html += `
+        <div class="wrong-item">
+          <h4>${q.title}</h4>
+          <p>${q.desc}</p>
+          ${q.type === "choice" ? `<p>选项：${optionStr}</p>` : ""}
+          <p>正确答案：<span class="correct-ans">${q.answer}（${q.point}）</span></p>
+        </div>
+      `;
+    });
+    wrongList.innerHTML = html;
+  }
+  wrongBook.style.display = "block";
+}
+
+function hideWrongBook() {
+  document.getElementById("wrongBook").style.display = "none";
+  document.getElementById("endPage").style.display = "block";
+}
+
+// ===== Hamburger Menu =====
+(function(){
+  var btn = document.getElementById('menuToggle'), menu = document.getElementById('categoryMenu');
+  if (btn && menu) {
+    btn.addEventListener('click', function() {
+      var open = menu.classList.toggle('nav-open');
+      btn.classList.toggle('is-active');
+      btn.setAttribute('aria-expanded', open);
+    });
+    menu.querySelectorAll('a').forEach(function(l) {
+      l.addEventListener('click', function() { menu.classList.remove('nav-open'); btn.classList.remove('is-active'); btn.setAttribute('aria-expanded','false'); });
+    });
+  }
+})();
+(function(){
+  var items = document.querySelectorAll('.menu-item');
+  items.forEach(function(item) {
+    var top = item.querySelector('.menu-top'), sub = item.querySelector('.submenu');
+    if (top && sub && sub.children.length > 1) {
+      top.addEventListener('click', function(e) {
+        if ('ontouchstart' in window && window.innerWidth <= 680) {
+          var isOpen = sub.classList.contains('open');
+          item.parentNode.querySelectorAll('.submenu.open').forEach(function(s) { if (s !== sub) s.classList.remove('open'); });
+          if (!isOpen) { e.preventDefault(); sub.classList.add('open'); }
+        }
+      });
+    }
+  });
+})();
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+
+

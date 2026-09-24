@@ -1,0 +1,1020 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="长度读取训练平台，练习刻度尺读数、估读和单位换算。">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>长度读取训练平台 | York 周老师物理</title>
+  <meta property="og:title" content="长度读取训练平台 | York 周老师物理">
+  <meta property="og:description" content="长度读取训练平台，练习刻度尺读数、估读和单位换算。">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    /* ===== 页面专属样式 ===== */
+    body {
+      background: var(--bg);
+    }
+
+    /* -- 主内容区 -- */
+    .exp-page {
+      padding-top: 96px;
+      padding-bottom: 40px;
+    }
+
+    /* -- 顶栏标题 -- */
+    .lab-hero {
+      margin-bottom: 24px;
+    }
+
+    .lab-hero h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      color: var(--brand);
+    }
+
+    .lab-hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* -- 主布局（双栏） -- */
+    .lab-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .lab-main {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .lab-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .lab-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .lab-card h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      color: var(--brand);
+    }
+
+    .lab-card h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: var(--ink);
+    }
+
+    .lab-card p {
+      margin: 8px 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* -- 侧边栏 -- */
+    .lab-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* -- 测量区域 -- */
+    .measurement-board {
+      position: relative;
+      min-height: 310px;
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background:
+        linear-gradient(rgba(15, 58, 99, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 58, 99, 0.04) 1px, transparent 1px),
+        #fbfdff;
+      background-size: 22px 22px;
+      overflow: hidden;
+    }
+
+    .object-bar {
+      position: absolute;
+      top: 84px;
+      left: 4%;
+      height: 78px;
+      width: 60%;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #2b8a6e, #57c78f);
+      box-shadow: 0 16px 28px rgba(43, 138, 110, 0.20);
+    }
+
+    .object-bar::after {
+      content: "待测物体";
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.86);
+      font-weight: 800;
+    }
+
+    .ruler {
+      position: absolute;
+      top: 190px;
+      left: 4%;
+      width: 92%;
+      height: 82px;
+      border-top: 3px solid #1d2939;
+    }
+
+    .ruler-mark {
+      position: absolute;
+      top: 0;
+      width: 1.5px;
+      background: #1d2939;
+    }
+
+    .ruler-mark.main { height: 28px; }
+    .ruler-mark.mid  { height: 22px; }
+    .ruler-mark.sub  { height: 15px; }
+
+    .ruler-number {
+      position: absolute;
+      top: 34px;
+      color: #344155;
+      font-size: 14px;
+      font-weight: 800;
+      transform: translateX(-50%);
+    }
+
+    .ruler-unit {
+      position: absolute;
+      top: 58px;
+      right: 0;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    /* -- 答题区域 -- */
+    .answer-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 270px;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .answer-panel {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: #f9fcff;
+    }
+
+    .input-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 12px 0;
+    }
+
+    #measurement {
+      width: 150px;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px 12px;
+      text-align: center;
+      color: var(--ink);
+      background: #fff;
+      font-size: 20px;
+      font-weight: 900;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    #measurement:focus {
+      border-color: var(--tech);
+    }
+
+    .result {
+      min-height: 28px;
+      margin-top: 12px;
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    .correct { color: #1b5e20; }
+    .incorrect { color: #b71c1c; }
+
+    /* -- 按钮 -- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--surface-soft);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand-2), var(--tech));
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.88;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #e53935, #ef5350);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .btn-danger:hover {
+      opacity: 0.88;
+    }
+
+    .segmented {
+      display: inline-flex;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .segmented .btn {
+      border: none;
+      border-radius: 0;
+    }
+
+    .segmented .is-active {
+      background: linear-gradient(135deg, var(--brand-2), var(--tech));
+      color: #fff;
+    }
+
+    /* -- 数字键盘 -- */
+    .numpad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .numpad .num-btn {
+      padding: 14px;
+      font-size: 18px;
+      font-weight: 700;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .numpad .num-btn:active {
+      transform: scale(0.95);
+      background: var(--surface-soft);
+    }
+
+    .numpad .zero { grid-column: span 2; }
+    .numpad .clear { grid-column: span 3; }
+
+    /* -- 实验步骤 -- */
+    .steps {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    .notice {
+      background: #fffbf0;
+      border-color: #f0dca0;
+    }
+
+    /* -- 数据记录表 -- */
+    .record-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .record-table th,
+    .record-table td {
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .record-table th {
+      background: var(--surface-soft);
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .record-table td {
+      color: var(--ink);
+    }
+
+    .record-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    /* -- 公式与变量表 -- */
+    .formula {
+      padding: 14px;
+      background: var(--surface-soft);
+      border-radius: 12px;
+      text-align: center;
+      font-size: 18px;
+      margin: 8px 0;
+    }
+
+    .variable-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 8px 0;
+    }
+
+    .variable-table th,
+    .variable-table td {
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      text-align: left;
+    }
+
+    .variable-table th {
+      background: var(--surface-soft);
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .variable-table td {
+      color: var(--ink);
+    }
+
+    .term {
+      color: var(--brand-2);
+      border-bottom: 1px dashed var(--tech);
+      cursor: help;
+    }
+
+    /* -- 实时数据 -- */
+    .metric-row {
+      display: flex;
+      gap: 16px;
+    }
+
+    .metric {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      background: var(--surface-soft);
+      border-radius: 12px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 20px;
+      color: var(--brand);
+    }
+
+    .metric span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* -- 相关推荐 -- */
+    .related-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .related-list a {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: var(--brand-2);
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .related-list a:hover {
+      background: var(--surface-soft);
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 960px) {
+      .lab-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .lab-sidebar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .answer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .measurement-board {
+        min-height: 280px;
+      }
+
+      .lab-sidebar {
+        grid-template-columns: 1fr;
+      }
+
+      .exp-page {
+        padding-top: 96px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .lab-hero h1 {
+        font-size: 22px;
+      }
+
+      .numpad .num-btn {
+        padding: 12px;
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .exp-page {
+        padding-top: 80px;
+      }
+
+      .lab-hero h1 {
+        font-size: 20px;
+      }
+
+      .lab-card {
+        padding: 14px;
+      }
+
+      .measurement-board {
+        min-height: 240px;
+      }
+
+      .object-bar {
+        top: 60px;
+        height: 60px;
+      }
+
+      .ruler {
+        top: 150px;
+      }
+
+      .ruler-number {
+        font-size: 11px;
+      }
+
+      .ruler-mark.main { height: 22px; }
+      .ruler-mark.mid  { height: 18px; }
+      .ruler-mark.sub  { height: 12px; }
+
+      #measurement {
+        width: 100%;
+      }
+
+      .record-table {
+        font-size: 12px;
+      }
+
+      .record-table th,
+      .record-table td {
+        padding: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============ 共享导航 ============ -->
+<div class="nav-shell">
+  <div class="container">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+        <span class="brand-mark">Phy</span>
+        <span>York 周老师物理<small>Professional Physics Lab</small></span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#acoustics">声学</a>
+          <div class="submenu">
+            <a href="02-frequency.html">频率发声器</a>
+            <a href="03-noise.html">噪声检测仪</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#optics">光学</a>
+          <div class="submenu">
+            <a href="04-pinhole.html">小孔成像虚拟实验</a>
+            
+            <a href="06-rgb.html">光的三原色组合游戏</a>
+            <a href="07-lens.html">凸透镜成像虚拟实验</a>
+            <a href="10-refraction.html">光的反射与折射定律</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#thermal">热学</a>
+          <div class="submenu">
+            <a href="08-molecule.html">分子热运动微观示意图</a>
+            <a href="09-engine.html">四冲程汽油机示意图</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#mechanics">力学</a>
+          <div class="submenu">
+            <a href="01-length.html">长度读取训练平台</a>
+            <a href="12-buoyancy.html">木块浮力图像</a>
+            <a href="13-torricelli.html">托里拆利实验</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#electricity">电学</a>
+          <div class="submenu">
+            <a href="15-circuit.html">电路连接与欧姆定律</a>
+            <a href="16-resistors.html">电阻的串联与并联</a>
+          </div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-top" href="index.html#quiz">知识测验</a>
+          <div class="submenu">
+            <a href="11-review.html">初中物理知识点复习</a>
+            <a href="14-quiz.html">《物理原来很有趣》测验</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- ============ 实验内容 ============ -->
+<main class="container exp-page">
+  <section class="lab-hero">
+    <h1>长度读取训练平台</h1>
+    <p>通过随机生成待测物体长度，训练学生使用刻度尺读数、估读到分度值下一位，并完成厘米与毫米的单位换算。</p>
+  </section>
+
+  <div class="lab-layout">
+    <div class="lab-main">
+      <!-- 互动实验区 -->
+      <section class="lab-card experiment-stage">
+        <h2>互动实验区</h2>
+        <p>观察待测物体右端在刻度尺上的位置，输入测量值并选择单位。系统允许 ±0.1 cm 的读数误差。</p>
+
+        <div class="measurement-board" aria-label="刻度尺测量区域">
+          <div class="object-bar" id="rectangle"></div>
+          <div class="ruler" id="ruler"></div>
+        </div>
+
+        <div class="answer-grid">
+          <div class="answer-panel">
+            <h3>测量结果</h3>
+            <div class="input-line">
+              <label for="measurement"><strong>测量值</strong></label>
+              <input type="text" id="measurement" readonly aria-label="测量值">
+            </div>
+            <div class="segmented" aria-label="单位选择">
+              <button class="btn unit-btn is-active" type="button" data-unit="cm">厘米 cm</button>
+              <button class="btn unit-btn" type="button" data-unit="mm">毫米 mm</button>
+            </div>
+            <div class="input-line">
+              <button class="btn btn-primary" id="submit" type="button">提交答案</button>
+              <button class="btn" id="new-question" type="button">生成新题</button>
+            </div>
+            <div class="result" id="result" aria-live="polite"></div>
+          </div>
+
+          <div class="answer-panel">
+            <h3>数字键盘</h3>
+            <div class="numpad">
+              <button class="num-btn" type="button" data-value="1">1</button>
+              <button class="num-btn" type="button" data-value="2">2</button>
+              <button class="num-btn" type="button" data-value="3">3</button>
+              <button class="num-btn" type="button" data-value="4">4</button>
+              <button class="num-btn" type="button" data-value="5">5</button>
+              <button class="num-btn" type="button" data-value="6">6</button>
+              <button class="num-btn" type="button" data-value="7">7</button>
+              <button class="num-btn" type="button" data-value="8">8</button>
+              <button class="num-btn" type="button" data-value="9">9</button>
+              <button class="num-btn zero" type="button" data-value="0">0</button>
+              <button class="num-btn" type="button" data-value=".">.</button>
+              <button class="btn btn-danger clear" type="button">清除</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="lab-bottom">
+        <!-- 实验步骤 -->
+        <section class="lab-card">
+          <h2>实验步骤</h2>
+          <ol class="steps">
+            <li>对齐观察：确认物体左端与刻度尺 0 cm 刻度线对齐。</li>
+            <li>读取位置：观察物体右端对应的主刻度和细分刻度。</li>
+            <li>合理估读：按刻度尺分度值估读到下一位，输入测量值。</li>
+            <li>单位换算：可选择 cm 或 mm 提交，比较系统反馈与标准读数。</li>
+          </ol>
+        </section>
+
+        <!-- 误差与注意事项 -->
+        <section class="lab-card notice">
+          <h2>误差与注意事项</h2>
+          <p>读数时视线应与刻度尺垂直，避免视差；记录结果时必须包含数值和单位。分度值为 1 mm 的刻度尺通常需要估读到 0.1 mm 或以 cm 表示到 0.01 cm，本训练允许较宽容差用于课堂快速练习。</p>
+        </section>
+
+        <!-- 数据记录 -->
+        <section class="lab-card">
+          <h2>数据记录</h2>
+          <table class="record-table">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>输入值</th>
+                <th>标准值</th>
+                <th>判断</th>
+              </tr>
+            </thead>
+            <tbody id="recordBody">
+              <tr><td colspan="4">暂无记录，提交答案后自动生成。</td></tr>
+            </tbody>
+          </table>
+          <div class="record-actions">
+            <button class="btn btn-primary" id="exportRecords" type="button">导出文本</button>
+            <button class="btn" id="clearRecords" type="button">清空记录</button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- 侧边栏 -->
+    <aside class="lab-sidebar">
+      <section class="lab-card">
+        <h2>原理说明</h2>
+        <p>长度测量的核心是用标准长度单位与待测长度进行比较。刻度尺读数包含准确值和<span class="term" data-tip="估读值是按最小分度再向下一位进行合理判断得到的末位数字。">估读值</span>，结果应写成数值与单位的组合。</p>
+        <div class="formula">\( L = x_{\text{right}} - x_{\text{left}} \)</div>
+        <table class="variable-table">
+          <thead><tr><th>符号</th><th>名称</th><th>单位</th></tr></thead>
+          <tbody>
+            <tr><td>\(L\)</td><td>物体长度</td><td>cm 或 mm</td></tr>
+            <tr><td>\(x_{\text{right}}\)</td><td>物体右端刻度</td><td>cm</td></tr>
+            <tr><td>\(x_{\text{left}}\)</td><td>物体左端刻度</td><td>cm</td></tr>
+          </tbody>
+        </table>
+        <p><strong>适用条件：</strong>刻度尺零刻度完整、物体与刻度尺平行、读数视线垂直。<strong>局限性：</strong>屏幕像素与真实刻度存在显示误差，本页面用于读数训练而非真实测量。</p>
+      </section>
+
+      <section class="lab-card">
+        <h2>实时数据</h2>
+        <div class="metric-row">
+          <div class="metric"><strong id="timer">00:00</strong><span>实验停留时长</span></div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <h2>参考值面板</h2>
+        <table class="variable-table">
+          <tbody>
+            <tr><td>常见直尺分度值</td><td>1 mm</td></tr>
+            <tr><td>1 cm</td><td>10 mm</td></tr>
+            <tr><td>课堂允许误差</td><td>约 ±1 mm</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="lab-card">
+        <h2>相关实验推荐</h2>
+        <div class="related-list">
+          <a href="12-buoyancy.html">→ 木块浮力图像</a>
+          <a href="13-torricelli.html">→ 托里拆利实验</a>
+          <a href="11-review.html">→ 初中物理知识点复习</a>
+        </div>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<!-- ============ 共享页脚 ============ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div>
+      <strong>York 周老师物理</strong>
+      <p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p>
+      <p>© 2026 York Physics Lab. All Rights Reserved.</p>
+    </div>
+    <div>
+      <strong>联系方式</strong>
+      <p>周煜全老师</p>
+      <p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p>
+    </div>
+    <div>
+      <strong>特别鸣谢</strong>
+      <p>龙外物理科组</p>
+      <p>梁卓栋老师</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ 脚本 ============ -->
+<script>
+  let rectLength;
+  let actualLength;
+  let scaleValue;
+  let currentUnit = 'cm';
+  
+  let elapsedSeconds = 0;
+  const records = [];
+
+
+  function formatTimer() {
+    elapsedSeconds += 1;
+    const minutes = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
+    const seconds = String(elapsedSeconds % 60).padStart(2, '0');
+    document.getElementById('timer').textContent = minutes + ':' + seconds;
+  }
+
+  function initMeasurement() {
+    rectLength = Math.floor(Math.random() * 201) + 100;
+    const rectangle = document.getElementById('rectangle');
+    const ruler = document.getElementById('ruler');
+
+    scaleValue = [0.1, 1][Math.floor(Math.random() * 2)];
+    ruler.innerHTML = '';
+
+    const rulerWidthPx = ruler.getBoundingClientRect().width;
+    const cmToPx = rulerWidthPx / 20;
+
+    for (let i = 0; i <= 20; i += 1) {
+      const mainMark = document.createElement('div');
+      mainMark.className = 'ruler-mark main';
+      mainMark.style.left = i * cmToPx + 'px';
+      ruler.appendChild(mainMark);
+
+      const number = document.createElement('div');
+      number.className = 'ruler-number';
+      number.textContent = i;
+      number.style.left = i * cmToPx + 'px';
+      ruler.appendChild(number);
+
+      if (scaleValue === 0.1 && i < 20) {
+        for (let j = 1; j <= 9; j += 1) {
+          const subMark = document.createElement('div');
+          subMark.className = j === 5 ? 'ruler-mark mid' : 'ruler-mark sub';
+          subMark.style.left = (i + j * 0.1) * cmToPx + 'px';
+          ruler.appendChild(subMark);
+        }
+      }
+    }
+
+    const unit = document.createElement('div');
+    unit.className = 'ruler-unit';
+    unit.textContent = 'cm';
+    ruler.appendChild(unit);
+
+    const rectWidthPx = (rectLength / 300) * rulerWidthPx;
+    rectangle.style.width = rectWidthPx + 'px';
+    actualLength = rectWidthPx / cmToPx;
+
+    document.getElementById('measurement').value = '';
+    document.getElementById('result').textContent = '';
+    document.getElementById('result').className = 'result';
+  }
+
+  function renderRecords() {
+    const body = document.getElementById('recordBody');
+    if (!records.length) {
+      body.innerHTML = '<tr><td colspan="4">暂无记录，提交答案后自动生成。</td></tr>';
+      return;
+    }
+
+    body.innerHTML = records.map(function (record, index) {
+      return '<tr>' +
+        '<td>' + (index + 1) + '</td>' +
+        '<td>' + record.input + '</td>' +
+        '<td>' + record.actual + '</td>' +
+        '<td>' + (record.correct ? '正确' : '需修正') + '</td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  function countDecimalPlaces(valueText) {
+    const normalized = String(valueText).trim();
+    if (!/^\d+(?:\.\d+)?$/.test(normalized)) return -1;
+    const dotIndex = normalized.indexOf('.');
+    return dotIndex === -1 ? 0 : normalized.length - dotIndex - 1;
+  }
+
+  function expectedDecimalPlacesForUnit(unit) {
+    const cmDecimalPlaces = scaleValue === 1 ? 1 : 2;
+    return unit === 'mm' ? Math.max(0, cmDecimalPlaces - 1) : cmDecimalPlaces;
+  }
+
+  function submitAnswer() {
+    const measurementInput = document.getElementById('measurement');
+    const userInput = parseFloat(measurementInput.value);
+    const resultDiv = document.getElementById('result');
+
+    if (isNaN(userInput)) {
+      resultDiv.textContent = '请输入有效的测量值。';
+      resultDiv.className = 'result incorrect';
+      return;
+    }
+
+    const userLengthInCm = currentUnit === 'mm' ? userInput / 10 : userInput;
+    const tolerance = 0.1;
+    const hasCorrectValue = Math.abs(userLengthInCm - actualLength) <= tolerance;
+    const decimalPlaces = scaleValue === 1 ? 1 : 2;
+    const requiredDecimalPlaces = expectedDecimalPlacesForUnit(currentUnit);
+    const hasCorrectPrecision = countDecimalPlaces(measurementInput.value) === requiredDecimalPlaces;
+    const isCorrect = hasCorrectValue && hasCorrectPrecision;
+    const formattedLength = actualLength.toFixed(decimalPlaces) + ' cm';
+
+    resultDiv.textContent = isCorrect
+      ? '正确。标准读数约为 ' + formattedLength + '。'
+      : '需要修正。标准读数约为 ' + formattedLength + '。';
+    resultDiv.className = isCorrect ? 'result correct' : 'result incorrect';
+    if (isCorrect) {
+      resultDiv.textContent = '正确。标准读数约为 ' + formattedLength + '。';
+    } else if (hasCorrectValue && !hasCorrectPrecision) {
+      resultDiv.textContent = '需要修正。数值接近，但测量值应保留 ' + requiredDecimalPlaces + ' 位小数。标准读数约为 ' + formattedLength + '。';
+    } else {
+      resultDiv.textContent = '需要修正。标准读数约为 ' + formattedLength + '。';
+    }
+
+    records.push({
+      input: measurementInput.value + ' ' + currentUnit,
+      actual: formattedLength,
+      correct: isCorrect
+    });
+    renderRecords();
+  }
+
+  function exportRecords() {
+    var content = records.length
+      ? records.map(function (record, index) {
+          return (index + 1) + '. 输入：' + record.input + ' | 标准值：' + record.actual + ' | 判断：' + (record.correct ? '正确' : '需修正');
+        }).join('\n')
+      : '暂无实验记录';
+    var blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = 'length-records.txt';
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const measurementInput = document.getElementById('measurement');
+    initMeasurement();
+    setInterval(formatTimer, 1000);
+
+    document.querySelectorAll('.unit-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.unit-btn').forEach(function (item) { item.classList.remove('is-active'); });
+        this.classList.add('is-active');
+        currentUnit = this.dataset.unit;
+      });
+    });
+
+    document.querySelectorAll('.num-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const value = this.dataset.value;
+        if (value === '.') {
+          if (measurementInput.value === '') {
+            measurementInput.value = '0.';
+          } else if (measurementInput.value.indexOf('.') === -1) {
+            measurementInput.value += value;
+          }
+          return;
+        }
+        measurementInput.value += value;
+      });
+    });
+
+    document.querySelector('.clear').addEventListener('click', function () {
+      measurementInput.value = '';
+    });
+
+    document.getElementById('submit').addEventListener('click', submitAnswer);
+    document.getElementById('new-question').addEventListener('click', function () {
+      initMeasurement();
+    });
+    document.getElementById('exportRecords').addEventListener('click', exportRecords);
+    document.getElementById('clearRecords').addEventListener('click', function () {
+      records.length = 0;
+      renderRecords();
+    });
+    window.addEventListener('resize', initMeasurement);
+  });
+
+  // ----- 移动端汉堡菜单 -----
+  (function () {
+    var toggleBtn = document.getElementById('menuToggle');
+    var menu = document.getElementById('categoryMenu');
+    if (toggleBtn && menu) {
+      toggleBtn.addEventListener('click', function () {
+        var isOpen = menu.classList.toggle('nav-open');
+        toggleBtn.classList.toggle('is-active');
+        toggleBtn.setAttribute('aria-expanded', isOpen);
+      });
+      menu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          menu.classList.remove('nav-open');
+          toggleBtn.classList.remove('is-active');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+  })();
+
+  (function () {
+    var menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach(function (item) {
+      var topLink = item.querySelector('.menu-top');
+      var sub = item.querySelector('.submenu');
+      if (topLink && sub && sub.children.length <= 1) return;
+      if (topLink && sub) {
+        topLink.addEventListener('click', function (e) {
+          if ('ontouchstart' in window && window.innerWidth <= 680) {
+            var isOpen = sub.classList.contains('open');
+            item.parentNode.querySelectorAll('.submenu.open').forEach(function (s) {
+              if (s !== sub) s.classList.remove('open');
+            });
+            if (!isOpen) {
+              e.preventDefault();
+              sub.classList.add('open');
+            }
+          }
+        });
+      }
+    });
+  })();
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+
+

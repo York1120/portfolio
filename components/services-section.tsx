@@ -6,8 +6,10 @@ const fields = [
     title: "物理教学",
     description: "初中物理互动实验平台，覆盖声学、光学、热学、力学、电学，让抽象概念可视化。",
     icon: FlaskConical,
-    href: "/physics",
+    href: "/physics/",
     external: false,
+    // /physics/ 是独立打包的静态站点，用原生 <a> 整页跳转
+    plain: true,
     lightColor: "bg-blue-50",
     iconColor: "text-blue-600",
   },
@@ -17,6 +19,7 @@ const fields = [
     icon: Monitor,
     href: "/it-education",
     external: false,
+    plain: false,
     lightColor: "bg-purple-50",
     iconColor: "text-purple-600",
   },
@@ -26,6 +29,7 @@ const fields = [
     icon: BookOpen,
     href: "/resources",
     external: false,
+    plain: false,
     lightColor: "bg-green-50",
     iconColor: "text-green-600",
   },
@@ -35,6 +39,7 @@ const fields = [
     icon: Wrench,
     href: "/tools",
     external: false,
+    plain: false,
     lightColor: "bg-orange-50",
     iconColor: "text-orange-600",
   },
@@ -54,7 +59,7 @@ export function ServicesSection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {fields.map((field) => {
             const Icon = field.icon
-            const CardWrapper = field.external ? "a" : Link
+            const CardWrapper = field.external || field.plain ? "a" : Link
             const wrapperProps = field.external
               ? { href: field.href, target: "_blank", rel: "noopener noreferrer" }
               : { href: field.href }

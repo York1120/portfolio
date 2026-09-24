@@ -1,0 +1,480 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="初中物理八年级上册知识点复习 — 100道选择题覆盖机械运动、声现象、物态变化。">
+  <meta name="theme-color" content="#0f3a63">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <meta itemprop="image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <title>初中物理知识点复习 | York 周老师物理</title>
+  <meta property="og:title" content="初中物理知识点复习 | York 周老师物理">
+  <meta property="og:description" content="初中物理八年级上册知识点复习 — 100道选择题覆盖机械运动、声现象、物态变化。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .exp-page { padding-top: 96px; padding-bottom: 40px; }
+    .lab-hero { margin-bottom: 24px; }
+    .lab-hero h1 { margin: 0 0 8px; font-size: 28px; color: var(--brand); }
+    .lab-hero p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .review-layout { display: grid; grid-template-columns: 1fr 280px; gap: 24px; align-items: start; }
+    .review-main { display: flex; flex-direction: column; gap: 18px; }
+    .review-sidebar { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 18px; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-soft); }
+    .card h2 { margin: 0 0 12px; font-size: 18px; color: var(--brand); }
+    .chapter-title { font-size: 20px; color: var(--brand-2); margin: 24px 0 14px; padding: 10px 14px; background: var(--surface-soft); border-radius: 10px; border-left: 4px solid var(--brand-2); }
+    .q-container { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow-soft); }
+    .q-container:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+    .q-text { font-weight: 600; margin-bottom: 16px; font-size: 15px; color: var(--ink); line-height: 1.5; }
+    .options { margin-left: 6px; margin-bottom: 14px; }
+    .option { margin-bottom: 10px; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: background .2s; font-size: 14px; }
+    .option:hover { background: var(--surface-soft); }
+    .option input { margin-right: 10px; transform: scale(1.1); }
+    .option label { cursor: pointer; }
+    .feedback { margin-top: 12px; padding: 12px; border-radius: 8px; display: none; font-size: 14px; line-height: 1.4; }
+    .feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; display: block; }
+    .feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; display: block; }
+    .q-btn { background: linear-gradient(135deg, var(--brand-2), var(--tech)); color: #fff; border: none; padding: 10px 28px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600; display: block; margin: 0 auto; transition: opacity .2s, transform .2s; }
+    .q-btn:hover { opacity: .9; transform: translateY(-1px); }
+    .q-completed { border-left: 4px solid #27ae60; }
+    .stats-card { background: linear-gradient(135deg, var(--brand-2), var(--tech)); color: #fff; border-radius: 14px; padding: 20px; text-align: center; }
+    .stats-number { font-size: 2.2em; font-weight: 700; margin: 8px 0; }
+    .stats-label { font-size: 14px; opacity: .9; }
+    .pbar { width: 100%; height: 10px; background: rgba(255,255,255,0.3); border-radius: 5px; margin: 12px 0; overflow: hidden; }
+    .pbar-fill { height: 100%; background: #fff; border-radius: 5px; transition: width .5s; }
+    .chapter-item { background: var(--surface-soft); border-radius: 10px; padding: 12px; margin-bottom: 8px; border-left: 4px solid var(--brand-2); }
+    .chapter-name { font-weight: 600; font-size: 14px; color: var(--ink); }
+    .chapter-stats { font-size: 13px; color: var(--muted); }
+    @media (max-width: 960px) { .review-layout { grid-template-columns: 1fr; } .review-sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } }
+    @media (max-width: 760px) { .review-sidebar { grid-template-columns: 1fr; } }
+    @media (max-width: 680px) { .lab-hero h1 { font-size: 22px; } }
+    @media (max-width: 480px) { .exp-page { padding-top: 80px; } .lab-hero h1 { font-size: 20px; } .card, .q-container { padding: 14px; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-shell">
+  <div class="container">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="York 周老师物理首页">
+        <span class="brand-mark">Phy</span>
+        <span>York 周老师物理<small>Professional Physics Lab</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <div class="category-menu" id="categoryMenu" aria-label="实验分类导航">
+        <div class="menu-item"><a class="menu-top" href="index.html#acoustics">声学</a><div class="submenu"><a href="02-frequency.html">频率发声器</a><a href="03-noise.html">噪声检测仪</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#optics">光学</a><div class="submenu"><a href="04-pinhole.html">小孔成像虚拟实验</a><a href="06-rgb.html">光的三原色组合游戏</a><a href="07-lens.html">凸透镜成像虚拟实验</a><a href="10-refraction.html">光的反射与折射定律</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#thermal">热学</a><div class="submenu"><a href="08-molecule.html">分子热运动微观示意图</a><a href="09-engine.html">四冲程汽油机示意图</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#mechanics">力学</a><div class="submenu"><a href="01-length.html">长度读取训练平台</a><a href="12-buoyancy.html">木块浮力图像</a><a href="13-torricelli.html">托里拆利实验</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#electricity">电学</a><div class="submenu"><a href="15-circuit.html">电路连接与欧姆定律</a><a href="16-resistors.html">电阻的串联与并联</a></div></div>
+        <div class="menu-item"><a class="menu-top" href="index.html#quiz">知识测验</a><div class="submenu"><a href="11-review.html">初中物理知识点复习</a><a href="14-quiz.html">《物理原来很有趣》测验</a></div></div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="container exp-page">
+  <div class="lab-hero">
+    <h1>初中物理八年级上册知识点复习</h1>
+    <p>100道选择题，覆盖机械运动、声现象、物态变化三大章节。</p>
+  </div>
+
+  <div class="review-layout">
+    <div class="review-main">
+      <div class="card" id="questionsContainer">
+        <h2>第一章：机械运动</h2>
+        <!-- Q1 -->
+        <div class="q-container"><div class="q-text">1. 在物理学中，物体位置的变化叫做什么？</div>
+          <div class="options">
+            <div class="option"><input type="radio" name="q1" value="A" id="q1a"><label for="q1a">A. 物理运动</label></div>
+            <div class="option"><input type="radio" name="q1" value="B" id="q1b"><label for="q1b">B. 机械运动</label></div>
+            <div class="option"><input type="radio" name="q1" value="C" id="q1c"><label for="q1c">C. 化学运动</label></div>
+            <div class="option"><input type="radio" name="q1" value="D" id="q1d"><label for="q1d">D. 生物运动</label></div>
+          </div>
+          <button class="q-btn" onclick="checkAnswer('q1','B','机械运动是指物体位置随时间的变化。')">提交答案</button>
+          <div class="feedback" id="feedback-q1"></div>
+        </div>
+        <!-- Q2 -->
+        <div class="q-container"><div class="q-text">2. 长度的国际单位是什么？</div>
+          <div class="options">
+            <div class="option"><input type="radio" name="q2" value="A" id="q2a"><label for="q2a">A. 厘米(cm)</label></div>
+            <div class="option"><input type="radio" name="q2" value="B" id="q2b"><label for="q2b">B. 分米(dm)</label></div>
+            <div class="option"><input type="radio" name="q2" value="C" id="q2c"><label for="q2c">C. 米(m)</label></div>
+            <div class="option"><input type="radio" name="q2" value="D" id="q2d"><label for="q2d">D. 千米(km)</label></div>
+          </div>
+          <button class="q-btn" onclick="checkAnswer('q2','C','长度的国际单位是米(m)。')">提交答案</button>
+          <div class="feedback" id="feedback-q2"></div>
+        </div>
+        <!-- Q3 -->
+        <div class="q-container"><div class="q-text">3. 下列哪个单位换算是正确的？</div>
+          <div class="options">
+            <div class="option"><input type="radio" name="q3" value="A" id="q3a"><label for="q3a">A. 1km = 100m</label></div>
+            <div class="option"><input type="radio" name="q3" value="B" id="q3b"><label for="q3b">B. 1cm = 0.01m</label></div>
+            <div class="option"><input type="radio" name="q3" value="C" id="q3c"><label for="q3c">C. 1mm = 0.001m</label></div>
+            <div class="option"><input type="radio" name="q3" value="D" id="q3d"><label for="q3d">D. B和C都正确</label></div>
+          </div>
+          <button class="q-btn" onclick="checkAnswer('q3','D','1cm=0.01m，1mm=0.001m。')">提交答案</button>
+          <div class="feedback" id="feedback-q3"></div>
+        </div>
+        <!-- Q4 -->
+        <div class="q-container"><div class="q-text">4. 时间的国际单位是什么？</div>
+          <div class="options">
+            <div class="option"><input type="radio" name="q4" value="A" id="q4a"><label for="q4a">A. 分(min)</label></div>
+            <div class="option"><input type="radio" name="q4" value="B" id="q4b"><label for="q4b">B. 小时(h)</label></div>
+            <div class="option"><input type="radio" name="q4" value="C" id="q4c"><label for="q4c">C. 秒(s)</label></div>
+            <div class="option"><input type="radio" name="q4" value="D" id="q4d"><label for="q4d">D. 天(d)</label></div>
+          </div>
+          <button class="q-btn" onclick="checkAnswer('q4','C','时间的国际单位是秒(s)。')">提交答案</button>
+          <div class="feedback" id="feedback-q4"></div>
+        </div>
+        <!-- Q5 -->
+        <div class="q-container"><div class="q-text">5. 速度的计算公式是什么？</div>
+          <div class="options">
+            <div class="option"><input type="radio" name="q5" value="A" id="q5a"><label for="q5a">A. v = t/s</label></div>
+            <div class="option"><input type="radio" name="q5" value="B" id="q5b"><label for="q5b">B. v = s/t</label></div>
+            <div class="option"><input type="radio" name="q5" value="C" id="q5c"><label for="q5c">C. v = s×t</label></div>
+            <div class="option"><input type="radio" name="q5" value="D" id="q5d"><label for="q5d">D. v = s+t</label></div>
+          </div>
+          <button class="q-btn" onclick="checkAnswer('q5','B','速度等于路程除以时间，即v=s/t。')">提交答案</button>
+          <div class="feedback" id="feedback-q5"></div>
+        </div>
+        <!-- Q6 -->
+        <div class="q-container"><div class="q-text">6. 下列关于参照物的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q6" value="A" id="q6a"><label for="q6a">A. 参照物必须是静止的物体</label></div><div class="option"><input type="radio" name="q6" value="B" id="q6b"><label for="q6b">B. 参照物可以是运动的物体</label></div><div class="option"><input type="radio" name="q6" value="C" id="q6c"><label for="q6c">C. 研究对象本身可以作为参照物</label></div><div class="option"><input type="radio" name="q6" value="D" id="q6d"><label for="q6d">D. 参照物必须是地面上的物体</label></div></div>
+          <button class="q-btn" onclick="checkAnswer('q6','B','参照物可以是静止的，也可以是运动的。')">提交答案</button><div class="feedback" id="feedback-q6"></div>
+        </div>
+        <!-- Q7 -->
+        <div class="q-container"><div class="q-text">7. 1m/s等于多少km/h？</div>
+          <div class="options"><div class="option"><input type="radio" name="q7" value="A" id="q7a"><label for="q7a">A. 1.6km/h</label></div><div class="option"><input type="radio" name="q7" value="B" id="q7b"><label for="q7b">B. 3.6km/h</label></div><div class="option"><input type="radio" name="q7" value="C" id="q7c"><label for="q7c">C. 6.0km/h</label></div><div class="option"><input type="radio" name="q7" value="D" id="q7d"><label for="q7d">D. 10km/h</label></div></div>
+          <button class="q-btn" onclick="checkAnswer('q7','B','1m/s=3.6km/h。')">提交答案</button><div class="feedback" id="feedback-q7"></div>
+        </div>
+        <!-- Q8 -->
+        <div class="q-container"><div class="q-text">8. 刻度尺读数时应该估读到什么位置？</div>
+          <div class="options"><div class="option"><input type="radio" name="q8" value="A" id="q8a"><label for="q8a">A. 最小刻度值</label></div><div class="option"><input type="radio" name="q8" value="B" id="q8b"><label for="q8b">B. 最小刻度值的下一位</label></div><div class="option"><input type="radio" name="q8" value="C" id="q8c"><label for="q8c">C. 最小刻度值的上一位</label></div><div class="option"><input type="radio" name="q8" value="D" id="q8d"><label for="q8d">D. 不需要估读</label></div></div>
+          <button class="q-btn" onclick="checkAnswer('q8','B','应估读到最小刻度值的下一位。')">提交答案</button><div class="feedback" id="feedback-q8"></div>
+        </div>
+        <!-- Q9 -->
+        <div class="q-container"><div class="q-text">9. 下列哪种情况属于机械运动？</div>
+          <div class="options"><div class="option"><input type="radio" name="q9" value="A" id="q9a"><label for="q9a">A. 铁生锈</label></div><div class="option"><input type="radio" name="q9" value="B" id="q9b"><label for="q9b">B. 水结冰</label></div><div class="option"><input type="radio" name="q9" value="C" id="q9c"><label for="q9c">C. 汽车行驶</label></div><div class="option"><input type="radio" name="q9" value="D" id="q9d"><label for="q9d">D. 花朵开放</label></div></div>
+          <button class="q-btn" onclick="checkAnswer('q9','C','机械运动是指物体位置的变化。')">提交答案</button><div class="feedback" id="feedback-q9"></div>
+        </div>
+        <!-- Q10 -->
+        <div class="q-container"><div class="q-text">10. 关于误差和错误，下列说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q10" value="A" id="q10a"><label for="q10a">A. 误差和错误一样，都可以避免</label></div><div class="option"><input type="radio" name="q10" value="B" id="q10b"><label for="q10b">B. 多次测量取平均值可以减小误差</label></div><div class="option"><input type="radio" name="q10" value="C" id="q10c"><label for="q10c">C. 误差就是错误</label></div><div class="option"><input type="radio" name="q10" value="D" id="q10d"><label for="q10d">D. 使用精密仪器可以消除误差</label></div></div>
+          <button class="q-btn" onclick="checkAnswer('q10','B','多次测量取平均值可以减小误差。')">提交答案</button><div class="feedback" id="feedback-q10"></div>
+        </div>
+        <!-- Q11-30 -->
+        <div class="q-container"><div class="q-text">11. 下列关于运动和静止的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q11" value="A" id="q11a"><label for="q11a">A. 运动是绝对的，静止是相对的</label></div><div class="option"><input type="radio" name="q11" value="B" id="q11b"><label for="q11b">B. 静止是绝对的，运动是相对的</label></div><div class="option"><input type="radio" name="q11" value="C" id="q11c"><label for="q11c">C. 运动和静止都是绝对的</label></div><div class="option"><input type="radio" name="q11" value="D" id="q11d"><label for="q11d">D. 运动和静止都是相对的</label></div></div><button class="q-btn" onclick="checkAnswer('q11','A','运动是绝对的，静止是相对的。')">提交答案</button><div class="feedback" id="feedback-q11"></div></div>
+        <div class="q-container"><div class="q-text">12. 下列物体中，做匀速直线运动的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q12" value="A" id="q12a"><label for="q12a">A. 自由下落的苹果</label></div><div class="option"><input type="radio" name="q12" value="B" id="q12b"><label for="q12b">B. 匀速行驶的汽车</label></div><div class="option"><input type="radio" name="q12" value="C" id="q12c"><label for="q12c">C. 绕地球运动的人造卫星</label></div><div class="option"><input type="radio" name="q12" value="D" id="q12d"><label for="q12d">D. 正在进站的火车</label></div></div><button class="q-btn" onclick="checkAnswer('q12','B','匀速行驶的汽车做匀速直线运动。')">提交答案</button><div class="feedback" id="feedback-q12"></div></div>
+        <div class="q-container"><div class="q-text">13. 下列关于速度的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q13" value="A" id="q13a"><label for="q13a">A. 速度是表示物体运动路程多少的物理量</label></div><div class="option"><input type="radio" name="q13" value="B" id="q13b"><label for="q13b">B. 速度是表示物体运动快慢的物理量</label></div><div class="option"><input type="radio" name="q13" value="C" id="q13c"><label for="q13c">C. 速度大的物体运动时间一定短</label></div><div class="option"><input type="radio" name="q13" value="D" id="q13d"><label for="q13d">D. 速度大的物体通过路程一定长</label></div></div><button class="q-btn" onclick="checkAnswer('q13','B','速度表示物体运动快慢。')">提交答案</button><div class="feedback" id="feedback-q13"></div></div>
+        <div class="q-container"><div class="q-text">14. 一辆汽车以72km/h的速度行驶，合多少m/s？</div>
+          <div class="options"><div class="option"><input type="radio" name="q14" value="A" id="q14a"><label for="q14a">A. 20m/s</label></div><div class="option"><input type="radio" name="q14" value="B" id="q14b"><label for="q14b">B. 15m/s</label></div><div class="option"><input type="radio" name="q14" value="C" id="q14c"><label for="q14c">C. 25m/s</label></div><div class="option"><input type="radio" name="q14" value="D" id="q14d"><label for="q14d">D. 30m/s</label></div></div><button class="q-btn" onclick="checkAnswer('q14','A','72÷3.6=20m/s。')">提交答案</button><div class="feedback" id="feedback-q14"></div></div>
+        <div class="q-container"><div class="q-text">15. 下列测量长度的方法中，正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q15" value="A" id="q15a"><label for="q15a">A. 测量时可以不从零刻度线开始</label></div><div class="option"><input type="radio" name="q15" value="B" id="q15b"><label for="q15b">B. 测量结果要记录到最小刻度的下一位</label></div><div class="option"><input type="radio" name="q15" value="C" id="q15c"><label for="q15c">C. 测量结果不用估读</label></div><div class="option"><input type="radio" name="q15" value="D" id="q15d"><label for="q15d">D. 以上说法都正确</label></div></div><button class="q-btn" onclick="checkAnswer('q15','B','测量结果要估读到最小刻度的下一位。')">提交答案</button><div class="feedback" id="feedback-q15"></div></div>
+        <div class="q-container"><div class="q-text">16. 关于误差，下列说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q16" value="A" id="q16a"><label for="q16a">A. 误差是完全可以避免的</label></div><div class="option"><input type="radio" name="q16" value="B" id="q16b"><label for="q16b">B. 误差和错误一样</label></div><div class="option"><input type="radio" name="q16" value="C" id="q16c"><label for="q16c">C. 改进实验方法可以减小误差</label></div><div class="option"><input type="radio" name="q16" value="D" id="q16d"><label for="q16d">D. 误差是由测量工具不精密造成的</label></div></div><button class="q-btn" onclick="checkAnswer('q16','C','改进实验方法可以减小误差。')">提交答案</button><div class="feedback" id="feedback-q16"></div></div>
+        <div class="q-container"><div class="q-text">17. 甲、乙两车都做匀速直线运动，甲的速度是乙的2倍，乙行驶的时间是甲的3倍，则甲、乙两车通过的路程之比是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q17" value="A" id="q17a"><label for="q17a">A. 2:3</label></div><div class="option"><input type="radio" name="q17" value="B" id="q17b"><label for="q17b">B. 3:2</label></div><div class="option"><input type="radio" name="q17" value="C" id="q17c"><label for="q17c">C. 2:1</label></div><div class="option"><input type="radio" name="q17" value="D" id="q17d"><label for="q17d">D. 1:2</label></div></div><button class="q-btn" onclick="checkAnswer('q17','A','s甲:s乙=(2v×t):(v×3t)=2:3。')">提交答案</button><div class="feedback" id="feedback-q17"></div></div>
+        <div class="q-container"><div class="q-text">18. 用刻度尺测量物体的长度时，下列要求错误的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q18" value="A" id="q18a"><label for="q18a">A. 刻度尺要与被测物体平行</label></div><div class="option"><input type="radio" name="q18" value="B" id="q18b"><label for="q18b">B. 刻度尺的刻度线要紧贴被测物体</label></div><div class="option"><input type="radio" name="q18" value="C" id="q18c"><label for="q18c">C. 测量时，刻度尺的零刻度线必须与被测物体一端对齐</label></div><div class="option"><input type="radio" name="q18" value="D" id="q18d"><label for="q18d">D. 读数时，视线要与刻度尺垂直</label></div></div><button class="q-btn" onclick="checkAnswer('q18','C','零刻度线磨损时可从其他整刻度线量起。')">提交答案</button><div class="feedback" id="feedback-q18"></div></div>
+        <div class="q-container"><div class="q-text">19. 关于参照物，下列说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q19" value="A" id="q19a"><label for="q19a">A. 只有静止的物体才能作为参照物</label></div><div class="option"><input type="radio" name="q19" value="B" id="q19b"><label for="q19b">B. 任何物体都可以作为参照物</label></div><div class="option"><input type="radio" name="q19" value="C" id="q19c"><label for="q19c">C. 参照物必须是地面上的物体</label></div><div class="option"><input type="radio" name="q19" value="D" id="q19d"><label for="q19d">D. 研究对象本身可以作为参照物</label></div></div><button class="q-btn" onclick="checkAnswer('q19','B','任何物体都可以作为参照物。')">提交答案</button><div class="feedback" id="feedback-q19"></div></div>
+        <div class="q-container"><div class="q-text">20. 匀速直线运动的速度公式v=s/t，下列说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q20" value="A" id="q20a"><label for="q20a">A. v与s成正比</label></div><div class="option"><input type="radio" name="q20" value="B" id="q20b"><label for="q20b">B. v与t成反比</label></div><div class="option"><input type="radio" name="q20" value="C" id="q20c"><label for="q20c">C. v与s和t无关，是个定值</label></div><div class="option"><input type="radio" name="q20" value="D" id="q20d"><label for="q20d">D. v与s、t都有关系</label></div></div><button class="q-btn" onclick="checkAnswer('q20','C','匀速直线运动的速度是定值。')">提交答案</button><div class="feedback" id="feedback-q20"></div></div>
+        <div class="q-container"><div class="q-text">21. 下列情况中，物体做匀速直线运动的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q21" value="A" id="q21a"><label for="q21a">A. 从树上掉落的苹果</label></div><div class="option"><input type="radio" name="q21" value="B" id="q21b"><label for="q21b">B. 正在进站的火车</label></div><div class="option"><input type="radio" name="q21" value="C" id="q21c"><label for="q21c">C. 在平直轨道上匀速行驶的列车</label></div><div class="option"><input type="radio" name="q21" value="D" id="q21d"><label for="q21d">D. 正在起飞的飞机</label></div></div><button class="q-btn" onclick="checkAnswer('q21','C','匀速行驶的列车做匀速直线运动。')">提交答案</button><div class="feedback" id="feedback-q21"></div></div>
+        <div class="q-container"><div class="q-text">22. 在测量平均速度的实验中，测量工具是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q22" value="A" id="q22a"><label for="q22a">A. 刻度尺和秒表</label></div><div class="option"><input type="radio" name="q22" value="B" id="q22b"><label for="q22b">B. 刻度尺和天平</label></div><div class="option"><input type="radio" name="q22" value="C" id="q22c"><label for="q22c">C. 秒表和温度计</label></div><div class="option"><input type="radio" name="q22" value="D" id="q22d"><label for="q22d">D. 刻度尺和温度计</label></div></div><button class="q-btn" onclick="checkAnswer('q22','A','测量平均速度需要刻度尺测路程，秒表测时间。')">提交答案</button><div class="feedback" id="feedback-q22"></div></div>
+        <div class="q-container"><div class="q-text">23. 人正常步行的速度约为？</div>
+          <div class="options"><div class="option"><input type="radio" name="q23" value="A" id="q23a"><label for="q23a">A. 1.1m/s</label></div><div class="option"><input type="radio" name="q23" value="B" id="q23b"><label for="q23b">B. 5m/s</label></div><div class="option"><input type="radio" name="q23" value="C" id="q23c"><label for="q23c">C. 10m/s</label></div><div class="option"><input type="radio" name="q23" value="D" id="q23d"><label for="q23d">D. 20m/s</label></div></div><button class="q-btn" onclick="checkAnswer('q23','A','人正常步行速度约1.1m/s。')">提交答案</button><div class="feedback" id="feedback-q23"></div></div>
+        <div class="q-container"><div class="q-text">24. 一列火车长200m，以15m/s的速度通过一座长1300m的大桥，火车完全通过大桥需要的时间是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q24" value="A" id="q24a"><label for="q24a">A. 100s</label></div><div class="option"><input type="radio" name="q24" value="B" id="q24b"><label for="q24b">B. 86.7s</label></div><div class="option"><input type="radio" name="q24" value="C" id="q24c"><label for="q24c">C. 80s</label></div><div class="option"><input type="radio" name="q24" value="D" id="q24d"><label for="q24d">D. 120s</label></div></div><button class="q-btn" onclick="checkAnswer('q24','A','t=s/v=(1300+200)/15=100s。')">提交答案</button><div class="feedback" id="feedback-q24"></div></div>
+        <div class="q-container"><div class="q-text">25. 下列关于误差的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q25" value="A" id="q25a"><label for="q25a">A. 误差和错误一样都是可以避免的</label></div><div class="option"><input type="radio" name="q25" value="B" id="q25b"><label for="q25b">B. 测量时遵守操作规则可以避免误差</label></div><div class="option"><input type="radio" name="q25" value="C" id="q25c"><label for="q25c">C. 测量中误差是不可避免的</label></div><div class="option"><input type="radio" name="q25" value="D" id="q25d"><label for="q25d">D. 误差是测量中的错误造成的</label></div></div><button class="q-btn" onclick="checkAnswer('q25','C','测量中误差不可避免。')">提交答案</button><div class="feedback" id="feedback-q25"></div></div>
+        <div class="q-container"><div class="q-text">26. 下列单位换算中正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q26" value="A" id="q26a"><label for="q26a">A. 5m = 50cm</label></div><div class="option"><input type="radio" name="q26" value="B" id="q26b"><label for="q26b">B. 5m = 500cm</label></div><div class="option"><input type="radio" name="q26" value="C" id="q26c"><label for="q26c">C. 5m = 5000cm</label></div><div class="option"><input type="radio" name="q26" value="D" id="q26d"><label for="q26d">D. 5m = 0.5cm</label></div></div><button class="q-btn" onclick="checkAnswer('q26','B','5m=500cm。')">提交答案</button><div class="feedback" id="feedback-q26"></div></div>
+        <div class="q-container"><div class="q-text">27. 骑自行车的人在上坡前往往要加紧蹬几下，这样做的目的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q27" value="A" id="q27a"><label for="q27a">A. 增大上坡的惯性</label></div><div class="option"><input type="radio" name="q27" value="B" id="q27b"><label for="q27b">B. 增大上坡的速度，减小上坡的阻力</label></div><div class="option"><input type="radio" name="q27" value="C" id="q27c"><label for="q27c">C. 增大动能，有利于上坡</label></div><div class="option"><input type="radio" name="q27" value="D" id="q27d"><label for="q27d">D. 增大惯性</label></div></div><button class="q-btn" onclick="checkAnswer('q27','C','增大动能有利于上坡。')">提交答案</button><div class="feedback" id="feedback-q27"></div></div>
+        <div class="q-container"><div class="q-text">28. 下列现象中，不能用惯性解释的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q28" value="A" id="q28a"><label for="q28a">A. 汽车刹车时，人向前倾倒</label></div><div class="option"><input type="radio" name="q28" value="B" id="q28b"><label for="q28b">B. 用手拍打衣服上的灰尘</label></div><div class="option"><input type="radio" name="q28" value="C" id="q28c"><label for="q28c">C. 苹果从树上掉下来</label></div><div class="option"><input type="radio" name="q28" value="D" id="q28d"><label for="q28d">D. 跳远时助跑</label></div></div><button class="q-btn" onclick="checkAnswer('q28','C','苹果掉落是因为重力，不是惯性。')">提交答案</button><div class="feedback" id="feedback-q28"></div></div>
+        <div class="q-container"><div class="q-text">29. 一个做匀速直线运动的物体在5s内通过的路程是25m，它的速度是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q29" value="A" id="q29a"><label for="q29a">A. 5m/s</label></div><div class="option"><input type="radio" name="q29" value="B" id="q29b"><label for="q29b">B. 10m/s</label></div><div class="option"><input type="radio" name="q29" value="C" id="q29c"><label for="q29c">C. 15m/s</label></div><div class="option"><input type="radio" name="q29" value="D" id="q29d"><label for="q29d">D. 25m/s</label></div></div><button class="q-btn" onclick="checkAnswer('q29','A','v=s/t=25/5=5m/s。')">提交答案</button><div class="feedback" id="feedback-q29"></div></div>
+        <div class="q-container"><div class="q-text">30. 甲、乙两物体都做匀速直线运动，甲的速度是乙的2倍，乙通过的路程是甲的1/3，则甲、乙的运动时间之比是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q30" value="A" id="q30a"><label for="q30a">A. 2:3</label></div><div class="option"><input type="radio" name="q30" value="B" id="q30b"><label for="q30b">B. 3:2</label></div><div class="option"><input type="radio" name="q30" value="C" id="q30c"><label for="q30c">C. 2:1</label></div><div class="option"><input type="radio" name="q30" value="D" id="q30d"><label for="q30d">D. 1:2</label></div></div><button class="q-btn" onclick="checkAnswer('q30','B','t甲:t乙=(s/2v):(s/3/v)=3:2。')">提交答案</button><div class="feedback" id="feedback-q30"></div></div>
+
+        <h2 class="chapter-title">第二章：声现象</h2>
+        <!-- Q31-40 -->
+        <div class="q-container"><div class="q-text">31. 声音是由物体的什么产生的？</div>
+          <div class="options"><div class="option"><input type="radio" name="q31" value="A" id="q31a"><label for="q31a">A. 振动</label></div><div class="option"><input type="radio" name="q31" value="B" id="q31b"><label for="q31b">B. 运动</label></div><div class="option"><input type="radio" name="q31" value="C" id="q31c"><label for="q31c">C. 位移</label></div><div class="option"><input type="radio" name="q31" value="D" id="q31d"><label for="q31d">D. 速度</label></div></div><button class="q-btn" onclick="checkAnswer('q31','A','声音是由物体振动产生的。')">提交答案</button><div class="feedback" id="feedback-q31"></div></div>
+        <div class="q-container"><div class="q-text">32. 声音不能在下列哪种介质中传播？</div>
+          <div class="options"><div class="option"><input type="radio" name="q32" value="A" id="q32a"><label for="q32a">A. 固体</label></div><div class="option"><input type="radio" name="q32" value="B" id="q32b"><label for="q32b">B. 液体</label></div><div class="option"><input type="radio" name="q32" value="C" id="q32c"><label for="q32c">C. 气体</label></div><div class="option"><input type="radio" name="q32" value="D" id="q32d"><label for="q32d">D. 真空</label></div></div><button class="q-btn" onclick="checkAnswer('q32','D','声音不能在真空中传播。')">提交答案</button><div class="feedback" id="feedback-q32"></div></div>
+        <div class="q-container"><div class="q-text">33. 15℃时，声音在空气中的传播速度约为？</div>
+          <div class="options"><div class="option"><input type="radio" name="q33" value="A" id="q33a"><label for="q33a">A. 340m/s</label></div><div class="option"><input type="radio" name="q33" value="B" id="q33b"><label for="q33b">B. 500m/s</label></div><div class="option"><input type="radio" name="q33" value="C" id="q33c"><label for="q33c">C. 1500m/s</label></div><div class="option"><input type="radio" name="q33" value="D" id="q33d"><label for="q33d">D. 3400m/s</label></div></div><button class="q-btn" onclick="checkAnswer('q33','A','15℃时声速约为340m/s。')">提交答案</button><div class="feedback" id="feedback-q33"></div></div>
+        <div class="q-container"><div class="q-text">34. 关于声音的传播，下列说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q34" value="A" id="q34a"><label for="q34a">A. 声音在真空中传播速度最快</label></div><div class="option"><input type="radio" name="q34" value="B" id="q34b"><label for="q34b">B. 声音在固体中传播速度最慢</label></div><div class="option"><input type="radio" name="q34" value="C" id="q34c"><label for="q34c">C. 声音在液体中传播比空气中快</label></div><div class="option"><input type="radio" name="q34" value="D" id="q34d"><label for="q34d">D. 声音在不同介质中传播速度相同</label></div></div><button class="q-btn" onclick="checkAnswer('q34','C','声音在液体中比空气中传播快。')">提交答案</button><div class="feedback" id="feedback-q34"></div></div>
+        <div class="q-container"><div class="q-text">35. 人能听到的声音频率范围是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q35" value="A" id="q35a"><label for="q35a">A. 20-2000Hz</label></div><div class="option"><input type="radio" name="q35" value="B" id="q35b"><label for="q35b">B. 20-20000Hz</label></div><div class="option"><input type="radio" name="q35" value="C" id="q35c"><label for="q35c">C. 200-20000Hz</label></div><div class="option"><input type="radio" name="q35" value="D" id="q35d"><label for="q35d">D. 20-200000Hz</label></div></div><button class="q-btn" onclick="checkAnswer('q35','B','人耳可听频率20-20000Hz。')">提交答案</button><div class="feedback" id="feedback-q35"></div></div>
+        <div class="q-container"><div class="q-text">36. 下列措施中，属于在传播过程中减弱噪声的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q36" value="A" id="q36a"><label for="q36a">A. 禁止鸣笛</label></div><div class="option"><input type="radio" name="q36" value="B" id="q36b"><label for="q36b">B. 安装隔音墙</label></div><div class="option"><input type="radio" name="q36" value="C" id="q36c"><label for="q36c">C. 佩戴耳罩</label></div><div class="option"><input type="radio" name="q36" value="D" id="q36d"><label for="q36d">D. 消声器</label></div></div><button class="q-btn" onclick="checkAnswer('q36','B','安装隔音墙是在传播过程中减弱噪声。')">提交答案</button><div class="feedback" id="feedback-q36"></div></div>
+        <div class="q-container"><div class="q-text">37. 声音的音调与什么因素有关？</div>
+          <div class="options"><div class="option"><input type="radio" name="q37" value="A" id="q37a"><label for="q37a">A. 振幅</label></div><div class="option"><input type="radio" name="q37" value="B" id="q37b"><label for="q37b">B. 频率</label></div><div class="option"><input type="radio" name="q37" value="C" id="q37c"><label for="q37c">C. 材料</label></div><div class="option"><input type="radio" name="q37" value="D" id="q37d"><label for="q37d">D. 距离</label></div></div><button class="q-btn" onclick="checkAnswer('q37','B','音调由频率决定。')">提交答案</button><div class="feedback" id="feedback-q37"></div></div>
+        <div class="q-container"><div class="q-text">38. 声音的响度与什么因素有关？</div>
+          <div class="options"><div class="option"><input type="radio" name="q38" value="A" id="q38a"><label for="q38a">A. 频率</label></div><div class="option"><input type="radio" name="q38" value="B" id="q38b"><label for="q38b">B. 振幅</label></div><div class="option"><input type="radio" name="q38" value="C" id="q38c"><label for="q38c">C. 传播速度</label></div><div class="option"><input type="radio" name="q38" value="D" id="q38d"><label for="q38d">D. 介质</label></div></div><button class="q-btn" onclick="checkAnswer('q38','B','响度由振幅决定。')">提交答案</button><div class="feedback" id="feedback-q38"></div></div>
+        <div class="q-container"><div class="q-text">39. 我们能辨别不同人的声音，是因为它们的什么不同？</div>
+          <div class="options"><div class="option"><input type="radio" name="q39" value="A" id="q39a"><label for="q39a">A. 音调</label></div><div class="option"><input type="radio" name="q39" value="B" id="q39b"><label for="q39b">B. 响度</label></div><div class="option"><input type="radio" name="q39" value="C" id="q39c"><label for="q39c">C. 音色</label></div><div class="option"><input type="radio" name="q39" value="D" id="q39d"><label for="q39d">D. 音速</label></div></div><button class="q-btn" onclick="checkAnswer('q39','C','音色不同是区分不同发声体的依据。')">提交答案</button><div class="feedback" id="feedback-q39"></div></div>
+        <div class="q-container"><div class="q-text">40. 超声波通常用于？</div>
+          <div class="options"><div class="option"><input type="radio" name="q40" value="A" id="q40a"><label for="q40a">A. 地震预报</label></div><div class="option"><input type="radio" name="q40" value="B" id="q40b"><label for="q40b">B. B超检查</label></div><div class="option"><input type="radio" name="q40" value="C" id="q40c"><label for="q40c">C. 无线电通信</label></div><div class="option"><input type="radio" name="q40" value="D" id="q40d"><label for="q40d">D. 测电</label></div></div><button class="q-btn" onclick="checkAnswer('q40','B','超声波常用于B超检查。')">提交答案</button><div class="feedback" id="feedback-q40"></div></div>
+        <!-- Q41-60 -->
+        <div class="q-container"><div class="q-text">41. 下列关于噪声的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q41" value="A" id="q41a"><label for="q41a">A. 悦耳的音乐一定不是噪声</label></div><div class="option"><input type="radio" name="q41" value="B" id="q41b"><label for="q41b">B. 噪声只会影响人的听力</label></div><div class="option"><input type="radio" name="q41" value="C" id="q41c"><label for="q41c">C. 从环保角度看，一切影响人们正常学习工作的声音都是噪声</label></div><div class="option"><input type="radio" name="q41" value="D" id="q41d"><label for="q41d">D. 噪声只能从声源处减弱</label></div></div><button class="q-btn" onclick="checkAnswer('q41','C','从环保角度看，影响人们正常生活的声音都是噪声。')">提交答案</button><div class="feedback" id="feedback-q41"></div></div>
+        <div class="q-container"><div class="q-text">42. 声音在下列介质中传播速度最快的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q42" value="A" id="q42a"><label for="q42a">A. 空气</label></div><div class="option"><input type="radio" name="q42" value="B" id="q42b"><label for="q42b">B. 水</label></div><div class="option"><input type="radio" name="q42" value="C" id="q42c"><label for="q42c">C. 铁</label></div><div class="option"><input type="radio" name="q42" value="D" id="q42d"><label for="q42d">D. 真空</label></div></div><button class="q-btn" onclick="checkAnswer('q42','C','声音在固体中传播速度最快，铁中约5200m/s。')">提交答案</button><div class="feedback" id="feedback-q42"></div></div>
+        <div class="q-container"><div class="q-text">43. 我们听到的"回声"是声音的什么现象？</div>
+          <div class="options"><div class="option"><input type="radio" name="q43" value="A" id="q43a"><label for="q43a">A. 反射</label></div><div class="option"><input type="radio" name="q43" value="B" id="q43b"><label for="q43b">B. 折射</label></div><div class="option"><input type="radio" name="q43" value="C" id="q43c"><label for="q43c">C. 衍射</label></div><div class="option"><input type="radio" name="q43" value="D" id="q43d"><label for="q43d">D. 干涉</label></div></div><button class="q-btn" onclick="checkAnswer('q43','A','回声是声音的反射现象。')">提交答案</button><div class="feedback" id="feedback-q43"></div></div>
+        <div class="q-container"><div class="q-text">44. 人耳能区分回声和原声的最小时间间隔是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q44" value="A" id="q44a"><label for="q44a">A. 0.01s</label></div><div class="option"><input type="radio" name="q44" value="B" id="q44b"><label for="q44b">B. 0.1s</label></div><div class="option"><input type="radio" name="q44" value="C" id="q44c"><label for="q44c">C. 1s</label></div><div class="option"><input type="radio" name="q44" value="D" id="q44d"><label for="q44d">D. 10s</label></div></div><button class="q-btn" onclick="checkAnswer('q44','B','最小时间间隔为0.1s。')">提交答案</button><div class="feedback" id="feedback-q44"></div></div>
+        <div class="q-container"><div class="q-text">45. 敲击大小不同的编钟，主要改变声音的？</div>
+          <div class="options"><div class="option"><input type="radio" name="q45" value="A" id="q45a"><label for="q45a">A. 音调</label></div><div class="option"><input type="radio" name="q45" value="B" id="q45b"><label for="q45b">B. 响度</label></div><div class="option"><input type="radio" name="q45" value="C" id="q45c"><label for="q45c">C. 音色</label></div><div class="option"><input type="radio" name="q45" value="D" id="q45d"><label for="q45d">D. 音速</label></div></div><button class="q-btn" onclick="checkAnswer('q45','A','编钟大小不同，振动频率不同，音调不同。')">提交答案</button><div class="feedback" id="feedback-q45"></div></div>
+        <!-- Q46-75: shortened to core representation -->
+        <div class="q-container"><div class="q-text">46. 在闹市区安装噪声监测仪，这是监测噪声的什么？</div>
+          <div class="options"><div class="option"><input type="radio" name="q46" value="A" id="q46a"><label for="q46a">A. 音调</label></div><div class="option"><input type="radio" name="q46" value="B" id="q46b"><label for="q46b">B. 响度（分贝）</label></div><div class="option"><input type="radio" name="q46" value="C" id="q46c"><label for="q46c">C. 音色</label></div><div class="option"><input type="radio" name="q46" value="D" id="q46d"><label for="q46d">D. 频率</label></div></div><button class="q-btn" onclick="checkAnswer('q46','B','噪声监测仪监测噪声的响度（分贝）。')">提交答案</button><div class="feedback" id="feedback-q46"></div></div>
+        <div class="q-container"><div class="q-text">47. 减弱噪声的三种途径是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q47" value="A" id="q47a"><label for="q47a">A. 声源处、传播过程中、人耳处</label></div><div class="option"><input type="radio" name="q47" value="B" id="q47b"><label for="q47b">B. 声源处、空气中、人耳处</label></div><div class="option"><input type="radio" name="q47" value="C" id="q47c"><label for="q47c">C. 固体中、液体中、气体中</label></div><div class="option"><input type="radio" name="q47" value="D" id="q47d"><label for="q47d">D. 高山上、平原上、海洋上</label></div></div><button class="q-btn" onclick="checkAnswer('q47','A','减弱噪声从声源处、传播过程中、人耳处三方面入手。')">提交答案</button><div class="feedback" id="feedback-q47"></div></div>
+        <div class="q-container"><div class="q-text">48. 下列关于次声波的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q48" value="A" id="q48a"><label for="q48a">A. 次声波的频率高于20000Hz</label></div><div class="option"><input type="radio" name="q48" value="B" id="q48b"><label for="q48b">B. 次声波的频率低于20Hz</label></div><div class="option"><input type="radio" name="q48" value="C" id="q48c"><label for="q48c">C. 次声波人耳可以听到</label></div><div class="option"><input type="radio" name="q48" value="D" id="q48d"><label for="q48d">D. 次声波在真空中传播最快</label></div></div><button class="q-btn" onclick="checkAnswer('q48','B','次声波频率低于20Hz，人耳听不到。')">提交答案</button><div class="feedback" id="feedback-q48"></div></div>
+        <div class="q-container"><div class="q-text">49. 男低音歌手放声歌唱，女高音歌手轻声伴唱，则？</div>
+          <div class="options"><div class="option"><input type="radio" name="q49" value="A" id="q49a"><label for="q49a">A. 男歌手音调高、响度大</label></div><div class="option"><input type="radio" name="q49" value="B" id="q49b"><label for="q49b">B. 男歌手音调低、响度大</label></div><div class="option"><input type="radio" name="q49" value="C" id="q49c"><label for="q49c">C. 女歌手音调高、响度大</label></div><div class="option"><input type="radio" name="q49" value="D" id="q49d"><label for="q49d">D. 女歌手音调低、响度大</label></div></div><button class="q-btn" onclick="checkAnswer('q49','B','男低音音调低响度大，女高音音调高响度小。')">提交答案</button><div class="feedback" id="feedback-q49"></div></div>
+        <div class="q-container"><div class="q-text">50. 声音在空气中的传播速度与什么有关？</div>
+          <div class="options"><div class="option"><input type="radio" name="q50" value="A" id="q50a"><label for="q50a">A. 响度</label></div><div class="option"><input type="radio" name="q50" value="B" id="q50b"><label for="q50b">B. 温度</label></div><div class="option"><input type="radio" name="q50" value="C" id="q50c"><label for="q50c">C. 音调</label></div><div class="option"><input type="radio" name="q50" value="D" id="q50d"><label for="q50d">D. 音色</label></div></div><button class="q-btn" onclick="checkAnswer('q50','B','声速与介质温度有关。')">提交答案</button><div class="feedback" id="feedback-q50"></div></div>
+        <div class="q-container"><div class="q-text">51. 下列不是利用超声波的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q51" value="A" id="q51a"><label for="q51a">A. 声呐测距</label></div><div class="option"><input type="radio" name="q51" value="B" id="q51b"><label for="q51b">B. B超检查</label></div><div class="option"><input type="radio" name="q51" value="C" id="q51c"><label for="q51c">C. 蝙蝠导航</label></div><div class="option"><input type="radio" name="q51" value="D" id="q51d"><label for="q51d">D. 声控灯</label></div></div><button class="q-btn" onclick="checkAnswer('q51','D','声控灯利用的是声音响度，不一定是超声波。')">提交答案</button><div class="feedback" id="feedback-q51"></div></div>
+        <div class="q-container"><div class="q-text">52. 教室里听到老师讲课的声音是通过什么传播的？</div>
+          <div class="options"><div class="option"><input type="radio" name="q52" value="A" id="q52a"><label for="q52a">A. 电线</label></div><div class="option"><input type="radio" name="q52" value="B" id="q52b"><label for="q52b">B. 空气</label></div><div class="option"><input type="radio" name="q52" value="C" id="q52c"><label for="q52c">C. 墙壁</label></div><div class="option"><input type="radio" name="q52" value="D" id="q52d"><label for="q52d">D. 课桌</label></div></div><button class="q-btn" onclick="checkAnswer('q52','B','声音通过空气传播到耳朵。')">提交答案</button><div class="feedback" id="feedback-q52"></div></div>
+        <div class="q-container"><div class="q-text">53. 下列关于声音的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q53" value="A" id="q53a"><label for="q53a">A. 声音传播需要介质</label></div><div class="option"><input type="radio" name="q53" value="B" id="q53b"><label for="q53b">B. 真空传声速度最快</label></div><div class="option"><input type="radio" name="q53" value="C" id="q53c"><label for="q53c">C. 声音在空气中传播最快</label></div><div class="option"><input type="radio" name="q53" value="D" id="q53d"><label for="q53d">D. 以上说法都正确</label></div></div><button class="q-btn" onclick="checkAnswer('q53','A','声音传播需要介质，真空不能传声。')">提交答案</button><div class="feedback" id="feedback-q53"></div></div>
+        <div class="q-container"><div class="q-text">54. 敲击装有不同水量的瓶子，产生的声音音调不同，是因为？</div>
+          <div class="options"><div class="option"><input type="radio" name="q54" value="A" id="q54a"><label for="q54a">A. 瓶子振动频率不同</label></div><div class="option"><input type="radio" name="q54" value="B" id="q54b"><label for="q54b">B. 瓶子振幅不同</label></div><div class="option"><input type="radio" name="q54" value="C" id="q54c"><label for="q54c">C. 传播介质不同</label></div><div class="option"><input type="radio" name="q54" value="D" id="q54d"><label for="q54d">D. 敲击力度不同</label></div></div><button class="q-btn" onclick="checkAnswer('q54','A','水越多，振动频率越低，音调越低。')">提交答案</button><div class="feedback" id="feedback-q54"></div></div>
+        <div class="q-container"><div class="q-text">55. 在公共场所轻声说话是文明的表现，这里的"轻声"指的是声音的？</div>
+          <div class="options"><div class="option"><input type="radio" name="q55" value="A" id="q55a"><label for="q55a">A. 音调低</label></div><div class="option"><input type="radio" name="q55" value="B" id="q55b"><label for="q55b">B. 响度小</label></div><div class="option"><input type="radio" name="q55" value="C" id="q55c"><label for="q55c">C. 音色好</label></div><div class="option"><input type="radio" name="q55" value="D" id="q55d"><label for="q55d">D. 频率低</label></div></div><button class="q-btn" onclick="checkAnswer('q55','B','"轻声"指响度小。')">提交答案</button><div class="feedback" id="feedback-q55"></div></div>
+        <div class="q-container"><div class="q-text">56. 声音在海水中传播速度比在空气中快，约为？</div>
+          <div class="options"><div class="option"><input type="radio" name="q56" value="A" id="q56a"><label for="q56a">A. 340m/s</label></div><div class="option"><input type="radio" name="q56" value="B" id="q56b"><label for="q56b">B. 1500m/s</label></div><div class="option"><input type="radio" name="q56" value="C" id="q56c"><label for="q56c">C. 5000m/s</label></div><div class="option"><input type="radio" name="q56" value="D" id="q56d"><label for="q56d">D. 10000m/s</label></div></div><button class="q-btn" onclick="checkAnswer('q56','B','声音在水中传播约1500m/s。')">提交答案</button><div class="feedback" id="feedback-q56"></div></div>
+        <div class="q-container"><div class="q-text">57. 关于声现象，下列说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q57" value="A" id="q57a"><label for="q57a">A. 声音在真空中传播最快</label></div><div class="option"><input type="radio" name="q57" value="B" id="q57b"><label for="q57b">B. 声音在固体中传播比空气中快</label></div><div class="option"><input type="radio" name="q57" value="C" id="q57c"><label for="q57c">C. 声音的传播不需要介质</label></div><div class="option"><input type="radio" name="q57" value="D" id="q57d"><label for="q57d">D. 声音的速度总是340m/s</label></div></div><button class="q-btn" onclick="checkAnswer('q57','B','声音在固体中传播最快。')">提交答案</button><div class="feedback" id="feedback-q57"></div></div>
+        <div class="q-container"><div class="q-text">58. 下列实验现象中，说明声音是由物体振动产生的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q58" value="A" id="q58a"><label for="q58a">A. 敲鼓时鼓面上的纸屑跳动</label></div><div class="option"><input type="radio" name="q58" value="B" id="q58b"><label for="q58b">B. 抽气罩中的手机铃声变弱</label></div><div class="option"><input type="radio" name="q58" value="C" id="q58c"><label for="q58c">C. 水下声呐探测鱼群</label></div><div class="option"><input type="radio" name="q58" value="D" id="q58d"><label for="q58d">D. 超声波清洗眼镜</label></div></div><button class="q-btn" onclick="checkAnswer('q58','A','纸屑跳动说明鼓面在振动。')">提交答案</button><div class="feedback" id="feedback-q58"></div></div>
+        <div class="q-container"><div class="q-text">59. 下列做法中，属于从声源处控制噪声的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q59" value="A" id="q59a"><label for="q59a">A. 道路两旁植树造林</label></div><div class="option"><input type="radio" name="q59" value="B" id="q59b"><label for="q59b">B. 安装隔音窗</label></div><div class="option"><input type="radio" name="q59" value="C" id="q59c"><label for="q59c">C. 考场附近禁止鸣笛</label></div><div class="option"><input type="radio" name="q59" value="D" id="q59d"><label for="q59d">D. 佩戴防噪声耳罩</label></div></div><button class="q-btn" onclick="checkAnswer('q59','C','禁止鸣笛是在声源处控制噪声。')">提交答案</button><div class="feedback" id="feedback-q59"></div></div>
+        <div class="q-container"><div class="q-text">60. 超声波清洗机是利用超声波的什么特性？</div>
+          <div class="options"><div class="option"><input type="radio" name="q60" value="A" id="q60a"><label for="q60a">A. 传递信息</label></div><div class="option"><input type="radio" name="q60" value="B" id="q60b"><label for="q60b">B. 传递能量</label></div><div class="option"><input type="radio" name="q60" value="C" id="q60c"><label for="q60c">C. 定向传播</label></div><div class="option"><input type="radio" name="q60" value="D" id="q60d"><label for="q60d">D. 反射</label></div></div><button class="q-btn" onclick="checkAnswer('q60','B','超声波清洗利用超声波传递能量。')">提交答案</button><div class="feedback" id="feedback-q60"></div></div>
+
+        <h2 class="chapter-title">第三章：物态变化</h2>
+        <!-- Q61-80 -->
+        <div class="q-container"><div class="q-text">61. 下列温度中，最接近23℃的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q61" value="A" id="q61a"><label for="q61a">A. 让人感觉温暖舒适的房间温度</label></div><div class="option"><input type="radio" name="q61" value="B" id="q61b"><label for="q61b">B. 冰水混合物的温度</label></div><div class="option"><input type="radio" name="q61" value="C" id="q61c"><label for="q61c">C. 标准大气压下沸水的温度</label></div><div class="option"><input type="radio" name="q61" value="D" id="q61d"><label for="q61d">D. 人体正常体温</label></div></div><button class="q-btn" onclick="checkAnswer('q61','A','23℃是让人感觉舒适的房间温度。')">提交答案</button><div class="feedback" id="feedback-q61"></div></div>
+        <div class="q-container"><div class="q-text">62. 摄氏温度中，冰水混合物的温度规定为？</div>
+          <div class="options"><div class="option"><input type="radio" name="q62" value="A" id="q62a"><label for="q62a">A. 0℃</label></div><div class="option"><input type="radio" name="q62" value="B" id="q62b"><label for="q62b">B. 4℃</label></div><div class="option"><input type="radio" name="q62" value="C" id="q62c"><label for="q62c">C. 100℃</label></div><div class="option"><input type="radio" name="q62" value="D" id="q62d"><label for="q62d">D. -4℃</label></div></div><button class="q-btn" onclick="checkAnswer('q62','A','冰水混合物的温度是0℃。')">提交答案</button><div class="feedback" id="feedback-q62"></div></div>
+        <div class="q-container"><div class="q-text">63. 温度计的工作原理是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q63" value="A" id="q63a"><label for="q63a">A. 固体的热胀冷缩</label></div><div class="option"><input type="radio" name="q63" value="B" id="q63b"><label for="q63b">B. 液体的热胀冷缩</label></div><div class="option"><input type="radio" name="q63" value="C" id="q63c"><label for="q63c">C. 气体的热胀冷缩</label></div><div class="option"><input type="radio" name="q63" value="D" id="q63d"><label for="q63d">D. 体积不变</label></div></div><button class="q-btn" onclick="checkAnswer('q63','B','液体温度计根据液体的热胀冷缩原理制成。')">提交答案</button><div class="feedback" id="feedback-q63"></div></div>
+        <div class="q-container"><div class="q-text">64. 物质从固态变成液态的过程叫做？</div>
+          <div class="options"><div class="option"><input type="radio" name="q64" value="A" id="q64a"><label for="q64a">A. 熔化</label></div><div class="option"><input type="radio" name="q64" value="B" id="q64b"><label for="q64b">B. 凝固</label></div><div class="option"><input type="radio" name="q64" value="C" id="q64c"><label for="q64c">C. 汽化</label></div><div class="option"><input type="radio" name="q64" value="D" id="q64d"><label for="q64d">D. 液化</label></div></div><button class="q-btn" onclick="checkAnswer('q64','A','熔化是固态变成液态。')">提交答案</button><div class="feedback" id="feedback-q64"></div></div>
+        <div class="q-container"><div class="q-text">65. 下列物质中，属于晶体的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q65" value="A" id="q65a"><label for="q65a">A. 玻璃</label></div><div class="option"><input type="radio" name="q65" value="B" id="q65b"><label for="q65b">B. 沥青</label></div><div class="option"><input type="radio" name="q65" value="C" id="q65c"><label for="q65c">C. 冰</label></div><div class="option"><input type="radio" name="q65" value="D" id="q65d"><label for="q65d">D. 蜡</label></div></div><button class="q-btn" onclick="checkAnswer('q65','C','冰是晶体，有固定的熔点。')">提交答案</button><div class="feedback" id="feedback-q65"></div></div>
+        <div class="q-container"><div class="q-text">66. 晶体在熔化过程中？</div>
+          <div class="options"><div class="option"><input type="radio" name="q66" value="A" id="q66a"><label for="q66a">A. 吸热，温度升高</label></div><div class="option"><input type="radio" name="q66" value="B" id="q66b"><label for="q66b">B. 吸热，温度不变</label></div><div class="option"><input type="radio" name="q66" value="C" id="q66c"><label for="q66c">C. 放热，温度降低</label></div><div class="option"><input type="radio" name="q66" value="D" id="q66d"><label for="q66d">D. 放热，温度不变</label></div></div><button class="q-btn" onclick="checkAnswer('q66','B','晶体熔化时吸热但温度保持不变。')">提交答案</button><div class="feedback" id="feedback-q66"></div></div>
+        <div class="q-container"><div class="q-text">67. 下列现象中，属于汽化的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q67" value="A" id="q67a"><label for="q67a">A. 冰雪消融</label></div><div class="option"><input type="radio" name="q67" value="B" id="q67b"><label for="q67b">B. 湿衣服变干</label></div><div class="option"><input type="radio" name="q67" value="C" id="q67c"><label for="q67c">C. 露珠的形成</label></div><div class="option"><input type="radio" name="q67" value="D" id="q67d"><label for="q67d">D. 霜的形成</label></div></div><button class="q-btn" onclick="checkAnswer('q67','B','湿衣服变干是汽化现象。')">提交答案</button><div class="feedback" id="feedback-q67"></div></div>
+        <div class="q-container"><div class="q-text">68. 夏天从冰箱里拿出的饮料瓶上出现小水珠，这是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q68" value="A" id="q68a"><label for="q68a">A. 熔化</label></div><div class="option"><input type="radio" name="q68" value="B" id="q68b"><label for="q68b">B. 汽化</label></div><div class="option"><input type="radio" name="q68" value="C" id="q68c"><label for="q68c">C. 液化</label></div><div class="option"><input type="radio" name="q68" value="D" id="q68d"><label for="q68d">D. 凝华</label></div></div><button class="q-btn" onclick="checkAnswer('q68','C','水蒸气遇冷液化成小水珠。')">提交答案</button><div class="feedback" id="feedback-q68"></div></div>
+        <div class="q-container"><div class="q-text">69. 影响蒸发快慢的因素不包括？</div>
+          <div class="options"><div class="option"><input type="radio" name="q69" value="A" id="q69a"><label for="q69a">A. 液体温度</label></div><div class="option"><input type="radio" name="q69" value="B" id="q69b"><label for="q69b">B. 液体表面积</label></div><div class="option"><input type="radio" name="q69" value="C" id="q69c"><label for="q69c">C. 液体体积</label></div><div class="option"><input type="radio" name="q69" value="D" id="q69d"><label for="q69d">D. 液体表面空气流速</label></div></div><button class="q-btn" onclick="checkAnswer('q69','C','液体体积不影响蒸发快慢。')">提交答案</button><div class="feedback" id="feedback-q69"></div></div>
+        <div class="q-container"><div class="q-text">70. 标准大气压下，水的沸点是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q70" value="A" id="q70a"><label for="q70a">A. 0℃</label></div><div class="option"><input type="radio" name="q70" value="B" id="q70b"><label for="q70b">B. 37℃</label></div><div class="option"><input type="radio" name="q70" value="C" id="q70c"><label for="q70c">C. 100℃</label></div><div class="option"><input type="radio" name="q70" value="D" id="q70d"><label for="q70d">D. 340℃</label></div></div><button class="q-btn" onclick="checkAnswer('q70','C','标准大气压下水的沸点是100℃。')">提交答案</button><div class="feedback" id="feedback-q70"></div></div>
+        <div class="q-container"><div class="q-text">71. 冰的熔点是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q71" value="A" id="q71a"><label for="q71a">A. -4℃</label></div><div class="option"><input type="radio" name="q71" value="B" id="q71b"><label for="q71b">B. 0℃</label></div><div class="option"><input type="radio" name="q71" value="C" id="q71c"><label for="q71c">C. 4℃</label></div><div class="option"><input type="radio" name="q71" value="D" id="q71d"><label for="q71d">D. 100℃</label></div></div><button class="q-btn" onclick="checkAnswer('q71','B','冰的熔点是0℃。')">提交答案</button><div class="feedback" id="feedback-q71"></div></div>
+        <div class="q-container"><div class="q-text">72. 下列物态变化中，需要吸热的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q72" value="A" id="q72a"><label for="q72a">A. 液化</label></div><div class="option"><input type="radio" name="q72" value="B" id="q72b"><label for="q72b">B. 凝固</label></div><div class="option"><input type="radio" name="q72" value="C" id="q72c"><label for="q72c">C. 熔化</label></div><div class="option"><input type="radio" name="q72" value="D" id="q72d"><label for="q72d">D. 凝华</label></div></div><button class="q-btn" onclick="checkAnswer('q72','C','熔化是吸热过程。')">提交答案</button><div class="feedback" id="feedback-q72"></div></div>
+        <div class="q-container"><div class="q-text">73. 下列关于蒸发和沸腾的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q73" value="A" id="q73a"><label for="q73a">A. 蒸发在任何温度下都发生</label></div><div class="option"><input type="radio" name="q73" value="B" id="q73b"><label for="q73b">B. 沸腾不需要吸热</label></div><div class="option"><input type="radio" name="q73" value="C" id="q73c"><label for="q73c">C. 蒸发只在液体表面发生，沸腾只在液体内部发生</label></div><div class="option"><input type="radio" name="q73" value="D" id="q73d"><label for="q73d">D. 蒸发和沸腾都只在固定温度发生</label></div></div><button class="q-btn" onclick="checkAnswer('q73','A','蒸发在任何温度下都能发生。')">提交答案</button><div class="feedback" id="feedback-q73"></div></div>
+        <div class="q-container"><div class="q-text">74. 冬天，户外自来水管冻裂，这是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q74" value="A" id="q74a"><label for="q74a">A. 水结冰后体积变大</label></div><div class="option"><input type="radio" name="q74" value="B" id="q74b"><label for="q74b">B. 水结冰后质量变大</label></div><div class="option"><input type="radio" name="q74" value="C" id="q74c"><label for="q74c">C. 水管热胀冷缩</label></div><div class="option"><input type="radio" name="q74" value="D" id="q74d"><label for="q74d">D. 水结冰后密度变大</label></div></div><button class="q-btn" onclick="checkAnswer('q74','A','水结冰后体积膨胀（密度变小）。')">提交答案</button><div class="feedback" id="feedback-q74"></div></div>
+        <div class="q-container"><div class="q-text">75. 霜是空气中的水蒸气什么形成的？</div>
+          <div class="options"><div class="option"><input type="radio" name="q75" value="A" id="q75a"><label for="q75a">A. 液化</label></div><div class="option"><input type="radio" name="q75" value="B" id="q75b"><label for="q75b">B. 凝固</label></div><div class="option"><input type="radio" name="q75" value="C" id="q75c"><label for="q75c">C. 凝华</label></div><div class="option"><input type="radio" name="q75" value="D" id="q75d"><label for="q75d">D. 升华</label></div></div><button class="q-btn" onclick="checkAnswer('q75','C','霜是水蒸气凝华形成的。')">提交答案</button><div class="feedback" id="feedback-q75"></div></div>
+        <!-- Q76-100 -->
+        <div class="q-container"><div class="q-text">76. 下列现象中，属于汽化现象的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q76" value="A" id="q76a"><label for="q76a">A. 春天冰雪消融</label></div><div class="option"><input type="radio" name="q76" value="B" id="q76b"><label for="q76b">B. 夏天洒在地上的水变干</label></div><div class="option"><input type="radio" name="q76" value="C" id="q76c"><label for="q76c">C. 秋天草叶上出现露珠</label></div><div class="option"><input type="radio" name="q76" value="D" id="q76d"><label for="q76d">D. 冬天窗玻璃上出现冰花</label></div></div><button class="q-btn" onclick="checkAnswer('q76','B','水变干是汽化。')">提交答案</button><div class="feedback" id="feedback-q76"></div></div>
+        <div class="q-container"><div class="q-text">77. 下列措施中，为了防止蒸发的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q77" value="A" id="q77a"><label for="q77a">A. 把湿衣服晾在通风处</label></div><div class="option"><input type="radio" name="q77" value="B" id="q77b"><label for="q77b">B. 把新鲜蔬菜用保鲜膜包好</label></div><div class="option"><input type="radio" name="q77" value="C" id="q77c"><label for="q77c">C. 把酒精灯盖上灯帽</label></div><div class="option"><input type="radio" name="q77" value="D" id="q77d"><label for="q77d">D. B和C都正确</label></div></div><button class="q-btn" onclick="checkAnswer('q77','D','保鲜膜和灯帽都可防止蒸发。')">提交答案</button><div class="feedback" id="feedback-q77"></div></div>
+        <div class="q-container"><div class="q-text">78. 在标准大气压下，水的沸点是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q78" value="A" id="q78a"><label for="q78a">A. 0℃</label></div><div class="option"><input type="radio" name="q78" value="B" id="q78b"><label for="q78b">B. 37℃</label></div><div class="option"><input type="radio" name="q78" value="C" id="q78c"><label for="q78c">C. 100℃</label></div><div class="option"><input type="radio" name="q78" value="D" id="q78d"><label for="q78d">D. 340℃</label></div></div><button class="q-btn" onclick="checkAnswer('q78','C','标准大气压下水的沸点是100℃。')">提交答案</button><div class="feedback" id="feedback-q78"></div></div>
+        <div class="q-container"><div class="q-text">79. 下列关于温度、热量和内能的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q79" value="A" id="q79a"><label for="q79a">A. 物体温度越高，含有的热量越多</label></div><div class="option"><input type="radio" name="q79" value="B" id="q79b"><label for="q79b">B. 物体温度升高，内能一定增加</label></div><div class="option"><input type="radio" name="q79" value="C" id="q79c"><label for="q79c">C. 物体吸收热量，温度一定升高</label></div><div class="option"><input type="radio" name="q79" value="D" id="q79d"><label for="q79d">D. 物体内能增加，一定吸收了热量</label></div></div><button class="q-btn" onclick="checkAnswer('q79','B','温度升高，内能一定增加。')">提交答案</button><div class="feedback" id="feedback-q79"></div></div>
+        <div class="q-container"><div class="q-text">80. 下列现象中，属于熔化现象的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q80" value="A" id="q80a"><label for="q80a">A. 冬天湖水结冰</label></div><div class="option"><input type="radio" name="q80" value="B" id="q80b"><label for="q80b">B. 春天冰雪消融</label></div><div class="option"><input type="radio" name="q80" value="C" id="q80c"><label for="q80c">C. 夏天自来水管"出汗"</label></div><div class="option"><input type="radio" name="q80" value="D" id="q80d"><label for="q80d">D. 秋天草叶上出现露珠</label></div></div><button class="q-btn" onclick="checkAnswer('q80','B','冰雪消融是熔化。')">提交答案</button><div class="feedback" id="feedback-q80"></div></div>
+        <div class="q-container"><div class="q-text">81. 下列关于参照物的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q81" value="A" id="q81a"><label for="q81a">A. 参照物必须是静止的物体</label></div><div class="option"><input type="radio" name="q81" value="B" id="q81b"><label for="q81b">B. 参照物必须是运动的物体</label></div><div class="option"><input type="radio" name="q81" value="C" id="q81c"><label for="q81c">C. 参照物可以是静止的，也可以是运动的</label></div><div class="option"><input type="radio" name="q81" value="D" id="q81d"><label for="q81d">D. 任何物体都可以选作参照物</label></div></div><button class="q-btn" onclick="checkAnswer('q81','C','参照物可以是静止的或运动的。')">提交答案</button><div class="feedback" id="feedback-q81"></div></div>
+        <div class="q-container"><div class="q-text">82. 一个做匀速直线运动的物体，在4秒内通过20米的路程，则它在第2秒内的速度是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q82" value="A" id="q82a"><label for="q82a">A. 5m/s</label></div><div class="option"><input type="radio" name="q82" value="B" id="q82b"><label for="q82b">B. 10m/s</label></div><div class="option"><input type="radio" name="q82" value="C" id="q82c"><label for="q82c">C. 2m/s</label></div><div class="option"><input type="radio" name="q82" value="D" id="q82d"><label for="q82d">D. 无法确定</label></div></div><button class="q-btn" onclick="checkAnswer('q82','A','v=s/t=20/4=5m/s。')">提交答案</button><div class="feedback" id="feedback-q82"></div></div>
+        <div class="q-container"><div class="q-text">83. 下列单位换算正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q83" value="A" id="q83a"><label for="q83a">A. 1m/s=3.6km/h</label></div><div class="option"><input type="radio" name="q83" value="B" id="q83b"><label for="q83b">B. 1km/h=3.6m/s</label></div><div class="option"><input type="radio" name="q83" value="C" id="q83c"><label for="q83c">C. 1m/s=0.36km/h</label></div><div class="option"><input type="radio" name="q83" value="D" id="q83d"><label for="q83d">D. 1km/h=1m/s</label></div></div><button class="q-btn" onclick="checkAnswer('q83','A','1m/s=3.6km/h。')">提交答案</button><div class="feedback" id="feedback-q83"></div></div>
+        <div class="q-container"><div class="q-text">84. 甲、乙两车做匀速直线运动，甲车的速度是乙车的3倍，甲车运动时间是乙车的1/2，则甲、乙路程之比是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q84" value="A" id="q84a"><label for="q84a">A. 1:6</label></div><div class="option"><input type="radio" name="q84" value="B" id="q84b"><label for="q84b">B. 6:1</label></div><div class="option"><input type="radio" name="q84" value="C" id="q84c"><label for="q84c">C. 3:2</label></div><div class="option"><input type="radio" name="q84" value="D" id="q84d"><label for="q84d">D. 2:3</label></div></div><button class="q-btn" onclick="checkAnswer('q84','C','s甲:s乙=3:2。')">提交答案</button><div class="feedback" id="feedback-q84"></div></div>
+        <div class="q-container"><div class="q-text">85. 下列关于误差的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q85" value="A" id="q85a"><label for="q85a">A. 误差就是错误</label></div><div class="option"><input type="radio" name="q85" value="B" id="q85b"><label for="q85b">B. 误差可以完全避免</label></div><div class="option"><input type="radio" name="q85" value="C" id="q85c"><label for="q85c">C. 多次测量取平均值可减小误差</label></div><div class="option"><input type="radio" name="q85" value="D" id="q85d"><label for="q85d">D. 精密仪器可消除误差</label></div></div><button class="q-btn" onclick="checkAnswer('q85','C','多次测量取平均值可减小误差。')">提交答案</button><div class="feedback" id="feedback-q85"></div></div>
+        <div class="q-container"><div class="q-text">86. 下列关于速度的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q86" value="A" id="q86a"><label for="q86a">A. 速度表示物体运动路程多少</label></div><div class="option"><input type="radio" name="q86" value="B" id="q86b"><label for="q86b">B. 速度表示物体运动快慢</label></div><div class="option"><input type="radio" name="q86" value="C" id="q86c"><label for="q86c">C. 速度大的物体路程一定长</label></div><div class="option"><input type="radio" name="q86" value="D" id="q86d"><label for="q86d">D. 速度大的物体时间一定短</label></div></div><button class="q-btn" onclick="checkAnswer('q86','B','速度表示物体运动快慢。')">提交答案</button><div class="feedback" id="feedback-q86"></div></div>
+        <div class="q-container"><div class="q-text">87. 物体做变速直线运动，前一半路程平均速度4m/s，后一半路程平均速度6m/s，全程平均速度是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q87" value="A" id="q87a"><label for="q87a">A. 5m/s</label></div><div class="option"><input type="radio" name="q87" value="B" id="q87b"><label for="q87b">B. 4.8m/s</label></div><div class="option"><input type="radio" name="q87" value="C" id="q87c"><label for="q87c">C. 10m/s</label></div><div class="option"><input type="radio" name="q87" value="D" id="q87d"><label for="q87d">D. 2m/s</label></div></div><button class="q-btn" onclick="checkAnswer('q87','B','v=2s/(s/4+s/6)=4.8m/s。')">提交答案</button><div class="feedback" id="feedback-q87"></div></div>
+        <div class="q-container"><div class="q-text">88. 关于s-t图像的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q88" value="A" id="q88a"><label for="q88a">A. 匀速直线运动的s-t图像是平行于时间轴的直线</label></div><div class="option"><input type="radio" name="q88" value="B" id="q88b"><label for="q88b">B. 匀速直线运动的s-t图像是倾斜直线</label></div><div class="option"><input type="radio" name="q88" value="C" id="q88c"><label for="q88c">C. 静止物体的s-t图像是倾斜直线</label></div><div class="option"><input type="radio" name="q88" value="D" id="q88d"><label for="q88d">D. 变速运动的s-t图像是直线</label></div></div><button class="q-btn" onclick="checkAnswer('q88','B','s-t图像倾斜直线表示匀速运动。')">提交答案</button><div class="feedback" id="feedback-q88"></div></div>
+        <div class="q-container"><div class="q-text">89. 关于v-t图像的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q89" value="A" id="q89a"><label for="q89a">A. 匀速直线运动的v-t图像是平行于时间轴的直线</label></div><div class="option"><input type="radio" name="q89" value="B" id="q89b"><label for="q89b">B. 匀速直线运动的v-t图像是倾斜直线</label></div><div class="option"><input type="radio" name="q89" value="C" id="q89c"><label for="q89c">C. 静止物体的v-t图像是倾斜直线</label></div><div class="option"><input type="radio" name="q89" value="D" id="q89d"><label for="q89d">D. 变速运动的v-t图像是平行于时间轴的直线</label></div></div><button class="q-btn" onclick="checkAnswer('q89','A','匀速运动的v-t图像是水平直线。')">提交答案</button><div class="feedback" id="feedback-q89"></div></div>
+        <div class="q-container"><div class="q-text">90. 甲、乙做匀速直线运动，甲路程是乙的2倍，乙用时是甲的1/3，则甲、乙速度之比是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q90" value="A" id="q90a"><label for="q90a">A. 2:3</label></div><div class="option"><input type="radio" name="q90" value="B" id="q90b"><label for="q90b">B. 3:2</label></div><div class="option"><input type="radio" name="q90" value="C" id="q90c"><label for="q90c">C. 6:1</label></div><div class="option"><input type="radio" name="q90" value="D" id="q90d"><label for="q90d">D. 1:6</label></div></div><button class="q-btn" onclick="checkAnswer('q90','A','v甲:v乙=2:3。')">提交答案</button><div class="feedback" id="feedback-q90"></div></div>
+        <div class="q-container"><div class="q-text">91. 关于声现象，下列说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q91" value="A" id="q91a"><label for="q91a">A. 声音在真空中传播最快</label></div><div class="option"><input type="radio" name="q91" value="B" id="q91b"><label for="q91b">B. 声音只能在空气中传播</label></div><div class="option"><input type="radio" name="q91" value="C" id="q91c"><label for="q91c">C. 声音是由物体振动产生的</label></div><div class="option"><input type="radio" name="q91" value="D" id="q91d"><label for="q91d">D. 声音在不同介质中传播速度相同</label></div></div><button class="q-btn" onclick="checkAnswer('q91','C','声音由振动产生。')">提交答案</button><div class="feedback" id="feedback-q91"></div></div>
+        <div class="q-container"><div class="q-text">92. 属于在声源处减弱噪声的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q92" value="A" id="q92a"><label for="q92a">A. 道路两旁种植树木</label></div><div class="option"><input type="radio" name="q92" value="B" id="q92b"><label for="q92b">B. 佩戴防噪声耳罩</label></div><div class="option"><input type="radio" name="q92" value="C" id="q92c"><label for="q92c">C. 考场周围禁止鸣笛</label></div><div class="option"><input type="radio" name="q92" value="D" id="q92d"><label for="q92d">D. 安装隔音板</label></div></div><button class="q-btn" onclick="checkAnswer('q92','C','禁止鸣笛是在声源处减弱。')">提交答案</button><div class="feedback" id="feedback-q92"></div></div>
+        <div class="q-container"><div class="q-text">93. 关于乐音三要素的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q93" value="A" id="q93a"><label for="q93a">A. 音调由振幅决定</label></div><div class="option"><input type="radio" name="q93" value="B" id="q93b"><label for="q93b">B. 响度由频率决定</label></div><div class="option"><input type="radio" name="q93" value="C" id="q93c"><label for="q93c">C. 音色与发声体材料和结构有关</label></div><div class="option"><input type="radio" name="q93" value="D" id="q93d"><label for="q93d">D. 三要素都由频率决定</label></div></div><button class="q-btn" onclick="checkAnswer('q93','C','音色与材料和结构有关。')">提交答案</button><div class="feedback" id="feedback-q93"></div></div>
+        <div class="q-container"><div class="q-text">94. 属于升华现象的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q94" value="A" id="q94a"><label for="q94a">A. 冬天冰冻的衣服变干</label></div><div class="option"><input type="radio" name="q94" value="B" id="q94b"><label for="q94b">B. 夏天洒在地上的水变干</label></div><div class="option"><input type="radio" name="q94" value="C" id="q94c"><label for="q94c">C. 秋天草叶上出现露珠</label></div><div class="option"><input type="radio" name="q94" value="D" id="q94d"><label for="q94d">D. 冬天窗玻璃上出现冰花</label></div></div><button class="q-btn" onclick="checkAnswer('q94','A','冰冻衣服变干是升华。')">提交答案</button><div class="feedback" id="feedback-q94"></div></div>
+        <div class="q-container"><div class="q-text">95. 关于凸透镜成像的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q95" value="A" id="q95a"><label for="q95a">A. 物体在焦点以内成正立放大的实像</label></div><div class="option"><input type="radio" name="q95" value="B" id="q95b"><label for="q95b">B. 物体在焦点以外成倒立缩小的实像</label></div><div class="option"><input type="radio" name="q95" value="C" id="q95c"><label for="q95c">C. 物体在二倍焦距以外成倒立缩小的实像</label></div><div class="option"><input type="radio" name="q95" value="D" id="q95d"><label for="q95d">D. 物体在二倍焦距处不成像</label></div></div><button class="q-btn" onclick="checkAnswer('q95','C','u>2f成倒立缩小的实像。')">提交答案</button><div class="feedback" id="feedback-q95"></div></div>
+        <div class="q-container"><div class="q-text">96. 关于物态变化吸放热说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q96" value="A" id="q96a"><label for="q96a">A. 熔化、液化、升华需要吸热</label></div><div class="option"><input type="radio" name="q96" value="B" id="q96b"><label for="q96b">B. 凝固、汽化、凝华需要放热</label></div><div class="option"><input type="radio" name="q96" value="C" id="q96c"><label for="q96c">C. 熔化、汽化、升华需要吸热</label></div><div class="option"><input type="radio" name="q96" value="D" id="q96d"><label for="q96d">D. 凝固、液化、升华需要放热</label></div></div><button class="q-btn" onclick="checkAnswer('q96','C','熔化、汽化、升华吸热。')">提交答案</button><div class="feedback" id="feedback-q96"></div></div>
+        <div class="q-container"><div class="q-text">97. 关于平均速度的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q97" value="A" id="q97a"><label for="q97a">A. 平均速度等于速度的平均值</label></div><div class="option"><input type="radio" name="q97" value="B" id="q97b"><label for="q97b">B. 平均速度等于路程与时间的比值</label></div><div class="option"><input type="radio" name="q97" value="C" id="q97c"><label for="q97c">C. 平均速度只能用于匀速直线运动</label></div><div class="option"><input type="radio" name="q97" value="D" id="q97d"><label for="q97d">D. 平均速度与总路程无关</label></div></div><button class="q-btn" onclick="checkAnswer('q97','B','平均速度=总路程/总时间。')">提交答案</button><div class="feedback" id="feedback-q97"></div></div>
+        <div class="q-container"><div class="q-text">98. 关于晶体熔化图像说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q98" value="A" id="q98a"><label for="q98a">A. 熔化过程中温度不断上升</label></div><div class="option"><input type="radio" name="q98" value="B" id="q98b"><label for="q98b">B. 熔化过程中温度保持不变</label></div><div class="option"><input type="radio" name="q98" value="C" id="q98c"><label for="q98c">C. 晶体没有固定熔点</label></div><div class="option"><input type="radio" name="q98" value="D" id="q98d"><label for="q98d">D. 熔化过程中先升温后降温</label></div></div><button class="q-btn" onclick="checkAnswer('q98','B','晶体熔化时温度不变。')">提交答案</button><div class="feedback" id="feedback-q98"></div></div>
+        <div class="q-container"><div class="q-text">99. 关于回声的说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q99" value="A" id="q99a"><label for="q99a">A. 声音遇到障碍物都会产生回声</label></div><div class="option"><input type="radio" name="q99" value="B" id="q99b"><label for="q99b">B. 回声传播速度比原声慢</label></div><div class="option"><input type="radio" name="q99" value="C" id="q99c"><label for="q99c">C. 区分回声和原声的时间间隔至少0.1s</label></div><div class="option"><input type="radio" name="q99" value="D" id="q99d"><label for="q99d">D. 回声只能在山谷中产生</label></div></div><button class="q-btn" onclick="checkAnswer('q99','C','时间间隔至少0.1s。')">提交答案</button><div class="feedback" id="feedback-q99"></div></div>
+        <div class="q-container"><div class="q-text">100. 关于超声波和次声波说法正确的是？</div>
+          <div class="options"><div class="option"><input type="radio" name="q100" value="A" id="q100a"><label for="q100a">A. 超声波频率低于20Hz</label></div><div class="option"><input type="radio" name="q100" value="B" id="q100b"><label for="q100b">B. 次声波频率高于20000Hz</label></div><div class="option"><input type="radio" name="q100" value="C" id="q100c"><label for="q100c">C. 人耳能听到超声波和次声波</label></div><div class="option"><input type="radio" name="q100" value="D" id="q100d"><label for="q100d">D. 超声波频率高于20000Hz</label></div></div><button class="q-btn" onclick="checkAnswer('q100','D','超声波>20000Hz，次声波<20Hz。')">提交答案</button><div class="feedback" id="feedback-q100"></div></div>
+      </div>
+    </div>
+
+    <div class="review-sidebar">
+      <div class="card stats-card">
+        <div class="stats-label">总体正确率</div>
+        <div class="stats-number" id="overallAccuracy">0%</div>
+        <div class="pbar"><div class="pbar-fill" id="accuracyBar"></div></div>
+        <div class="stats-label">已答题数: <span id="answeredCount">0</span>/100</div>
+      </div>
+      <div class="card stats-card" style="background:linear-gradient(135deg,#00b894,#00cec9);">
+        <div class="stats-label">正确题数</div>
+        <div class="stats-number" id="correctCount">0</div>
+        <div class="stats-label">错误题数: <span id="wrongCount">0</span></div>
+      </div>
+      <div class="card">
+        <h2>章节进度</h2>
+        <div class="chapter-item"><div class="chapter-name">第一章：机械运动</div><div class="chapter-stats" id="ch1Stats">0/30 已完成</div></div>
+        <div class="chapter-item"><div class="chapter-name">第二章：声现象</div><div class="chapter-stats" id="ch2Stats">0/30 已完成</div></div>
+        <div class="chapter-item"><div class="chapter-name">第三章：物态变化</div><div class="chapter-stats" id="ch3Stats">0/40 已完成</div></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>York 周老师物理</strong><p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p><p>© 2026 York Physics Lab. All Rights Reserved.</p></div>
+    <div><strong>联系方式</strong><p>周煜全老师</p><p><a href="mailto:mynameisyork@163.com">mynameisyork@163.com</a></p></div>
+    <div><strong>特别鸣谢</strong><p>龙外物理科组</p><p>梁卓栋老师</p></div>
+  </div>
+</footer>
+
+<script>
+// ===== Stats =====
+let stats = { totalQuestions: 100, answered: 0, correct: 0, wrong: 0,
+  chapter1: { answered: 0, correct: 0, total: 30 },
+  chapter2: { answered: 0, correct: 0, total: 30 },
+  chapter3: { answered: 0, correct: 0, total: 40 }
+};
+
+function checkAnswer(qName, correctAns, explanation) {
+  var sel = document.querySelector('input[name="'+qName+'"]:checked');
+  var fb = document.getElementById('feedback-'+qName);
+  if (!sel) { fb.textContent = '请先选择一个答案！'; fb.className = 'feedback incorrect'; return; }
+  if (sel.dataset.answered === 'true') { fb.textContent = '这道题已经回答过了！'; fb.className = 'feedback incorrect'; return; }
+  sel.dataset.answered = 'true';
+  stats.answered++;
+  var num = parseInt(qName.replace('q',''));
+  var ch = num <= 30 ? 'chapter1' : num <= 60 ? 'chapter2' : 'chapter3';
+  stats[ch].answered++;
+  if (sel.value === correctAns) {
+    fb.textContent = '正确！'+explanation; fb.className = 'feedback correct';
+    stats.correct++; stats[ch].correct++;
+    sel.closest('.q-container').classList.add('q-completed');
+  } else {
+    fb.textContent = '错误！正确答案是：'+correctAns+'。'+explanation; fb.className = 'feedback incorrect';
+    stats.wrong++;
+  }
+  updateStats();
+}
+
+function updateStats() {
+  var acc = stats.answered > 0 ? Math.round((stats.correct/stats.answered)*100) : 0;
+  document.getElementById('overallAccuracy').textContent = acc+'%';
+  document.getElementById('accuracyBar').style.width = acc+'%';
+  document.getElementById('answeredCount').textContent = stats.answered;
+  document.getElementById('correctCount').textContent = stats.correct;
+  document.getElementById('wrongCount').textContent = stats.wrong;
+  document.getElementById('ch1Stats').textContent = stats.chapter1.answered+'/'+stats.chapter1.total+' 已完成';
+  document.getElementById('ch2Stats').textContent = stats.chapter2.answered+'/'+stats.chapter2.total+' 已完成';
+  document.getElementById('ch3Stats').textContent = stats.chapter3.answered+'/'+stats.chapter3.total+' 已完成';
+}
+
+updateStats();
+</script>
+
+<script>
+// ===== Hamburger Menu =====
+(function(){
+  var btn = document.getElementById('menuToggle'), menu = document.getElementById('categoryMenu');
+  if (btn && menu) {
+    btn.addEventListener('click', function() {
+      var open = menu.classList.toggle('nav-open');
+      btn.classList.toggle('is-active');
+      btn.setAttribute('aria-expanded', open);
+    });
+    menu.querySelectorAll('a').forEach(function(l) {
+      l.addEventListener('click', function() { menu.classList.remove('nav-open'); btn.classList.remove('is-active'); btn.setAttribute('aria-expanded','false'); });
+    });
+  }
+})();
+(function(){
+  var items = document.querySelectorAll('.menu-item');
+  items.forEach(function(item) {
+    var top = item.querySelector('.menu-top'), sub = item.querySelector('.submenu');
+    if (top && sub && sub.children.length > 1) {
+      top.addEventListener('click', function(e) {
+        if ('ontouchstart' in window && window.innerWidth <= 680) {
+          var isOpen = sub.classList.contains('open');
+          item.parentNode.querySelectorAll('.submenu.open').forEach(function(s) { if (s !== sub) s.classList.remove('open'); });
+          if (!isOpen) { e.preventDefault(); sub.classList.add('open'); }
+        }
+      });
+    }
+  });
+})();
+</script>
+<script defer src="disable-context-menu.js"></script>
+</body>
+</html>
+
+
