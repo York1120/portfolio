@@ -621,6 +621,7 @@
   var analyser;
   var microphone;
   var dataArray;
+  var timeArray;
   var animationId;
   var isRunning = false;
 
@@ -646,11 +647,19 @@
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
     analyser = audioContext.createAnalyser();
     analyser.fftSize = 2048;
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
+    // 关闭浏览器的音频处理链（2026-09-26 修）：
+    //   noiseSuppression 会把低电平的环境底噪当作"噪声"删掉 → 安静环境读数被削到 0；
+    //   autoGainControl 会把不同环境的音量自动拉平 → 噪声强弱对比失去意义；
+    //   echoCancellation 对本页面（不播放声音）没有意义。
+    navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+    }).then(function (stream) {
       microphone = audioContext.createMediaStreamSource(stream);
       microphone.connect(analyser);
       var bufferLength = analyser.frequencyBinCount;
       dataArray = new Uint8Array(bufferLength);
+      // 时域浮点数组，长度必须等于 fftSize，用于计算真实电平
+      timeArray = new Float32Array(analyser.fftSize);
       startButton.disabled = true;
       stopButton.disabled = false;
       statusElement.textContent = '正在检测环境噪声...';
@@ -703,15 +712,31 @@
 
   function updateDecibelLevel() {
     if (!isRunning) return;
-    analyser.getByteFrequencyData(dataArray);
+
+    // 用时域波形算电平（2026-09-26 改）。
+    // 旧实现用 getByteFrequencyData（频域）算分贝：频域 byte 值受 analyser.minDecibels
+    //（默认 -100dB）硬性夹取，安静环境下所有频点都落到该下限之下 → 全部为 0，
+    // 再经 Math.max(0, ...) 截断后恒显示 "0 dB"，无法反映真实环境底噪。
+    // 时域浮点数据没有这个下限，安静房间也能得到有效读数。
+    analyser.getFloatTimeDomainData(timeArray);
     var sum = 0;
-    for (var i = 0; i < dataArray.length; i++) { sum += dataArray[i] * dataArray[i]; }
-    var rms = Math.sqrt(sum / dataArray.length);
-    var db = 20 * Math.log10(rms / 255 * 100);
-    var adjustedDb = Math.max(0, db + 30);
-    dbValueElement.textContent = Math.round(adjustedDb);
-    levelElement.style.width = Math.min(100, adjustedDb) + '%';
-    if (adjustedDb > 85) {
+    for (var i = 0; i < timeArray.length; i++) { sum += timeArray[i] * timeArray[i]; }
+    var rms = Math.sqrt(sum / timeArray.length);
+
+    // 约 -100dBFS 以下视为「未采集到有效声音」，显示 "--" 而非误导性的 0
+    var hasSignal = rms > 1e-5;
+    // 映射：满量程 0dBFS → 100，-100dBFS → 0
+    var adjustedDb = hasSignal ? Math.max(0, 100 + 20 * Math.log10(rms)) : 0;
+
+    if (hasSignal) {
+      dbValueElement.textContent = Math.round(adjustedDb);
+      levelElement.style.width = Math.min(100, adjustedDb) + '%';
+    } else {
+      dbValueElement.textContent = '--';
+      levelElement.style.width = '0%';
+    }
+
+    if (hasSignal && adjustedDb > 85) {
       warningElement.textContent = '⚠ 警告：长时间暴露在此噪声水平下可能损害听力！';
       warningElement.className = 'warning-text active';
     } else {
@@ -720,7 +745,7 @@
     }
     var now = Date.now();
     if (now - lastLogTime > 2000) {
-      logRecord(adjustedDb);
+      if (hasSignal) logRecord(adjustedDb);
       lastLogTime = now;
     }
     setTimeout(updateDecibelLevel, 100);
