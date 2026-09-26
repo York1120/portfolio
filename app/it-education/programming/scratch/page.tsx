@@ -1,5 +1,11 @@
 ﻿import { ArrowLeft, Monitor, Code, BookOpen, ExternalLink } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Scratch 基础 | 周老师教学园地",
+  description: "Scratch 图形化编程入门：认识编程环境、顺序与循环、条件判断、变量与列表。",
+}
 
 export default function ScratchPage() {
   return (

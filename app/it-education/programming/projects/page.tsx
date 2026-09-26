@@ -1,5 +1,11 @@
 ﻿import { ArrowLeft, Monitor, Code, ExternalLink } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "趣味项目实践 | 周老师教学园地",
+  description: "Python 趣味编程项目：猜数字游戏、简易计算器、贪吃蛇与天气查询工具。",
+}
 
 export default function ProjectsPage() {
   return (

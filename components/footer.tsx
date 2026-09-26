@@ -1,5 +1,6 @@
 ﻿import { Mail } from "lucide-react"
 import Link from "next/link"
+import { FooterYear } from "@/components/footer-year"
 
 export function Footer() {
   return (
@@ -54,7 +55,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
-          <p>&copy; {new Date().getFullYear()} 周老师教学园地 · 保留所有权利</p>
+          <p>&copy; <FooterYear buildYear={new Date().getFullYear()} /> 周老师教学园地 · 保留所有权利</p>
         </div>
       </div>
     </footer>

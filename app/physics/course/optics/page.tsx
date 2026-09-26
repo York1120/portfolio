@@ -1,5 +1,11 @@
 ﻿import { ArrowLeft, FlaskConical, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "光学 | 周老师教学园地",
+  description: "光的直线传播、光的反射定律、平面镜成像、光的折射与凸透镜成像规律。",
+}
 
 export default function OpticsPage() {
   return (
@@ -106,6 +112,7 @@ export default function OpticsPage() {
           <p className="text-gray-600 text-sm mb-3">通过互动实验直观理解光学概念。</p>
           <div className="flex flex-wrap gap-2">
             <a href="/physics/04-pinhole.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">小孔成像 <ArrowRight className="w-3 h-3" /></a>
+            <a href="/physics/05-reflection.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">反射折射模拟器 <ArrowRight className="w-3 h-3" /></a>
             <a href="/physics/06-rgb.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">三原色组合 <ArrowRight className="w-3 h-3" /></a>
             <a href="/physics/07-lens.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">凸透镜成像 <ArrowRight className="w-3 h-3" /></a>
             <a href="/physics/10-refraction.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">反射与折射 <ArrowRight className="w-3 h-3" /></a>

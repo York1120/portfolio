@@ -17,3 +17,6 @@ tsconfig.tsbuildinfo
 # Lock files - pnpm only
 package-lock.json
 yarn.lock
+
+# WorkBuddy local workspace (session state, memory) - not part of the site source
+.workbuddy/

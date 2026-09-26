@@ -1,5 +1,11 @@
 ﻿import { ArrowLeft, FlaskConical, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "声学 | 周老师教学园地",
+  description: "声音的产生与传播、声音的三个特性、噪声的危害与控制，配套频率发声器等互动实验。",
+}
 
 export default function AcousticsPage() {
   return (

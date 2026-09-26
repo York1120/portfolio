@@ -1,5 +1,11 @@
 ﻿import { ArrowLeft, FlaskConical, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "力学 | 周老师教学园地",
+  description: "长度与时间的测量、浮力与阿基米德原理、大气压强与托里拆利实验。",
+}
 
 export default function MechanicsPage() {
   return (

@@ -1,5 +1,11 @@
 ﻿import { ArrowLeft, FlaskConical, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "电学 | 周老师教学园地",
+  description: "电路的基本概念、串联与并联、欧姆定律与电阻的串并联计算，配套电路互动实验。",
+}
 
 export default function ElectricityPage() {
   return (

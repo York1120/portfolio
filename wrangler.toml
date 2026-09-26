@@ -3,3 +3,6 @@ compatibility_date = "2025-06-25"
 
 [assets]
 directory = "out"
+# 未匹配到静态资源时返回 out/404.html（Next 导出的 app/not-found.tsx 产物）。
+# 不配此项时默认值为 "none"，自定义 404 页不会生效。
+not_found_handling = "404-page"

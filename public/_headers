@@ -1,0 +1,25 @@
+# Cloudflare Workers Static Assets 响应头配置。
+# 本文件由 public/ 原样复制到 out/，被 Workers 解析后**不会**作为静态资源对外提供。
+# 官方文档：developers.cloudflare.com/workers/static-assets/headers/
+#
+# 注意：这里刻意不加 Content-Security-Policy。
+# 站点大量使用内联 <script>/<style> 与内联 style 属性（物理实验室 17 个页面尤其密集），
+# 一旦上 CSP 就必须改成 nonce/hash 方案，否则会直接白屏 —— 收益远小于风险。
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+# Next.js 导出的 /_next/static/* 文件名带内容哈希，可以放心长缓存。
+# 默认值是 `public, max-age=0, must-revalidate`（每次都要回源校验），
+# 对哈希资源来说是纯浪费。
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 物理实验室的图片资源变动频率很低，给一周缓存 + 一天 stale-while-revalidate。
+# 注意不要用到 /physics/*.html 上 —— HTML 必须保持每次校验，否则更新发布后
+# 用户会长时间看到旧页面。
+/physics/images/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400

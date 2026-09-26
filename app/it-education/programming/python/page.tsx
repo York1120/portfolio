@@ -1,5 +1,11 @@
 ﻿import { ArrowLeft, Monitor, Code, ExternalLink } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Python 入门 | 周老师教学园地",
+  description: "初中生 Python 入门：环境搭建、变量与数据类型、条件判断、循环语句与 turtle 绘图。",
+}
 
 export default function PythonPage() {
   return (

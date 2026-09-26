@@ -81,6 +81,7 @@ export default function ToolsPage() {
           return (
             <div
               key={tool.title}
+              id={tool.id}
               className={"bg-white border-2 " + tool.borderColor + " rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300"}
             >
               <div className="p-8 max-sm:p-5">

@@ -1,5 +1,11 @@
 ﻿import { ArrowLeft, Monitor, BookOpen, ExternalLink } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "数据处理入门 | 周老师教学园地",
+  description: "电子表格基础操作、数据格式化、公式与函数、排序筛选与图表制作。",
+}
 
 export default function DataPage() {
   return (

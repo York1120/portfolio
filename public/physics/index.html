@@ -7,8 +7,8 @@
   <meta name="keywords" content="初中物理,互动实验,物理教学,虚拟实验,York周老师物理">
   <meta name="theme-color" content="#0f3a63">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="icon" href="https://yorkeducation.eu.cc/physics/images/logo.png" type="image/png">
-  <link rel="apple-touch-icon" href="https://yorkeducation.eu.cc/physics/images/logo.png">
+  <link rel="icon" href="images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="images/logo.png">
   <meta property="og:image" content="https://yorkeducation.eu.cc/physics/images/logo.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="300">
@@ -53,6 +53,7 @@
             <a class="menu-top" href="#optics">光学</a>
             <div class="submenu">
               <a href="#exp-pinhole">小孔成像虚拟实验</a>
+              <a href="05-reflection.html">光的反射与折射模拟器</a>
               <a href="#exp-rgb">光的三原色组合游戏</a>
               <a href="#exp-lens">凸透镜成像虚拟实验</a>
               <a href="#exp-refraction">光的反射与折射定律</a>
@@ -86,6 +87,9 @@
               <a href="#exp-review">初中物理知识点复习</a>
               <a href="#exp-quiz">《物理原来很有趣》测验</a>
             </div>
+          </div>
+          <div class="menu-item">
+            <a class="menu-top menu-home" href="/" title="返回周老师教学园地主站">← 返回主站</a>
           </div>
         </div>
       </nav>
@@ -196,6 +200,16 @@
         <div class="tags">
           <span class="tag">透镜成像</span>
           <span class="tag">光路作图</span>
+        </div>
+      </a>
+      <a class="experiment-card" id="exp-reflection" href="05-reflection.html"
+         data-title="光的反射与折射模拟器 光学 反射 折射 全反射 数据记录" data-topic="光学" data-level="进阶">
+        <span class="difficulty">⭐⭐ 进阶</span>
+        <h3>光的反射与折射模拟器</h3>
+        <p>拖拽入射光线、连续调节折射率，实时读取反射角与折射角，可记录多组数据并导出 CSV。</p>
+        <div class="tags">
+          <span class="tag">反射与折射</span>
+          <span class="tag">数据记录</span>
         </div>
       </a>
       <a class="experiment-card" id="exp-refraction" href="10-refraction.html"
@@ -354,7 +368,7 @@
     <div>
       <strong>York 周老师物理</strong>
       <p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p>
-      <p>© 2026 York Physics Lab. All Rights Reserved.</p>
+      <p>© <span class="copyright-year">2026</span> York Physics Lab. All Rights Reserved.</p>
     </div>
     <div>
       <strong>联系方式</strong>
@@ -461,6 +475,7 @@
   })();
 </script>
 <script defer src="disable-context-menu.js"></script>
+<script>document.querySelectorAll(".copyright-year").forEach(function (el) { el.textContent = new Date().getFullYear(); });</script>
 </body>
 </html>
 

@@ -215,6 +215,20 @@ a { color: inherit; text-decoration: none; }
   color: var(--brand-2);
 }
 
+/* ---------- 返回主站入口（导航尾项，主站根路径） ---------- */
+.menu-top.menu-home {
+  color: var(--brand-2);
+  font-weight: 800;
+  border: 1px solid rgba(35, 167, 230, 0.38);
+  background: rgba(35, 167, 230, 0.08);
+}
+
+.menu-top.menu-home:hover,
+.menu-top.menu-home:focus {
+  background: rgba(35, 167, 230, 0.20);
+  color: var(--brand);
+}
+
 /* ---------- Hero Section ---------- */
 .hero {
   padding: 58px 0 46px;

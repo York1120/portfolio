@@ -1,4 +1,10 @@
 ﻿import { Mail, GraduationCap, Monitor, Award, FlaskConical } from "lucide-react"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "关于我 | 周老师教学园地",
+  description: "认识周老师：初中物理与信息技术教师，了解教学理念、教学领域与联系方式。",
+}
 
 export default function AboutPage() {
   return (

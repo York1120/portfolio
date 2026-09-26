@@ -1,5 +1,11 @@
 ﻿import { ArrowLeft, FlaskConical, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "热学 | 周老师教学园地",
+  description: "分子热运动、内能与热量、热机与四冲程汽油机工作原理，配套分子运动微观示意图。",
+}
 
 export default function ThermodynamicsPage() {
   return (

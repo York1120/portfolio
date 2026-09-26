@@ -126,6 +126,9 @@
 
 html {
   scroll-behavior: smooth;
+  /* 悬浮导航条实际高度 64px（pt-2 8px + h-14 56px），
+     留 80px 让 #锚点落点不被导航条遮挡。 */
+  scroll-padding-top: 5rem;
   background: linear-gradient(135deg, #eff6ff 0%, #ffffff 768px) #eff6ff;
 }
 

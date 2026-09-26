@@ -1,5 +1,11 @@
 ﻿import { ArrowLeft, Monitor, BookOpen, ExternalLink } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "计算机基础 | 周老师教学园地",
+  description: "计算机发展历史、硬件组成、软件分类、操作系统基本操作与键盘指法训练。",
+}
 
 export default function ComputerBasicsPage() {
   return (

@@ -1,5 +1,11 @@
 ﻿import { ArrowLeft, Monitor, BookOpen, ExternalLink } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "网络与信息安全 | 周老师教学园地",
+  description: "互联网工作原理、搜索引擎使用技巧、密码安全、网络诈骗识别与健康上网。",
+}
 
 export default function NetworkPage() {
   return (
