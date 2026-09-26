@@ -115,7 +115,6 @@ export default function OpticsPage() {
             <a href="/physics/05-reflection.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">反射折射模拟器 <ArrowRight className="w-3 h-3" /></a>
             <a href="/physics/06-rgb.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">三原色组合 <ArrowRight className="w-3 h-3" /></a>
             <a href="/physics/07-lens.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">凸透镜成像 <ArrowRight className="w-3 h-3" /></a>
-            <a href="/physics/10-refraction.html" className="inline-flex items-center gap-1 text-sm bg-white text-blue-600 px-3 py-1.5 rounded-full border border-blue-200 hover:bg-blue-50 transition-colors">反射与折射 <ArrowRight className="w-3 h-3" /></a>
           </div>
         </div>
       </div>

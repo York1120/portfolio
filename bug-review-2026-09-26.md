@@ -39,6 +39,14 @@ npx wrangler login    # 首次
 npm run deploy        # 已含 next build
 ```
 
+### 后续变更（2026-09-26 追加）：10-refraction 已应用户要求删除
+- `public/physics/10-refraction.html` 整体删除（用户认定与 05-reflection 内容重复）。
+  本报告 #7 当时的判定是「05 与 10 功能不重叠，故补 05 入口而非删除」，此处仅作历史记录、不改写原文。
+- 全站引用同步清理：16 个物理页导航子菜单移除 10 的菜单项（光学子菜单现为 04/05/06/07）；
+  `index.html` 移除 10 的实验卡片；06-rgb 与 07-lens 的「相关实验」、03-noise 的导航项改为指向
+  05-reflection；主站 optics 课程页移除 10 的互动实验 chip；`app/sitemap.ts` 移除对应条目（34 → 33 条）。
+- 已验证站点源码（app / components / public）中 `10-refraction` 零残留。
+
 ---
 
 ## 0. 架构事实

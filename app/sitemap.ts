@@ -44,7 +44,6 @@ const PHYSICS_PAGES = [
   "/physics/07-lens.html",
   "/physics/08-molecule.html",
   "/physics/09-engine.html",
-  "/physics/10-refraction.html",
   "/physics/11-review.html",
   "/physics/12-buoyancy.html",
   "/physics/13-torricelli.html",
