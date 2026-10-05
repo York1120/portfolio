@@ -1,7 +1,7 @@
 ﻿"use client"
 
 import { useState } from "react"
-import { Wrench, ExternalLink, Cpu, Users, ChevronDown, CheckCircle } from "lucide-react"
+import { Wrench, ExternalLink, Cpu, Users, ChevronDown, CheckCircle, BarChart3, Dices, Clock } from "lucide-react"
 
 import type { LucideIcon } from "lucide-react"
 interface Tool {
@@ -143,20 +143,64 @@ export default function ToolsPage() {
         })}
       </div>
 
-      {/* 工具开发计划 */}
-      <div className="mt-16 bg-gradient-to-br from-gray-50 to-blue-50 border border-gray-200 rounded-2xl p-8 max-sm:p-5 max-w-4xl mx-auto">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">即将推出的工具</h2>
-        <div className="grid sm:grid-cols-3 gap-4">
+      {/* 本站在线工具 */}
+      <div className="mt-16 max-w-4xl mx-auto">
+        <h2 className="text-xl font-bold text-gray-900 mb-4">更多在线工具</h2>
+        <div className="grid sm:grid-cols-2 gap-4">
           {[
-            { title: "成绩分析系统", desc: "自动分析考试成绩，生成多维度的学情报告" },
-            { title: "课堂随机点名器", desc: "公平随机点名，记录学生课堂参与情况" },
-            { title: "作业管理平台", desc: "在线布置、提交和批改作业，减轻教师负担" },
-          ].map((t) => (
-            <div key={t.title} className="bg-white border border-gray-200 rounded-xl p-5">
-              <h3 className="font-semibold text-gray-900 mb-1">{t.title}</h3>
-              <p className="text-gray-500 text-sm">{t.desc}</p>
-            </div>
-          ))}
+            {
+              id: "grade-analysis",
+              title: "成绩分析系统",
+              desc: "自动分析考试成绩，生成多维度的学情报告。",
+              href: "https://grade.yorkeducation.eu.cc/",
+              icon: BarChart3,
+              color: "text-blue-600",
+              bgColor: "bg-blue-50",
+              hoverBorder: "hover:border-blue-300",
+            },
+            {
+              id: "roll-call",
+              title: "课堂随机点名器",
+              desc: "公平随机点名，记录学生课堂参与情况。",
+              href: "https://roll.yorkeducation.eu.cc/",
+              icon: Dices,
+              color: "text-amber-600",
+              bgColor: "bg-amber-50",
+              hoverBorder: "hover:border-amber-300",
+            },
+          ].map((t) => {
+            const Icon = t.icon
+            return (
+              <a
+                key={t.title}
+                id={t.id}
+                href={t.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={"bg-white border-2 border-gray-200 rounded-2xl p-5 flex flex-col hover:shadow-lg transition-all duration-300 " + t.hoverBorder}
+              >
+                <div className={"w-12 h-12 " + t.bgColor + " rounded-xl flex items-center justify-center mb-4"}>
+                  <Icon className={"w-6 h-6 " + t.color} />
+                </div>
+                <h3 className="font-bold text-gray-900 mb-1">{t.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed mb-4 flex-1">{t.desc}</p>
+                <span className="inline-flex items-center gap-1 text-blue-600 text-sm font-medium hover:text-blue-700 transition-colors">
+                  打开工具
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </span>
+              </a>
+            )
+          })}
+        </div>
+        <div className="mt-4 bg-white/70 border border-dashed border-gray-300 rounded-xl px-5 py-4 flex items-center gap-3">
+          <span className="inline-flex items-center gap-1.5 bg-orange-100 text-orange-700 text-xs font-medium px-2.5 py-1 rounded-full flex-shrink-0">
+            <Clock className="w-3 h-3" />
+            即将推出
+          </span>
+          <div>
+            <h3 className="font-semibold text-gray-900 text-sm">作业管理平台</h3>
+            <p className="text-gray-500 text-sm">在线布置、提交和批改作业，减轻教师负担。</p>
+          </div>
         </div>
       </div>
     </div>

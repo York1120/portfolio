@@ -58,6 +58,8 @@ const navItems: NavItem[] = [
     children: [
       { label: "班级排座位系统", href: "/tools" },
       { label: "AI 教学平台", href: "/tools#ai" },
+      { label: "成绩分析系统", href: "/tools#grade-analysis" },
+      { label: "课堂随机点名器", href: "/tools#roll-call" },
     ],
   },
   { label: "关于我", href: "/about" },
