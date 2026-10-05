@@ -3,7 +3,7 @@
 # 官方文档：developers.cloudflare.com/workers/static-assets/headers/
 #
 # 注意 1：刻意不加 Content-Security-Policy。
-# 站点大量使用内联 <script>/<style> 与内联 style 属性（物理实验室 17 个页面尤其密集），
+# 站点大量使用内联 <script>/<style> 与内联 style 属性（物理实验室 16 个页面尤其密集），
 # 一旦上 CSP 就必须改成 nonce/hash 方案，否则会直接白屏 —— 收益远小于风险。
 #
 # 注意 2：刻意不加 Permissions-Policy（2026-09-26 踩坑后移除）。

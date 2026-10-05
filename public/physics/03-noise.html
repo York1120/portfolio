@@ -564,7 +564,7 @@
     <div>
       <strong>York 周老师物理</strong>
       <p>专业物理互动教学平台，服务初中物理课堂演示与学生自主探究。</p>
-      <p>&copy; 2026 York Physics Lab. All Rights Reserved.</p>
+      <p>&copy; <span class="copyright-year">2026</span> York Physics Lab. All Rights Reserved.</p>
     </div>
     <div>
       <strong>联系方式</strong>
@@ -617,6 +617,7 @@
   var audioContext;
   var analyser;
   var microphone;
+  var mediaStream;
   var dataArray;
   var animationId;
   var isRunning = false;
@@ -639,16 +640,19 @@
   var lastLogTime = 0;
 
   startButton.addEventListener('click', function () {
+    // 授权弹窗期间先禁用，防止重复点击创建多个 AudioContext / 并发绘制循环
+    startButton.disabled = true;
     statusElement.textContent = '正在初始化麦克风...';
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
     analyser = audioContext.createAnalyser();
     analyser.fftSize = 2048;
     navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
+      // 保留轨道引用，停止检测时显式释放麦克风
+      mediaStream = stream;
       microphone = audioContext.createMediaStreamSource(stream);
       microphone.connect(analyser);
       var bufferLength = analyser.frequencyBinCount;
       dataArray = new Uint8Array(bufferLength);
-      startButton.disabled = true;
       stopButton.disabled = false;
       statusElement.textContent = '正在检测环境噪声...';
       isRunning = true;
@@ -656,6 +660,9 @@
       updateDecibelLevel();
     }).catch(function (error) {
       statusElement.textContent = '错误: ' + error.message;
+      audioContext.close();
+      audioContext = null;
+      startButton.disabled = false;
     });
   });
 
@@ -663,6 +670,10 @@
     if (microphone && audioContext) {
       microphone.disconnect();
       if (audioContext.state !== 'closed') { audioContext.close(); }
+    }
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(function (t) { t.stop(); });
+      mediaStream = null;
     }
     cancelAnimationFrame(animationId);
     startButton.disabled = false;
@@ -796,6 +807,7 @@
   })();
 </script>
 <script defer src="disable-context-menu.js"></script>
+<script>document.querySelectorAll(".copyright-year").forEach(function (el) { el.textContent = new Date().getFullYear(); });</script>
 </body>
 </html>
 

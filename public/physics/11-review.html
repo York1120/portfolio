@@ -413,8 +413,10 @@ function checkAnswer(qName, correctAns, explanation) {
   var sel = document.querySelector('input[name="'+qName+'"]:checked');
   var fb = document.getElementById('feedback-'+qName);
   if (!sel) { fb.textContent = '请先选择一个答案！'; fb.className = 'feedback incorrect'; return; }
-  if (sel.dataset.answered === 'true') { fb.textContent = '这道题已经回答过了！'; fb.className = 'feedback incorrect'; return; }
-  sel.dataset.answered = 'true';
+  // 已答标记挂在题目容器上：换选其他选项也无法绕过防重复守卫
+  var container = sel.closest('.q-container');
+  if (container.dataset.answered === 'true') { fb.textContent = '这道题已经回答过了！'; fb.className = 'feedback incorrect'; return; }
+  container.dataset.answered = 'true';
   stats.answered++;
   var num = parseInt(qName.replace('q',''));
   var ch = num <= 30 ? 'chapter1' : num <= 60 ? 'chapter2' : 'chapter3';

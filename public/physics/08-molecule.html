@@ -197,17 +197,24 @@ let records = [];
 function recordData() { records.push({ temp: temperatureFactor * 100 }); renderRecords() }
 function renderRecords() {
   var tbody = document.getElementById('recordBody');
+function motionDesc(t) {
+  var solidDesc = '缓慢振动', liquidDesc = '缓慢流动', gasDesc = '缓慢飘动';
+  if (t > 70) { solidDesc = '剧烈振动'; liquidDesc = '快速流动'; gasDesc = '高速飞驰'; }
+  else if (t > 30) { solidDesc = '中等振动'; liquidDesc = '中等流动'; gasDesc = '快速运动'; }
+  return { solidDesc: solidDesc, liquidDesc: liquidDesc, gasDesc: gasDesc };
+}
+function renderRecords() {
   tbody.innerHTML = records.map(function(r,i){
-    var solidDesc = '缓慢振动', liquidDesc = '缓慢流动', gasDesc = '缓慢飘动';
-    var t = r.temp;
-    if (t > 70) { solidDesc = '剧烈振动'; liquidDesc = '快速流动'; gasDesc = '高速飞驰'; }
-    else if (t > 30) { solidDesc = '中等振动'; liquidDesc = '中等流动'; gasDesc = '快速运动'; }
-    return '<tr><td>'+(i+1)+'</td><td>'+Math.round(t)+'</td><td>'+solidDesc+'</td><td>'+liquidDesc+'</td><td>'+gasDesc+'</td></tr>';
+    var d = motionDesc(r.temp);
+    return '<tr><td>'+(i+1)+'</td><td>'+Math.round(r.temp)+'</td><td>'+d.solidDesc+'</td><td>'+d.liquidDesc+'</td><td>'+d.gasDesc+'</td></tr>';
   }).join('');
 }
 function exportRecords() {
   if (!records.length) return;
-  var csv = '序号,温度(°C),固体振动,液体运动,气体运动\n' + records.map(function(r,i){ return (i+1)+','+Math.round(r.temp)+',,,;'; }).join('\n');
+  var csv = '序号,温度(°C),固体振动,液体运动,气体运动\n' + records.map(function(r,i){
+    var d = motionDesc(r.temp);
+    return (i+1)+','+Math.round(r.temp)+','+d.solidDesc+','+d.liquidDesc+','+d.gasDesc;
+  }).join('\n');
   var blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'});
   var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '分子热运动数据.csv'; a.click();
 }

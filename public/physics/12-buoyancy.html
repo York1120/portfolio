@@ -218,19 +218,22 @@ setInterval(function() { elapsedSeconds++; var m = Math.floor(elapsedSeconds/60)
 // ===== Records =====
 let records = [];
 function recordData() { var d = parseInt(depthSlider.value); records.push({ depth: d, force: calculateBuoyancy(d) }); renderRecords() }
+function stageOf(depth) {
+  var stage = '沉底';
+  if (depth > 16) stage = '完全浸没';
+  else if (depth > 12) stage = '拉紧浸没';
+  else if (depth > 6) stage = '漂浮';
+  return stage;
+}
 function renderRecords() {
   var tbody = document.getElementById('recordBody');
   tbody.innerHTML = records.map(function(r,i){
-    var stage = '沉底';
-    if (r.depth > 16) stage = '完全浸没';
-    else if (r.depth > 12) stage = '拉紧浸没';
-    else if (r.depth > 6) stage = '漂浮';
-    return '<tr><td>'+(i+1)+'</td><td>'+r.depth+'</td><td>'+r.force.toFixed(1)+'</td><td>'+stage+'</td></tr>';
+    return '<tr><td>'+(i+1)+'</td><td>'+r.depth+'</td><td>'+r.force.toFixed(1)+'</td><td>'+stageOf(r.depth)+'</td></tr>';
   }).join('');
 }
 function exportRecords() {
   if (!records.length) return;
-  var csv = '序号,水深(cm),浮力(N),阶段\n' + records.map(function(r,i){ return (i+1)+','+r.depth+','+r.force.toFixed(1); }).join('\n');
+  var csv = '序号,水深(cm),浮力(N),阶段\n' + records.map(function(r,i){ return (i+1)+','+r.depth+','+r.force.toFixed(1)+','+stageOf(r.depth); }).join('\n');
   var blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'});
   var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '浮力数据.csv'; a.click();
 }
