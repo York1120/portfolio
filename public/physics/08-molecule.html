@@ -195,8 +195,6 @@ setInterval(function() { elapsedSeconds++; var m = Math.floor(elapsedSeconds/60)
 // ===== Records =====
 let records = [];
 function recordData() { records.push({ temp: temperatureFactor * 100 }); renderRecords() }
-function renderRecords() {
-  var tbody = document.getElementById('recordBody');
 function motionDesc(t) {
   var solidDesc = '缓慢振动', liquidDesc = '缓慢流动', gasDesc = '缓慢飘动';
   if (t > 70) { solidDesc = '剧烈振动'; liquidDesc = '快速流动'; gasDesc = '高速飞驰'; }
@@ -204,6 +202,7 @@ function motionDesc(t) {
   return { solidDesc: solidDesc, liquidDesc: liquidDesc, gasDesc: gasDesc };
 }
 function renderRecords() {
+  var tbody = document.getElementById('recordBody');
   tbody.innerHTML = records.map(function(r,i){
     var d = motionDesc(r.temp);
     return '<tr><td>'+(i+1)+'</td><td>'+Math.round(r.temp)+'</td><td>'+d.solidDesc+'</td><td>'+d.liquidDesc+'</td><td>'+d.gasDesc+'</td></tr>';
