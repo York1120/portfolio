@@ -80,3 +80,23 @@ echo "<值>" | npx wrangler secret put REGISTER_SECRET
 | 点名器/成绩显示"云端连接失败" | 该浏览器离线或 API 异常——`npx wrangler tail roll-call` 看实时日志 |
 | 成绩/名单不同步 | 确认已登录（页面右上角显示用户名）；token 过期重新登录即可 |
 | 排座位保存提示"数据量过大" | 班级规模超 30×30 全占的极端场景，缩小规模（单 batch 原子性保护） |
+
+## 九、数据库定期备份（2026-10-05 新增）
+
+**脚本**：`个人网站/backup-dbs.sh` —— 一键导出三个 D1 库的完整 SQL 快照。
+
+**使用**：
+```bash
+bash backup-dbs.sh
+```
+- 输出：`个人网站/backups/<日期时间>/<库名>.sql`
+- 保留最近 12 份，旧份自动清理；日志在 `backups/backup.log`
+- **建议频率**：每周一次（含用户账号的 class-seating-db 优先）
+
+**恢复方法**（单库，示例）：
+```bash
+cd class-seating
+npx wrangler d1 execute class-seating-db --remote --file="../backups/<日期>/class-seating-db.sql"
+```
+> 注意：SQL 里含 `CREATE TABLE IF NOT EXISTS`，对空库可直接恢复；
+> 对已有数据的库恢复前先确认（会重复插入主键冲突的行）。
