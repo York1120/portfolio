@@ -379,11 +379,30 @@ function drawExperiment() {
   document.getElementById('objectHeightValue').textContent = objectHeight;
 }
 
+// ===== 成像限制：像高不得超过光屏长度(300px) =====
+// 像高 = 物高 × 像距 / 物距。任一参数变化时，把该参数夹在
+// 使像高恰好不超光屏的边界内（其余两参数视为固定）。
+function minObjectDistance() { return Math.max(50, objectHeight * screenDistance / 300); }
+function maxScreenDistance() { return Math.min(350, 300 * objectDistance / objectHeight); }
+function maxObjectHeight()  { return Math.min(150, 300 * objectDistance / screenDistance); }
+
 // ===== 控件事件 =====
 function initExperiment() {
-  document.getElementById('objectDistance').addEventListener('input', function(e) { objectDistance = parseInt(e.target.value); drawExperiment(); });
-  document.getElementById('screenDistance').addEventListener('input', function(e) { screenDistance = parseInt(e.target.value); drawExperiment(); });
-  document.getElementById('objectHeight').addEventListener('input', function(e) { objectHeight = parseInt(e.target.value); drawExperiment(); });
+  document.getElementById('objectDistance').addEventListener('input', function(e) {
+    let v = parseInt(e.target.value), min = Math.ceil(minObjectDistance());
+    if (v < min) { v = min; e.target.value = min; }
+    objectDistance = v; drawExperiment();
+  });
+  document.getElementById('screenDistance').addEventListener('input', function(e) {
+    let v = parseInt(e.target.value), max = Math.floor(maxScreenDistance());
+    if (v > max) { v = max; e.target.value = max; }
+    screenDistance = v; drawExperiment();
+  });
+  document.getElementById('objectHeight').addEventListener('input', function(e) {
+    let v = parseInt(e.target.value), max = Math.floor(maxObjectHeight());
+    if (v > max) { v = max; e.target.value = max; }
+    objectHeight = v; drawExperiment();
+  });
   document.getElementById('resetButton').addEventListener('click', function() {
     objectDistance = 200; screenDistance = 200; objectHeight = 100;
     document.getElementById('objectDistance').value = 200; document.getElementById('screenDistance').value = 200; document.getElementById('objectHeight').value = 100;
@@ -400,8 +419,8 @@ function initExperiment() {
   canvas.addEventListener('mousemove', function(e) {
     if (!isDragging) return;
     const rect = canvas.getBoundingClientRect(), mx = e.clientX - rect.left;
-    if (dragTarget === 'object') { let nd = holeX - (mx - dragOffsetX); if (nd >= 50 && nd <= 350) { objectDistance = nd; document.getElementById('objectDistance').value = nd; } }
-    else if (dragTarget === 'screen') { let nd = (mx - dragOffsetX) - holeX; if (nd >= 50 && nd <= 350) { screenDistance = nd; document.getElementById('screenDistance').value = nd; } }
+    if (dragTarget === 'object') { let nd = holeX - (mx - dragOffsetX); if (nd >= 50 && nd <= 350) { objectDistance = Math.max(nd, minObjectDistance()); document.getElementById('objectDistance').value = objectDistance; } }
+    else if (dragTarget === 'screen') { let nd = (mx - dragOffsetX) - holeX; if (nd >= 50 && nd <= 350) { screenDistance = Math.min(nd, maxScreenDistance()); document.getElementById('screenDistance').value = screenDistance; } }
     drawExperiment();
   });
   canvas.addEventListener('mouseup', function() { isDragging = false; dragTarget = null; });
@@ -418,8 +437,8 @@ function initExperiment() {
   canvas.addEventListener('touchmove', function(e) {
     e.preventDefault(); if (!isDragging) return;
     const touch = e.touches[0], rect = canvas.getBoundingClientRect(), tx = touch.clientX - rect.left;
-    if (dragTarget === 'object') { let nd = holeX - (tx - dragOffsetX); if (nd >= 50 && nd <= 350) { objectDistance = nd; document.getElementById('objectDistance').value = nd; } }
-    else if (dragTarget === 'screen') { let nd = (tx - dragOffsetX) - holeX; if (nd >= 50 && nd <= 350) { screenDistance = nd; document.getElementById('screenDistance').value = nd; } }
+    if (dragTarget === 'object') { let nd = holeX - (tx - dragOffsetX); if (nd >= 50 && nd <= 350) { objectDistance = Math.max(nd, minObjectDistance()); document.getElementById('objectDistance').value = objectDistance; } }
+    else if (dragTarget === 'screen') { let nd = (tx - dragOffsetX) - holeX; if (nd >= 50 && nd <= 350) { screenDistance = Math.min(nd, maxScreenDistance()); document.getElementById('screenDistance').value = screenDistance; } }
     drawExperiment();
   }, { passive: false });
   canvas.addEventListener('touchend', function(e) { e.preventDefault(); isDragging = false; dragTarget = null; });
