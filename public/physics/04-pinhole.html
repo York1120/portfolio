@@ -305,6 +305,26 @@ function drawScreen(x, cy) {
   ctx.fillStyle = '#333'; ctx.font = '21px Arial'; ctx.fillText('光屏', x - 22.5, topY - 30);
 }
 
+// 画布底部尺寸标注用的竖直虚线（从元素底部延伸到标注区）
+function drawGuideLine(x, fromY) {
+  ctx.strokeStyle = '#9aa7b2'; ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(x, fromY); ctx.lineTo(x, 374); ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+// 双向箭头尺寸线 + 居中文字（工程图标注风格）
+function drawDimensionLine(x1, x2, color, label) {
+  const y = 370;
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x1 + 7, y - 3.5); ctx.lineTo(x1 + 7, y + 3.5); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x2, y); ctx.lineTo(x2 - 7, y - 3.5); ctx.lineTo(x2 - 7, y + 3.5); ctx.closePath(); ctx.fill();
+  ctx.font = '16px Arial'; ctx.textAlign = 'center';
+  ctx.fillText(label, (x1 + x2) / 2, 390);
+  ctx.textAlign = 'start';
+}
+
 function drawImage(objectX, cy, objH, hX, sX) {
   const imgH = (objH * screenDistance) / objectDistance;
   const imgTopY = cy + imgH / 2, imgBotY = cy - imgH / 2;
@@ -346,6 +366,13 @@ function drawExperiment() {
   drawScreen(sX, cy);
   const imgH = drawImage(objX, cy, objectHeight, holeX, sX);
   drawLightRays(objX, cy, objectHeight, holeX, sX);
+
+  // 物距 / 像距实时标注：从物体、小孔、光屏底部引虚线到底部标注区
+  drawGuideLine(objX, cy + objectHeight / 2 + 8);   // 物体底端（物体高最大 150）
+  drawGuideLine(holeX, cy + 60 + 8);                // 小孔底端（孔板高 120）
+  drawGuideLine(sX, cy + 150 + 4);                  // 光屏底端（屏高 300）
+  drawDimensionLine(objX, holeX, '#e74c3c', '物距: ' + objectDistance + 'px');
+  drawDimensionLine(holeX, sX, '#9b59b6', '像距: ' + screenDistance + 'px');
 
   document.getElementById('objectDistanceValue').textContent = objectDistance;
   document.getElementById('screenDistanceValue').textContent = screenDistance;
