@@ -416,15 +416,24 @@ function initExperiment() {
     if (mx >= objX - 20 && mx <= objX + 20) { isDragging = true; dragTarget = 'object'; dragOffsetX = mx - objX; }
     if (mx >= sX - 20 && mx <= sX + 20) { isDragging = true; dragTarget = 'screen'; dragOffsetX = mx - sX; }
   });
-  canvas.addEventListener('mousemove', function(e) {
+  // 鼠标拖拽：move/up 绑在 window 上 —— 光屏拉到边缘后继续拖会让鼠标
+  // 越出画布，若监听在 canvas 上会收到 mouseleave 而中断拖拽（需重新按住）。
+  // window 监听 + 越界吸边后，拖拽全程不中断，出界即贴边停住。
+  window.addEventListener('mousemove', function(e) {
     if (!isDragging) return;
     const rect = canvas.getBoundingClientRect(), mx = e.clientX - rect.left;
-    if (dragTarget === 'object') { let nd = Math.round(holeX - (mx - dragOffsetX)); if (nd >= 50 && nd <= 350) { objectDistance = Math.max(nd, Math.ceil(minObjectDistance())); document.getElementById('objectDistance').value = objectDistance; } }
-    else if (dragTarget === 'screen') { let nd = Math.round((mx - dragOffsetX) - holeX); if (nd >= 50 && nd <= 350) { screenDistance = Math.min(nd, Math.floor(maxScreenDistance())); document.getElementById('screenDistance').value = screenDistance; } }
+    if (dragTarget === 'object') {
+      let nd = Math.max(50, Math.min(350, Math.round(holeX - (mx - dragOffsetX))));
+      objectDistance = Math.max(nd, Math.ceil(minObjectDistance()));
+      document.getElementById('objectDistance').value = objectDistance;
+    } else if (dragTarget === 'screen') {
+      let nd = Math.max(50, Math.min(350, Math.round((mx - dragOffsetX) - holeX)));
+      screenDistance = Math.min(nd, Math.floor(maxScreenDistance()));
+      document.getElementById('screenDistance').value = screenDistance;
+    }
     drawExperiment();
   });
-  canvas.addEventListener('mouseup', function() { isDragging = false; dragTarget = null; });
-  canvas.addEventListener('mouseleave', function() { isDragging = false; dragTarget = null; });
+  window.addEventListener('mouseup', function() { isDragging = false; dragTarget = null; });
 
   // 触摸拖拽
   canvas.addEventListener('touchstart', function(e) {
