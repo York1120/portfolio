@@ -57,6 +57,7 @@
     .btn-secondary:hover { background: #c8d6e5; }
     #simulation-container { position: relative; width: 100%; max-width: 800px; height: 500px; background: #fff; border: 1px solid var(--line); border-radius: 12px; margin: 0 auto; overflow: hidden; }
     .water-surface { position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: #1864ab; z-index: 1; }
+    .water-area { position: absolute; top: 50%; left: 0; width: 100%; height: 50%; background: linear-gradient(rgba(52,152,219,0.20), rgba(52,152,219,0.08)); z-index: 0; }
     .normal-line { position: absolute; top: 0; left: 50%; width: 1px; height: 100%; border-left: 2px dashed #666; z-index: 1; }
     .point-o { position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; background: #e74c3c; border-radius: 50%; transform: translate(-5px, -5px); z-index: 2; border: 2px solid #fff; }
     .ray-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
@@ -116,12 +117,14 @@
       <div class="lab-card">
         <h2>实验操作区</h2>
         <div id="simulation-container">
+          <div class="water-area"></div>
           <div class="water-surface"></div>
           <div class="normal-line"></div>
           <div class="point-o"></div>
           <svg class="ray-svg" id="incidentRaySvg"></svg>
           <svg class="ray-svg" id="reflectedRaySvg"></svg>
           <svg class="ray-svg" id="refractedRaySvg"></svg>
+          <svg class="ray-svg" id="angleSvg"></svg>
           <div class="draggable-point" id="dragHandle"></div>
         </div>
         <div class="legend">
@@ -258,6 +261,7 @@ var container = document.getElementById('simulation-container');
 var incidentSvg = document.getElementById('incidentRaySvg');
 var reflectedSvg = document.getElementById('reflectedRaySvg');
 var refractedSvg = document.getElementById('refractedRaySvg');
+var angleSvg = document.getElementById('angleSvg');
 var dragHandle = document.getElementById('dragHandle');
 var angleSlider = document.getElementById('angleSlider');
 var angleDisplay = document.getElementById('angleDisplay');
@@ -327,6 +331,74 @@ function updateRays() {
     pl3.setAttribute('marker-mid','url(#arr-g)');
     refractedSvg.appendChild(pl3);
   }
+
+  // ===== 角度标注（弧线 + 整数度数）与光源 =====
+  var NS = 'http://www.w3.org/2000/svg';
+  angleSvg.innerHTML = '';
+  var arcR = 44, labelR = 62;
+  var side = isRightSide ? 1 : -1;
+  // theta: 相对法线的带符号偏角（弧度，右偏为正）；below: 是否下半区（折射侧）
+  function arcPoint(theta, rr, below) {
+    return (cx + rr * Math.sin(theta)).toFixed(1) + ',' + (cy + (below ? 1 : -1) * rr * Math.cos(theta)).toFixed(1);
+  }
+  function addArc(below, theta2, color) {
+    var sweep;
+    if (!below) { sweep = theta2 > 0 ? 1 : 0; }        // 上半区：12点往右=顺时针
+    else { sweep = theta2 > 0 ? 0 : 1; }               // 下半区：6点往右=逆时针
+    var path = document.createElementNS(NS, 'path');
+    path.setAttribute('d', 'M' + arcPoint(0, arcR, below) + ' A' + arcR + ',' + arcR + ' 0 0,' + sweep + ' ' + arcPoint(theta2, arcR, below));
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', color);
+    path.setAttribute('stroke-width', '1.5');
+    angleSvg.appendChild(path);
+  }
+  function addAngleLabel(below, theta, color, text) {
+    var t = document.createElementNS(NS, 'text');
+    t.setAttribute('x', (cx + labelR * Math.sin(theta)).toFixed(1));
+    t.setAttribute('y', (cy + (below ? 1 : -1) * labelR * Math.cos(theta)).toFixed(1));
+    t.setAttribute('fill', color);
+    t.setAttribute('font-size', '12');
+    t.setAttribute('font-weight', '600');
+    t.setAttribute('text-anchor', 'middle');
+    t.textContent = text;
+    angleSvg.appendChild(t);
+  }
+  // 入射角（上半区，法线与入射光线之间）
+  addArc(false, side * rad, '#e74c3c');
+  addAngleLabel(false, side * rad / 2, '#e74c3c', '入射角 ' + Math.round(incidentAngle) + '°');
+  // 反射角（上半区另一侧，反射角=入射角）
+  addArc(false, -side * rad, '#3498db');
+  addAngleLabel(false, -side * rad / 2, '#3498db', '反射角 ' + Math.round(incidentAngle) + '°');
+  // 折射角（下半区；全反射时无折射光线，不标注）
+  if (refr !== null) {
+    var refrTheta = -side * refr * Math.PI / 180;
+    addArc(true, refrTheta, '#2ecc71');
+    addAngleLabel(true, refrTheta / 2, '#2ecc71', '折射角 ' + Math.round(refr) + '°');
+  }
+  // 光源：入射光末端（拖拽点）的光晕 + 光芒 + 标签
+  var glow = document.createElementNS(NS, 'circle');
+  glow.setAttribute('cx', ex); glow.setAttribute('cy', ey); glow.setAttribute('r', '10');
+  glow.setAttribute('fill', 'rgba(241,196,15,0.28)');
+  angleSvg.appendChild(glow);
+  for (var gi = 0; gi < 8; gi++) {
+    var ga = gi * Math.PI / 4;
+    var gl = document.createElementNS(NS, 'line');
+    gl.setAttribute('x1', (ex + 12 * Math.cos(ga)).toFixed(1)); gl.setAttribute('y1', (ey + 12 * Math.sin(ga)).toFixed(1));
+    gl.setAttribute('x2', (ex + 17 * Math.cos(ga)).toFixed(1)); gl.setAttribute('y2', (ey + 17 * Math.sin(ga)).toFixed(1));
+    gl.setAttribute('stroke', '#f1c40f'); gl.setAttribute('stroke-width', '2');
+    gl.setAttribute('stroke-linecap', 'round');
+    angleSvg.appendChild(gl);
+  }
+  var lightText = document.createElementNS(NS, 'text');
+  var ux = (ex - cx) / len, uy = (ey - cy) / len;
+  lightText.setAttribute('x', (ex + ux * 36).toFixed(1));
+  lightText.setAttribute('y', (ey + uy * 36 + 4).toFixed(1));
+  lightText.setAttribute('text-anchor', 'middle');
+  lightText.setAttribute('font-size', '12');
+  lightText.setAttribute('font-weight', '600');
+  lightText.setAttribute('fill', '#b8860b');
+  lightText.textContent = '光源';
+  angleSvg.appendChild(lightText);
 
   dragHandle.style.left = ex + 'px';
   dragHandle.style.top = ey + 'px';
