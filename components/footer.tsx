@@ -56,6 +56,35 @@ export function Footer() {
 
         <div className="border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
           <p>&copy; <FooterYear buildYear={new Date().getFullYear()} /> 周老师教学园地 · 保留所有权利</p>
+
+          {/*
+            备案信息（工信部 + 公安联网备案均为强制展示项）。
+            注意：
+            1. ICP 号必须原样展示并链接到 beian.miit.gov.cn，不可拆行或加空格。
+            2. 公安备案尚无「粤公网安备 ×× 号」正式编号，暂以数据码跳转官方查询页；
+               拿到正式编号后，把下面的文字替换即可，href 不必改。
+          */}
+          <p className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs sm:text-sm">
+            <a
+              href="https://beian.miit.gov.cn/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-gray-300"
+            >
+              粤ICP备2026169766号
+            </a>
+            <span aria-hidden="true" className="text-gray-700">
+              |
+            </span>
+            <a
+              href="https://beian.mps.gov.cn/#/query/webSearch?code=f623891cea7755205a7787259005b838"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-gray-300"
+            >
+              公安联网备案
+            </a>
+          </p>
         </div>
       </div>
     </footer>

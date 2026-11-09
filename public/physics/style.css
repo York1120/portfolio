@@ -481,6 +481,34 @@ h1 {
   line-height: 1.7;
 }
 
+/* 备案信息行（工信部 ICP + 公安联网备案），置于 footer-inner 之后 */
+.footer-legal {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.footer-legal a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.footer-legal a:hover {
+  color: var(--brand-2);
+  text-decoration: underline;
+}
+
+.footer-legal-sep {
+  color: var(--line);
+}
+
 /* ==========================================================
    Responsive — Tablet (≤960px)
    ========================================================== */
@@ -685,5 +713,11 @@ h1 {
   .footer {
     padding: 24px 0;
     font-size: 13px;
+  }
+
+  .footer-legal {
+    margin-top: 16px;
+    font-size: 12px;
+    gap: 6px;
   }
 }
